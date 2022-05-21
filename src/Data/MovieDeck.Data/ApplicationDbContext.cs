@@ -6,11 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using MovieDeck.Data.Common.Models;
-    using MovieDeck.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using MovieDeck.Data.Common.Models;
+    using MovieDeck.Data.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -24,7 +23,29 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+
+        public DbSet<Actor> Actors { get; set; }
+
+        public DbSet<Director> Directors { get; set; }
+
+        public DbSet<Watchlist> Watchlists { get; set; }
+
+        public DbSet<ProductionCompany> ProductionCompanies { get; set; }
+
+        public DbSet<Genre> Genres { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<MovieActor> MovieActors { get; set; }
+
+        public DbSet<MovieDirector> MovieDirectors { get; set; }
+
+        public DbSet<MovieWatchlist> MovieWatchlists { get; set; }
+
+        public DbSet<MovieCompany> MovieCompanies { get; set; }
+
+        public DbSet<MovieGenre> MovieGenres { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -72,6 +93,11 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            builder
+                .Entity<Actor>()
+                .Property(e => e.Gender)
+                .HasConversion<string>();
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

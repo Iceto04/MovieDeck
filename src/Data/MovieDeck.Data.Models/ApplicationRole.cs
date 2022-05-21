@@ -3,9 +3,8 @@ namespace MovieDeck.Data.Models
 {
     using System;
 
-    using MovieDeck.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using MovieDeck.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

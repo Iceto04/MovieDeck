@@ -1,8 +1,9 @@
 ﻿namespace MovieDeck.Data.Configurations
 {
-    using MovieDeck.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using MovieDeck.Data.Models;
 
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {

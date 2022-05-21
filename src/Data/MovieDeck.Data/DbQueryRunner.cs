@@ -3,9 +3,9 @@
     using System;
     using System.Threading.Tasks;
 
-    using MovieDeck.Data.Common;
-
     using Microsoft.EntityFrameworkCore;
+
+    using MovieDeck.Data.Common;
 
     public class DbQueryRunner : IDbQueryRunner
     {

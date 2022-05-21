@@ -2,9 +2,9 @@
 {
     using System.Diagnostics;
 
-    using MovieDeck.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using MovieDeck.Web.ViewModels;
 
     public class HomeController : BaseController
     {

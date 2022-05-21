@@ -4,18 +4,20 @@ namespace MovieDeck.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using MovieDeck.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using MovieDeck.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+
+            this.Watchlists = new HashSet<Watchlist>();
         }
 
         // Audit info
@@ -33,5 +35,7 @@ namespace MovieDeck.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<Watchlist> Watchlists { get; set; }
     }
 }

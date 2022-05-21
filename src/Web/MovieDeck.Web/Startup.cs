@@ -2,17 +2,6 @@
 {
     using System.Reflection;
 
-    using MovieDeck.Data;
-    using MovieDeck.Data.Common;
-    using MovieDeck.Data.Common.Repositories;
-    using MovieDeck.Data.Models;
-    using MovieDeck.Data.Repositories;
-    using MovieDeck.Data.Seeding;
-    using MovieDeck.Services.Data;
-    using MovieDeck.Services.Mapping;
-    using MovieDeck.Services.Messaging;
-    using MovieDeck.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -21,6 +10,16 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+
+    using MovieDeck.Data;
+    using MovieDeck.Data.Common;
+    using MovieDeck.Data.Common.Repositories;
+    using MovieDeck.Data.Models;
+    using MovieDeck.Data.Repositories;
+    using MovieDeck.Data.Seeding;
+    using MovieDeck.Services.Mapping;
+    using MovieDeck.Services.Messaging;
+    using MovieDeck.Web.ViewModels;
 
     public class Startup
     {
@@ -64,7 +63,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

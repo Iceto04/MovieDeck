@@ -2,9 +2,9 @@
 {
     using System.Linq;
 
-    using MovieDeck.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+
+    using MovieDeck.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

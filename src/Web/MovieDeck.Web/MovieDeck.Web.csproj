@@ -36,4 +36,8 @@
     <ProjectReference Include="..\MovieDeck.Web.Infrastructure\MovieDeck.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\MovieDeck.Web.ViewModels\MovieDeck.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Dashboard\" />
+  </ItemGroup>
 </Project>
