@@ -36,6 +36,8 @@ namespace MovieDeck.Data.Models
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
+        public virtual ICollection<Movie> Movies { get; set; }
+
         public virtual ICollection<Watchlist> Watchlists { get; set; }
     }
 }

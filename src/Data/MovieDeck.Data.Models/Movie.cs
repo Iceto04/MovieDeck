@@ -25,6 +25,10 @@
 
         public TimeSpan Runtime { get; set; }
 
+        public string AddedByUserId { get; set; }
+
+        public virtual ApplicationUser AddedByUser { get; set; }
+
         public virtual ICollection<MovieActor> Actors { get; set; }
 
         public virtual ICollection<MovieDirector> Directors { get; set; }

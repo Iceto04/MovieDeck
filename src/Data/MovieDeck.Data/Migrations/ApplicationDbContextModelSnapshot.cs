@@ -395,6 +395,9 @@ namespace MovieDeck.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AddedByUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -420,6 +423,8 @@ namespace MovieDeck.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -670,6 +675,15 @@ namespace MovieDeck.Data.Migrations
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("MovieDeck.Data.Models.Movie", b =>
+                {
+                    b.HasOne("MovieDeck.Data.Models.ApplicationUser", "AddedByUser")
+                        .WithMany("Movies")
+                        .HasForeignKey("AddedByUserId");
+
+                    b.Navigation("AddedByUser");
+                });
+
             modelBuilder.Entity("MovieDeck.Data.Models.MovieActor", b =>
                 {
                     b.HasOne("MovieDeck.Data.Models.Actor", "Actor")
@@ -780,6 +794,8 @@ namespace MovieDeck.Data.Migrations
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("Movies");
 
                     b.Navigation("Roles");
 
