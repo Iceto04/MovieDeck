@@ -1,0 +1,39 @@
+﻿@model MovieDeck.Web.ViewModels.Movies.CreateMovieInputModel
+@{
+    this.ViewData["Title"] = "Add movie";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Plot"></label>
+        <textarea asp-for="Plot" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Plot" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Runtime"></label>
+        <input class="form-control" asp-for="Runtime" type="hidden" />
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>Hours</label>
+            <input class="form-control" asp-for="Runtime.Hours" />
+        </div>
+        <div class="form-group col-md-4">
+            <label>Minutes</label>
+            <input class="form-control" asp-for="Runtime.Minutes" />
+        </div>
+        <div class="form-group col-md-4">
+            <label>Seconds</label>
+            <input class="form-control" asp-for="Runtime.Seconds" />
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" />
+</form>

@@ -1,10 +1,9 @@
 ﻿namespace MovieDeck.Web.Areas.Administration.Controllers
 {
-    using MovieDeck.Common;
-    using MovieDeck.Web.Controllers;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using MovieDeck.Common;
+    using MovieDeck.Web.Controllers;
 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     [Area("Administration")]

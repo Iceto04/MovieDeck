@@ -39,5 +39,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\Dashboard\" />
+    <Folder Include="Views\Actors\" />
+    <Folder Include="Views\Directors\" />
+    <Folder Include="Views\Companies\" />
   </ItemGroup>
 </Project>
