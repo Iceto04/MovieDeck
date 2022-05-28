@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MovieDeck.Data.Common\MovieDeck.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\MovieDeck.Data.Models\MovieDeck.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\MovieDeck.Web.ViewModels\MovieDeck.Web.ViewModels.csproj" />
     <ProjectReference Include="..\MovieDeck.Services.Mapping\MovieDeck.Services.Mapping.csproj" />
   </ItemGroup>
 

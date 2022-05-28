@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
     using MovieDeck.Data.Common.Models;
 
@@ -15,12 +18,13 @@
             this.Watchlists = new HashSet<MovieWatchlist>();
             this.Images = new HashSet<Image>();
             this.Companies = new HashSet<MovieCompany>();
-        }
+}
 
         public string Title { get; set; }
 
         public string Plot { get; set; }
 
+        [Column(TypeName = "Date")]
         public DateTime ReleaseDate { get; set; }
 
         public TimeSpan Runtime { get; set; }

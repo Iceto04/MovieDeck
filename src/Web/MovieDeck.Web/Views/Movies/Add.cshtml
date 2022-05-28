@@ -1,11 +1,11 @@
-﻿@model MovieDeck.Web.ViewModels.Movies.CreateMovieInputModel
+﻿@model MovieDeck.Web.ViewModels.Movies.AddMovieInputModel
 @{
     this.ViewData["Title"] = "Add movie";
 }
 
 <h1>@this.ViewData["Title"]</h1>
 
-<form method="post">
+<form method="post" class="col-md-6 offset-3">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Title"></label>
@@ -17,23 +17,37 @@
         <textarea asp-for="Plot" class="form-control" rows="5"></textarea>
         <span asp-validation-for="Plot" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input asp-for="ReleaseDate" class="form-control" />
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    </div>
     <div>
         <label asp-for="Runtime"></label>
-        <input class="form-control" asp-for="Runtime" type="hidden" />
+        <input asp-for="Runtime" type="hidden" class="form-control" />
     </div>
     <div class="form-row">
         <div class="form-group col-md-4">
-            <label>Hours</label>
-            <input class="form-control" asp-for="Runtime.Hours" />
+            <label asp-for="Runtime.Hours">Hours</label>
+            <input asp-for="Runtime.Hours" class="form-control" />
         </div>
         <div class="form-group col-md-4">
-            <label>Minutes</label>
-            <input class="form-control" asp-for="Runtime.Minutes" />
+            <label asp-for="Runtime.Minutes">Minutes</label>
+            <input asp-for="Runtime.Minutes" class="form-control" />
         </div>
         <div class="form-group col-md-4">
-            <label>Seconds</label>
-            <input class="form-control" asp-for="Runtime.Seconds" />
+            <label asp-for="Runtime.Seconds">Seconds</label>
+            <input asp-for="Runtime.Seconds" class="form-control" />
         </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="GenresIds"></label>
+        <select class="form-control selectpicker" asp-for="GenresIds" asp-items="@Model.GenresItems"></select>
+        <span asp-validation-for="GenresIds" class="text-danger"></span>
     </div>
     <input type="submit" class="btn btn-primary" />
 </form>
+
+@section Scripts {
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js" asp-append-version="true"></script>
+}

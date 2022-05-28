@@ -414,7 +414,7 @@ namespace MovieDeck.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<TimeSpan>("Runtime")
                         .HasColumnType("time");

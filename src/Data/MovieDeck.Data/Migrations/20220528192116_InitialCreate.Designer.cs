@@ -10,7 +10,7 @@ using MovieDeck.Data;
 namespace MovieDeck.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220522154129_InitialCreate")]
+    [Migration("20220528192116_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -416,7 +416,7 @@ namespace MovieDeck.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<TimeSpan>("Runtime")
                         .HasColumnType("time");
