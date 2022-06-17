@@ -63,7 +63,7 @@
             var context = BrowsingContext.New(config);
 
             var document = context
-                .OpenAsync($"https://www.imdb.com/title/tt4154756/")
+                .OpenAsync($"https://www.imdb.com/title/tt4154796/")
                 .GetAwaiter()
                 .GetResult();
 
@@ -75,7 +75,7 @@
             Console.WriteLine(movieName);
 
             var fullMoviePlotDoc = context
-                    .OpenAsync($"https://www.imdb.com/title/tt4154756/plotsummary")
+                    .OpenAsync($"https://www.imdb.com/title/tt4154796/plotsummary")
                     .GetAwaiter()
                     .GetResult();
 
@@ -112,8 +112,9 @@
             var runtimeDataSplited = runtimeAsString
                 .ToLower()
                 .Replace("hours", string.Empty)
-                .Replace("minutes", string.Empty)
+                .Replace("minute", string.Empty)
                 .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                .Take(2)
                 .Select(int.Parse)
                 .ToArray();
 
@@ -125,17 +126,48 @@
             var genres = document.QuerySelectorAll("div[data-testid=genres] > a > ul > li")
                 .Select(x => x.TextContent);
 
-            var directorsNames = document
+            Console.WriteLine(string.Join(", ", genres));
+
+            var moviePosterUrl = document.QuerySelector("div[data-testid=hero-media__poster] > div > img").GetAttribute("src");
+            Console.WriteLine(moviePosterUrl);
+
+            var directors = document
                 .QuerySelector("section[data-testid=title-cast] > ul > li > div > ul")
                 .QuerySelectorAll("li > a");
 
-            foreach (var director in directorsNames)
+            foreach (var director in directors)
             {
-                Console.WriteLine(director.TextContent);
+                var directorName = director.TextContent;
+                Console.WriteLine(directorName);
+
+                var directorFullInfoUrl = director.GetAttribute("href");
+                directorFullInfoUrl = directorFullInfoUrl.Substring(0, directorFullInfoUrl.IndexOf("?"));
+
+                var directorFullInfoDoc = context.OpenAsync($"https://www.imdb.com/{directorFullInfoUrl}")
+                    .GetAwaiter()
+                    .GetResult();
+
+                var directorBirthDateAsString = directorFullInfoDoc.QuerySelector("#name-born-info > time")?.GetAttribute("datetime");
+                // {yyyy-MM-dd} date format
+
+                var directorBirtDate = DateTime.ParseExact(directorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+
+                Console.WriteLine(directorBirtDate.ToString("d-M-yyyy"));
+
+                var directorBio = directorFullInfoDoc.QuerySelector(".name-trivia-bio-text > div")?.TextContent
+                    .Replace("See full bio »", string.Empty)
+                    .Trim();
+
+                Console.WriteLine(directorBio);
+
+                var directorPhotoUrl = directorFullInfoDoc.QuerySelector("#name-poster")?.GetAttribute("src");
+
+                Console.WriteLine(directorPhotoUrl);
+
             }
 
             var companiesDoc = context
-                .OpenAsync("https://www.imdb.com/title/tt4154756/companycredits")
+                .OpenAsync("https://www.imdb.com/title/tt4154796/companycredits")
                 .GetAwaiter()
                 .GetResult();
 
@@ -146,7 +178,7 @@
                 .ToArray();
 
             var actorsDoc = context
-                .OpenAsync("https://www.imdb.com/title/tt4154756/fullcredits")
+                .OpenAsync("https://www.imdb.com/title/tt4154796/fullcredits")
                 .GetAwaiter()
                 .GetResult();
 
@@ -154,21 +186,71 @@
 
             foreach (var actor in actors)
             {
-                var actorPhotoElement = actor.QuerySelector("td.primary_photo > a").GetAttribute("href");
-
-                var actorPhotoDoc = context.OpenAsync($"https://www.imdb.com/{actorPhotoElement}")
-                    .GetAwaiter()
-                    .GetResult();
-
-                var actorPhotoUrl = actorPhotoDoc.QuerySelector("#name-poster").GetAttribute("src");
-
-                Console.WriteLine(actorPhotoUrl);
-
                 var actorName = actor.QuerySelector("td:not([class]) > a").TextContent.Trim();
                 Console.WriteLine(actorName);
 
-                var characters = actor.QuerySelectorAll("td.character > a").Select(x => x.TextContent).ToList();
-                Console.WriteLine(string.Join(", ", characters));
+                var charactersInfo = actor.QuerySelector("td.character")
+                    .TextContent
+                    .Trim()
+                    .Replace("\n", string.Empty);
+
+                if (charactersInfo.Contains("/") && (charactersInfo.Contains("(") || charactersInfo.Contains(")")))
+                {
+                    var characters = charactersInfo
+                        .Split("/", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    var characters2 = string.Join(" / ", characters);
+
+                    characters = characters2.Split("  ", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    Console.WriteLine(string.Join(" ", characters));
+                }
+                else if (charactersInfo.Contains("/"))
+                {
+                    var characters = charactersInfo
+                        .Split("/", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    Console.WriteLine(string.Join(" / ", characters));
+                }
+                else
+                {
+                    var characters = charactersInfo
+                        .Split("  ", StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim())
+                        .ToList();
+
+                    Console.WriteLine(string.Join(" ", characters));
+                }
+
+                var actorFullInfoUrl = actor.QuerySelector("td.primary_photo > a")?.GetAttribute("href");
+                actorFullInfoUrl = actorFullInfoUrl.Substring(0, actorFullInfoUrl.LastIndexOf("/"));
+
+                var actorFullInfoDoc = context.OpenAsync($"https://www.imdb.com/{actorFullInfoUrl}")
+                    .GetAwaiter()
+                    .GetResult();
+
+                var actorBirthDateAsString = actorFullInfoDoc.QuerySelector("#name-born-info > time")?.GetAttribute("datetime");
+                // {yyyy-MM-dd} date format
+
+                var actorBirtDate = DateTime.ParseExact(actorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+
+                Console.WriteLine(actorBirtDate.ToString("d-M-yyyy"));
+
+                var actorBio = actorFullInfoDoc.QuerySelector(".name-trivia-bio-text > div")?.TextContent
+                    .Replace("See full bio »", string.Empty)
+                    .Trim();
+
+                Console.WriteLine(actorBio);
+
+                var actorPhotoUrl = actorFullInfoDoc.QuerySelector("#name-poster")?.GetAttribute("src");
+
+                Console.WriteLine(actorPhotoUrl);
             }
         }
 

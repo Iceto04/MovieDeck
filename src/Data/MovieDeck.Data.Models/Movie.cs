@@ -18,7 +18,7 @@
             this.Watchlists = new HashSet<MovieWatchlist>();
             this.Images = new HashSet<Image>();
             this.Companies = new HashSet<MovieCompany>();
-}
+        }
 
         public string Title { get; set; }
 
