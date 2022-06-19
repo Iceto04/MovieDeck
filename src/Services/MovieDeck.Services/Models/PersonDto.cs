@@ -1,11 +1,8 @@
-﻿namespace MovieDeck.Data.Models
+﻿namespace MovieDeck.Services.Models
 {
     using System;
 
-    using MovieDeck.Data.Common.Models;
-    using MovieDeck.Data.Models.Enums;
-
-    public class BasePersonModel<T> : BaseDeletableModel<T>
+    public class PersonDto
     {
         public string FullName { get; set; }
 

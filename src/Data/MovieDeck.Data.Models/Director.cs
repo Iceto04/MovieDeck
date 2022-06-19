@@ -3,12 +3,10 @@
     using System;
     using System.Collections.Generic;
 
-    public class Director : BasePersonModel<string>
+    public class Director : BasePersonModel<int>
     {
         public Director()
         {
-            this.Id = Guid.NewGuid().ToString();
-
             this.Movies = new HashSet<MovieDirector>();
         }
 

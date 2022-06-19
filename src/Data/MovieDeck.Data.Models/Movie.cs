@@ -29,6 +29,12 @@
 
         public TimeSpan Runtime { get; set; }
 
+        public string ImdbRating { get; set; }
+
+        public string OriginalUrl { get; set; }
+
+        public string PosterUrl { get; set; }
+
         public string AddedByUserId { get; set; }
 
         public virtual ApplicationUser AddedByUser { get; set; }

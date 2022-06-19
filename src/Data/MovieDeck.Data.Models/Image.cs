@@ -15,6 +15,8 @@
 
         public virtual Movie Movie { get; set; }
 
+        public string OriginalUrl { get; set; }
+
         public string Extension { get; set; }
 
         //// The contents of the image is on the file system

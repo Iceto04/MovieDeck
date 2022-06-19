@@ -8,7 +8,7 @@
 
         public virtual Movie Movie { get; set; }
 
-        public string DirectorId { get; set; }
+        public int DirectorId { get; set; }
 
         public virtual Director Director { get; set; }
     }

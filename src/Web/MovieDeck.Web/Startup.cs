@@ -17,6 +17,7 @@
     using MovieDeck.Data.Models;
     using MovieDeck.Data.Repositories;
     using MovieDeck.Data.Seeding;
+using MovieDeck.Services;
     using MovieDeck.Services.Data;
     using MovieDeck.Services.Mapping;
     using MovieDeck.Services.Messaging;
@@ -66,6 +67,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<IGenresService, GenresService>();
             services.AddTransient<IMoviesService, MoviesService>();
+            services.AddTransient<IMovieScraperService, MovieScraperService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

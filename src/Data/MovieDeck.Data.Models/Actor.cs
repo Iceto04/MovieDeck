@@ -6,12 +6,10 @@
     using MovieDeck.Data.Common.Models;
     using MovieDeck.Data.Models.Enums;
 
-    public class Actor : BasePersonModel<string>
+    public class Actor : BasePersonModel<int>
     {
         public Actor()
         {
-            this.Id = Guid.NewGuid().ToString();
-
             this.Movies = new HashSet<MovieActor>();
         }
 

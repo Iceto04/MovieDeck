@@ -93,11 +93,6 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
-
-            builder
-                .Entity<Actor>()
-                .Property(e => e.Gender)
-                .HasConversion<string>();
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
