@@ -350,6 +350,7 @@ MigrationBackup/
 .ionide/
 
 # Custom ignores
-/Web/PressCenters.Web/appsettings.Production.json
+/Web/MovieDeck.Web/appsettings.Production.json
+**/wwwroot/lib
 *.min.css
 *.min.js
