@@ -18,7 +18,7 @@ namespace MovieDeck.Data.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -85,7 +85,7 @@ namespace MovieDeck.Data.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -242,7 +242,7 @@ namespace MovieDeck.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Plot = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReleaseDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
                     ImdbRating = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OriginalUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),

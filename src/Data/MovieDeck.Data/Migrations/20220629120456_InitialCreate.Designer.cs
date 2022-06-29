@@ -10,7 +10,7 @@ using MovieDeck.Data;
 namespace MovieDeck.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220618232010_InitialCreate")]
+    [Migration("20220629120456_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,8 +135,8 @@ namespace MovieDeck.Data.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("Date");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -293,8 +293,8 @@ namespace MovieDeck.Data.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("Date");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -424,7 +424,7 @@ namespace MovieDeck.Data.Migrations
                     b.Property<string>("PosterUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ReleaseDate")
+                    b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("Date");
 
                     b.Property<TimeSpan>("Runtime")

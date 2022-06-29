@@ -1,7 +1,7 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
     using System.Diagnostics;
-using System.Threading.Tasks;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
         public async Task<IActionResult> Import()
         {
-            await this.movieScraperService.ImportMoviesAsync(4154795, 4154830);
+            await this.movieScraperService.ImportMoviesAsync(4154795, 4154799);
 
             return this.Redirect("/");
         }

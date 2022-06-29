@@ -14,7 +14,7 @@
             this.Actors = new List<ActorDto>();
             this.Directors = new List<PersonDto>();
             this.Genres = new List<string>();
-            // this.Images = new HashSet<Image>();
+            //// this.Images = new HashSet<Image>();
             this.Companies = new List<string>();
         }
 
@@ -22,7 +22,7 @@
 
         public string Plot { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public TimeSpan Runtime { get; set; }
 

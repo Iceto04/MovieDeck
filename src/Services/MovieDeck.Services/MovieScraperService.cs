@@ -185,7 +185,7 @@
 
         private MovieDto GetMovie(long id)
         {
-            var url = string.Format(BaseUrl, id);
+            var url = string.Format(BaseUrl, id.ToString("D7"));
 
             var document = this.context
                 .OpenAsync(url)
@@ -202,6 +202,8 @@
             movieDto.Title = document
                 .QuerySelector("h1[data-testid=hero-title-block__title]")
                 .TextContent;
+
+            Console.WriteLine(movieDto.Title);
 
             var fullMoviePlotDoc = this.context
                     .OpenAsync($"{url}plotsummary")
@@ -296,11 +298,11 @@
                 .QuerySelector("div[data-testid=hero-media__poster] > div > img")
                 .GetAttribute("src");
 
-            movieDto.PosterUrl = posterUrl.Substring(0, posterUrl.LastIndexOf("@")) + PosterUrlExtension;
+            movieDto.PosterUrl = posterUrl.Substring(0, posterUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
 
             movieDto.OriginalUrl = url;
 
-            var genres = document.QuerySelectorAll("div[data-testid=genres] > a > ul > li")
+            var genres = document.QuerySelectorAll("div[data-testid=genres] a > ul > li")
                 .Select(x => x.TextContent).ToList();
 
             movieDto.Genres.AddRange(genres);
@@ -327,7 +329,14 @@
                     var directorBirthDateAsString = directorFullInfoDoc.QuerySelector("#name-born-info > time")?.GetAttribute("datetime");
                     //// {yyyy-MM-dd} date format
 
-                    directorDto.BirthDate = DateTime.ParseExact(directorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+                    if (string.IsNullOrEmpty(directorBirthDateAsString))
+                    {
+                        directorDto.BirthDate = null;
+                    }
+                    else
+                    {
+                        directorDto.BirthDate = DateTime.ParseExact(directorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+                    }
 
                     directorDto.Biography = directorFullInfoDoc.QuerySelector(".name-trivia-bio-text > div")?.TextContent
                         .Replace("See full bio »", string.Empty)
@@ -336,7 +345,20 @@
                     var photoUrl = directorFullInfoDoc
                         .QuerySelector("#name-poster")?.GetAttribute("src");
 
-                    directorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("@")) + PosterUrlExtension;
+                    directorDto.PhotoUrl = photoUrl
+                            .Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
+                    /*
+                    if (!photoUrl.Contains("@"))
+                    {
+                        directorDto.PhotoUrl = photoUrl
+                            .Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
+                    }
+                    else
+                    {
+                        directorDto.PhotoUrl = photoUrl
+                            .Substring(0, photoUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
+                    }
+                    */
 
                     movieDto.Directors.Add(directorDto);
                 }
@@ -345,6 +367,8 @@
                     continue;
                 }
             }
+
+            Console.WriteLine($"Directors Count:{movieDto.Directors.Count}");
 
             var companies = document
                 .QuerySelector("li[data-testid=title-details-companies] > div > ul")
@@ -418,7 +442,14 @@
                     var actorBirthDateAsString = actorFullInfoDoc
                         .QuerySelector("#name-born-info > time")?.GetAttribute("datetime");
 
-                    actorDto.BirthDate = DateTime.ParseExact(actorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+                    if (string.IsNullOrEmpty(actorBirthDateAsString))
+                    {
+                        actorDto.BirthDate = null;
+                    }
+                    else
+                    {
+                        actorDto.BirthDate = DateTime.ParseExact(actorBirthDateAsString, "yyyy-M-d", CultureInfo.InvariantCulture);
+                    }
 
                     actorDto.Biography = actorFullInfoDoc.QuerySelector(".name-trivia-bio-text > div")?.TextContent
                         .Replace("See full bio »", string.Empty)
@@ -426,7 +457,18 @@
 
                     var photoUrl = actorFullInfoDoc.QuerySelector("#name-poster")?.GetAttribute("src");
 
-                    actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("@")) + PosterUrlExtension;
+                    actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
+
+                    /*
+                    if (!photoUrl.Contains("@"))
+                    {
+                        actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
+                    }
+                    else
+                    {
+                        actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
+                    }
+                    */
 
                     movieDto.Actors.Add(actorDto);
                 }
@@ -435,6 +477,9 @@
                     continue;
                 }
             }
+
+            Console.WriteLine($"Actors Count:{movieDto.Actors.Count}");
+            Console.WriteLine();
 
             return movieDto;
         }

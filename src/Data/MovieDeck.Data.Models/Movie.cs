@@ -25,7 +25,7 @@
         public string Plot { get; set; }
 
         [Column(TypeName = "Date")]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public TimeSpan Runtime { get; set; }
 
