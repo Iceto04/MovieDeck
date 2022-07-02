@@ -1,4 +1,4 @@
-﻿namespace MovieDeck.Services
+﻿namespace MovieDeck.Services.Scraper
 {
     using System;
     using System.Collections.Concurrent;
@@ -12,8 +12,11 @@
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
-    using MovieDeck.Services.Models;
+    using MovieDeck.Services.Scraper.Models;
 
+    /// <summary>
+    /// Won't be used due to finding a good API that I can get data with.
+    /// </summary>
     public class MovieScraperService : IMovieScraperService
     {
         private const string BaseUrl = "https://www.imdb.com/title/tt{0}/";

@@ -1,4 +1,4 @@
-﻿namespace MovieDeck.Services
+﻿namespace MovieDeck.Services.Scraper
 {
     using System.Threading.Tasks;
 

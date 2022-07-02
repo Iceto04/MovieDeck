@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MovieDeck.Services.Models
+﻿namespace MovieDeck.Services.Scraper.Models
 {
     public class ActorDto : PersonDto
     {

@@ -1,4 +1,4 @@
-﻿namespace MovieDeck.Services.Models
+﻿namespace MovieDeck.Services.Scraper.Models
 {
     using System;
 
