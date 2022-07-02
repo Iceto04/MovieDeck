@@ -42,7 +42,8 @@
     </div>
     <div class="form-group">
         <label asp-for="GenresIds"></label>
-        <select class="form-control selectpicker" asp-for="GenresIds" asp-items="@Model.GenresItems"></select>
+        <select asp-for="GenresIds" asp-items="@Model.GenresItems" class="form-control selectpicker" 
+        data-live-search="true" data-actions-box="true" data-size="5"></select>
         <span asp-validation-for="GenresIds" class="text-danger"></span>
     </div>
     <input type="submit" class="btn btn-primary" />
