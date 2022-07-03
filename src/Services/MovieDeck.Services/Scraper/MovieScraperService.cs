@@ -12,7 +12,7 @@
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
-    using MovieDeck.Services.Scraper.Models;
+    using MovieDeck.Services.Models;
 
     /// <summary>
     /// Won't be used due to finding a good API that I can get data with.

@@ -1,4 +1,4 @@
-﻿namespace MovieDeck.Services.Scraper.Models
+﻿namespace MovieDeck.Services.Models
 {
     public class ActorDto : PersonDto
     {

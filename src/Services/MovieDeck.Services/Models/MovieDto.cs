@@ -1,4 +1,4 @@
-﻿namespace MovieDeck.Services.Scraper.Models
+﻿namespace MovieDeck.Services.Models
 {
     using System;
     using System.Collections.Generic;
@@ -14,8 +14,8 @@
             this.Actors = new List<ActorDto>();
             this.Directors = new List<PersonDto>();
             this.Genres = new List<string>();
-            //// this.Images = new HashSet<Image>();
             this.Companies = new List<string>();
+            this.Images = new List<string>();
         }
 
         public string Title { get; set; }
@@ -42,6 +42,6 @@
 
         public List<string> Companies { get; set; }
 
-        //// public virtual ICollection<Image> Images { get; set; }
+        public List<string> Images { get; set; }
     }
 }

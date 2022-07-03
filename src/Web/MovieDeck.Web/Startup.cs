@@ -21,6 +21,7 @@
     using MovieDeck.Services.Data;
     using MovieDeck.Services.Mapping;
     using MovieDeck.Services.Messaging;
+using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels;
 
     public class Startup
@@ -67,6 +68,7 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<IGenresService, GenresService>();
             services.AddTransient<IMoviesService, MoviesService>();
+            services.AddTransient<ITmdbService, TmdbService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
