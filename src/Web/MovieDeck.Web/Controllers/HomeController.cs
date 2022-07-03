@@ -6,12 +6,16 @@
     using Microsoft.AspNetCore.Mvc;
 
     using MovieDeck.Services;
+using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels;
 
     public class HomeController : BaseController
     {
-        public HomeController()
+        private readonly ITmdbService tmdbService;
+
+        public HomeController(ITmdbService tmdbService)
         {
+            this.tmdbService = tmdbService;
         }
 
         public IActionResult Index()
@@ -20,6 +24,18 @@
         }
 
         public IActionResult Privacy()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Import(int from, int to)
+        {
+            await this.tmdbService.ImportMoviesAsync(from, to);
+            return this.Redirect("/");
+        }
+
+        public IActionResult All()
         {
             return this.View();
         }

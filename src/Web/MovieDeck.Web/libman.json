@@ -53,6 +53,28 @@
         "dist/js/bootstrap-select.min.js",
         "dist/js/bootstrap-select.min.js.map"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "OwlCarousel2@2.3.4",
+      "destination": "wwwroot/lib/OwlCarousel2/",
+      "files": [
+        "owl.carousel.min.js",
+        "owl.carousel.js",
+        "assets/owl.carousel.css",
+        "assets/owl.carousel.min.css",
+        "assets/owl.theme.default.css",
+        "assets/owl.theme.default.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@6.1.1",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css"
+      ]
     }
-  ]
+]
 }
