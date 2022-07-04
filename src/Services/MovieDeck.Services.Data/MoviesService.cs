@@ -1,5 +1,6 @@
 ﻿namespace MovieDeck.Services.Data
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -46,6 +47,11 @@
 
             await this.moviesRepository.AddAsync(movie);
             await this.moviesRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<Movie> GetAll()
+        {
+            return this.moviesRepository.AllAsNoTracking().ToList();
         }
     }
 }

@@ -5,17 +5,19 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    using MovieDeck.Services;
-using MovieDeck.Services.TmdbApi;
+    using MovieDeck.Services.Data;
+    using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels;
 
     public class HomeController : BaseController
     {
         private readonly ITmdbService tmdbService;
+        private readonly IMoviesService moviesService;
 
-        public HomeController(ITmdbService tmdbService)
+        public HomeController(ITmdbService tmdbService, IMoviesService moviesService)
         {
             this.tmdbService = tmdbService;
+            this.moviesService = moviesService;
         }
 
         public IActionResult Index()
@@ -37,7 +39,8 @@ using MovieDeck.Services.TmdbApi;
 
         public IActionResult All()
         {
-            return this.View();
+            var movies = this.moviesService.GetAll();
+            return this.View(movies);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
