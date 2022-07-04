@@ -183,6 +183,8 @@ using AngleSharp.Media;
                 Actors = await this.GetMovieActorsAsync(movieInfo),
             };
 
+            Console.WriteLine(movie.Title + "is taken");
+
             return movie;
         }
 
