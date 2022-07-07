@@ -151,6 +151,19 @@ using AngleSharp.Media;
             }
         }
 
+        public async Task<IEnumerable<Data.Models.Movie>> GetPopularMoviesAsync()
+        {
+            var topPopularMovies = await this.client.GetMoviePopularListAsync();
+
+            return topPopularMovies.Results.Select(x => new Data.Models.Movie
+            {
+                Title = x.Title,
+                ImdbRating = x.VoteAverage.ToString("F1"),
+                PosterUrl = this.config.Images.BaseUrl
+                    + this.config.Images.PosterSizes.LastOrDefault() + x.PosterPath,
+            });
+        }
+
         public void GetAll()
         {
             throw new System.NotImplementedException();

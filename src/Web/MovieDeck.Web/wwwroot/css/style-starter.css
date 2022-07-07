@@ -1749,20 +1749,21 @@ button.owl-next {
         line-height: 20px;
         font-weight: 600;
         text-transform: capitalize;
-        margin: 0 0 5px;
+        margin: 0 0 -10px;
         color: #fff;
     }
 
     .w3l-grids .box16 span {
-        display: inline-block;
         padding: 0px 0;
         font-size: 13px;
         color: #fff;
         font-weight: 400;
     }
 
-        .w3l-grids .box16 span.fa.fa-heart {
-            color: var(--theme-rose);
+        .w3l-grids .box16 span.bi-heart-fill {
+            /*color: var(--theme-rose);*/
+            display: flex;
+            justify-content: flex-end;
         }
 
         .w3l-grids .box16 span.video-icon {

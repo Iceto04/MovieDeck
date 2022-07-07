@@ -8,19 +8,23 @@
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
+    using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels.Movies;
 
     public class MoviesService : IMoviesService
     {
         private readonly IDeletableEntityRepository<Movie> moviesRepository;
         private readonly IDeletableEntityRepository<Genre> genresRepository;
+        private readonly ITmdbService tmdbService;
 
         public MoviesService(
             IDeletableEntityRepository<Movie> moviesRepository,
-            IDeletableEntityRepository<Genre> genresRepository)
+            IDeletableEntityRepository<Genre> genresRepository,
+            ITmdbService tmdbService)
         {
             this.moviesRepository = moviesRepository;
             this.genresRepository = genresRepository;
+            this.tmdbService = tmdbService;
         }
 
         public async Task AddAsync(AddMovieInputModel input)
@@ -65,6 +69,18 @@
                     PosterUrl = x.PosterUrl,
                     BannerUrl = x.Images.FirstOrDefault().OriginalUrl,
                 }).ToList();
+        }
+
+        public async Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync()
+        {
+            var movies = await this.tmdbService.GetPopularMoviesAsync();
+
+            return movies.Select(x => new MovieViewModel
+            {
+                Title = x.Title,
+                ImdbRating = x.ImdbRating,
+                PosterUrl = x.PosterUrl,
+            });
         }
     }
 }

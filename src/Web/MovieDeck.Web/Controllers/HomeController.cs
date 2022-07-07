@@ -23,13 +23,15 @@
             this.moviesService = moviesService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var movies = this.moviesService.GetAllForHomePage();
+            var popularMovies = await this.moviesService.GetPopularMoviesAsync();
 
             var model = new IndexListViewModel
             {
                 Movies = movies,
+                PopularMovies = popularMovies,
             };
 
             return this.View(model);

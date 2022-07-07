@@ -23,7 +23,7 @@
                             <div class="banner-info">
                                 <h3>@movie.Title</h3>
                                 <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
-                                    <span class="video-play-icon"><i class="bi bi-play-fill"></i></span>
+                                    <span class="bi bi-play-fill video-play-icon"></span>
                                 </a>
                             </div>
                         </div>
@@ -65,82 +65,30 @@
 
                                         </span>
 
-                                        <span class="post fa fa-heart text-right"></span>
+                                        <span class="post bi bi-heart-fill text-right"></span>
                                     </h4>
                                 </div>
-                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
+                                <span class="bi bi-play-fill video-icon" aria-hidden="true"></span>
                             </a>
                         </div>
                     </div>
-                    <div class="item vhny-grid">
-                        <div class="box16">
-                            <a href="genre.html">
-                                <figure>
-                                    <img class="img-fluid" src="/images/m3.jpg" alt="">
-                                </figure>
-                                <div class="box-content">
-                                    <h3 class="title">Knives Out</h3>
-                                    <h4>
-
-                                        <span class="post">
-
-                                            <span class="fa fa-clock-o"> </span> 1 Hr 4min
-
-                                        </span>
-
-                                        <span class="post fa fa-heart text-right"></span>
-                                    </h4>
-                                </div>
-                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
-                            </a>
+                    @foreach (var movie in @Model.PopularMovies)
+                    {
+                        <div class="item vhny-grid">
+                            <div class="box16">
+                                <a href="genre.html">
+                                    <figure>
+                                        <img class="img-fluid" src="@movie.PosterUrl" alt="">
+                                    </figure>
+                                    <div class="box-content">
+                                        <h4 class="title">@movie.Title</h4>
+                                        <span class="post bi bi-heart-fill"></span>
+                                    </div>
+                                    <span class="bi bi-play-fill video-icon" aria-hidden="true"></span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item vhny-grid">
-                        <div class="box16">
-                            <a href="genre.html">
-                                <figure>
-                                    <img class="img-fluid" src="/images/m4.jpg" alt="">
-                                </figure>
-                                <div class="box-content">
-                                    <h3 class="title">Little Women</h3>
-                                    <h4>
-
-                                        <span class="post">
-
-                                            <span class="fa fa-clock-o"> </span> 1 Hr 4min
-
-                                        </span>
-
-                                        <span class="post fa fa-heart text-right"></span>
-                                    </h4>
-                                </div>
-                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="item vhny-grid">
-                        <div class="box16">
-                            <a href="genre.html">
-                                <figure>
-                                    <img class="img-fluid" src="/images/m5.jpg" alt="">
-                                </figure>
-                                <div class="box-content">
-                                    <h3 class="title">Jumanji</h3>
-                                    <h4>
-
-                                        <span class="post">
-
-                                            <span class="fa fa-clock-o"> </span> 1 Hr 4min
-
-                                        </span>
-
-                                        <span class="post fa fa-heart text-right"></span>
-                                    </h4>
-                                </div>
-                                <span class="fa fa-play video-icon" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

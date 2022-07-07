@@ -11,5 +11,7 @@
         Task AddAsync(AddMovieInputModel input);
 
         IEnumerable<MovieViewModel> GetAllForHomePage();
+
+        Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync();
     }
 }

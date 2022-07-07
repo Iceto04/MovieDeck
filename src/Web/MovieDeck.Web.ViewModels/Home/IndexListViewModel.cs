@@ -7,5 +7,7 @@
     public class IndexListViewModel
     {
         public IEnumerable<MovieViewModel> Movies { get; set; }
+
+        public IEnumerable<MovieViewModel> PopularMovies { get; set; }
     }
 }
