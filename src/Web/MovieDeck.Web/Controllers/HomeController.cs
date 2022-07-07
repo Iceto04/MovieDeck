@@ -1,6 +1,7 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,8 @@
     using MovieDeck.Services.Data;
     using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels;
+    using MovieDeck.Web.ViewModels.Home;
+    using MovieDeck.Web.ViewModels.Movies;
 
     public class HomeController : BaseController
     {
@@ -22,10 +25,22 @@
 
         public IActionResult Index()
         {
-            return this.View();
+            var movies = this.moviesService.GetAllForHomePage();
+
+            var model = new IndexListViewModel
+            {
+                Movies = movies,
+            };
+
+            return this.View(model);
         }
 
         public IActionResult Privacy()
+        {
+            return this.View();
+        }
+
+        public IActionResult Import()
         {
             return this.View();
         }
@@ -35,12 +50,6 @@
         {
             await this.tmdbService.ImportMoviesAsync(from, to);
             return this.Redirect("/");
-        }
-
-        public IActionResult All()
-        {
-            var movies = this.moviesService.GetAll();
-            return this.View(movies);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

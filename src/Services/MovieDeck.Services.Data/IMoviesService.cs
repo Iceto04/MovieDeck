@@ -10,6 +10,6 @@
     {
         Task AddAsync(AddMovieInputModel input);
 
-        IEnumerable<Movie> GetAll();
+        IEnumerable<MovieViewModel> GetAllForHomePage();
     }
 }

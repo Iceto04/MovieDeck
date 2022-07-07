@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
+
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
     using MovieDeck.Web.ViewModels.Movies;
@@ -49,9 +51,20 @@
             await this.moviesRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<Movie> GetAll()
+        public IEnumerable<MovieViewModel> GetAllForHomePage()
         {
-            return this.moviesRepository.AllAsNoTracking().ToList();
+            return this.moviesRepository.All()
+                .Select(x => new MovieViewModel
+                {
+                    Title = x.Title,
+                    Plot = x.Plot,
+                    ReleaseDate = x.ReleaseDate,
+                    Runtime = x.Runtime,
+                    ImdbRating = x.ImdbRating,
+                    OriginalUrl = x.OriginalUrl,
+                    PosterUrl = x.PosterUrl,
+                    BannerUrl = x.Images.FirstOrDefault().OriginalUrl,
+                }).ToList();
         }
     }
 }
