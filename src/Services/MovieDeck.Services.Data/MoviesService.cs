@@ -53,7 +53,7 @@
 
         public IEnumerable<MovieViewModel> GetAllForHomePage()
         {
-            return this.moviesRepository.All()
+            return this.moviesRepository.AllAsNoTracking()
                 .Select(x => new MovieViewModel
                 {
                     Title = x.Title,

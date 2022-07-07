@@ -1,9 +1,6 @@
 ﻿namespace MovieDeck.Web.ViewModels.Movies
 {
     using System;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
     public class MovieViewModel
     {
