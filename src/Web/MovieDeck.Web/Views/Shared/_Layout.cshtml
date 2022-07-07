@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.min.css" asp-append-version="true">
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" asp-append-version="true">
     <link href="//fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,600&display=swap"
           rel="stylesheet">
 </head>
@@ -50,9 +51,9 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div>
         <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
+        <main role="main">
             @this.RenderBody()
         </main>
     </div>

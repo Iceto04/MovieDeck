@@ -16,14 +16,15 @@
                 @foreach (var movie in @Model.Movies)
                 {
                     <div class="item">
-                        <div class="slider-info bg bg2">
+                        <div class="slider-info">
                             <div class="banner-view">
-                                <img class="banner-view" src="@movie.BannerUrl" >
+                                <img class="banner-view" src="@movie.BannerUrl">
                             </div>
                             <div class="banner-info">
                                 <h3>@movie.Title</h3>
-                                <p>@movie.Plot</p>
-                                <a href="#small-dialog1" class="popup-with-zoom-anim play-view1"></a>
+                                <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
+                                    <span class="video-play-icon"><i class="bi bi-play-fill"></i></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -273,25 +274,25 @@
                                     @foreach (var movie in Model.Movies)
                                     {
                                         <div class="col-lg-4 new-relise-gd mt-lg-0 mt-0">
-                                                <div class="slider-info">
-                                                    <div class="img-circle">
-                                                        <a href="genre.html">
-                                                            <img src="@movie.PosterUrl" class="img-fluid"
+                                            <div class="slider-info">
+                                                <div class="img-circle">
+                                                    <a href="genre.html">
+                                                        <img src="@movie.PosterUrl" class="img-fluid"
                                                          alt="author image">
-                                                        </a>
-                                                    </div>
-                                                    <div class="message">
-                                                        <p>English</p>
-                                                        <a class="author-book-title" href="genre.html">@movie.Title</a>
-                                                        <h4>
-                                                            <span class="post">
-                                                                <span class="fa fa-clock-o"> </span> @movie.Runtime
-                                                            </span>
-                                                        </h4>
-                                                    </div>
+                                                    </a>
                                                 </div>
-
+                                                <div class="message">
+                                                    <p>English</p>
+                                                    <a class="author-book-title" href="genre.html">@movie.Title</a>
+                                                    <h4>
+                                                        <span class="post">
+                                                            <span class="fa fa-clock-o"> </span> @movie.Runtime
+                                                        </span>
+                                                    </h4>
+                                                </div>
                                             </div>
+
+                                        </div>
                                     }
                                 </div>
                             </div>
@@ -463,7 +464,7 @@
                 margin: 20,
                 nav: true,
                 responsiveClass: true,
-                autoplay: true,
+                autoplay: false,
                 autoplayTimeout: 5000,
                 autoplaySpeed: 1000,
                 autoplayHoverPause: false,
