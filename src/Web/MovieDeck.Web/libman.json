@@ -69,25 +69,15 @@
     },
     {
       "provider": "cdnjs",
-      "library": "font-awesome@6.1.1",
-      "destination": "wwwroot/lib/font-awesome/",
+      "library": "bootstrap-icons@1.8.3",
+      "destination": "wwwroot/lib/bootstrap-icons/",
       "files": [
-        "css/all.min.css",
-        "css/all.css"
+        "font/fonts/bootstrap-icons.woff",
+        "font/fonts/bootstrap-icons.woff2",
+        "font/bootstrap-icons.css",
+        "font/bootstrap-icons.json",
+        "font/bootstrap-icons.min.css"
       ]
     }
-,
-{
-  "provider": "cdnjs",
-  "library": "bootstrap-icons@1.8.3",
-  "destination": "wwwroot/lib/bootstrap-icons/",
-  "files": [
-    "font/fonts/bootstrap-icons.woff",
-    "font/fonts/bootstrap-icons.woff2",
-    "font/bootstrap-icons.css",
-    "font/bootstrap-icons.json",
-    "font/bootstrap-icons.min.css"
   ]
-}
-]
 }
