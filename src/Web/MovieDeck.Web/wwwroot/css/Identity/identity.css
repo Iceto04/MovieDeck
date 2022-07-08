@@ -1,0 +1,60 @@
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #6a11cb;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+}
+
+
+.input {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font: inherit;
+    color: white;
+    background-color: transparent;
+    outline: 2px solid #fff;
+}
+
+.input-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(10px, 10px);
+    transition: transform .25s;
+}
+.input:focus+.input-label,
+input:valid+.input-label {
+    transform: translate(10px, 10px) scale(.8);
+    color: #d1c5fc;
+    padding-inline: 5px;
+    background-color: #242329;
+}
+
+.input:is(:focus, :valid) {
+    color: white;
+    outline-color: #d1c5fc;
+}
+
+.input:not(:focus):invalid {
+    border-color: darkred;
+    outline: 2px solid darkred;
+    box-shadow: none;
+}
+
+.input:invalid {
+    outline: 2px solid darkred;
+    box-shadow: none;
+}
+
+    .input:focus:not(:invalid) {
+        border-color: #d1c5fc;
+        box-shadow: 0 0 0 0.22rem hwb(253deg 77% 1%);
+    }
+
+.transparent-input {
+    background-color: transparent !important;
+    border: none !important;
+}
