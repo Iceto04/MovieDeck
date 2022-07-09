@@ -38,12 +38,6 @@ input:valid+.input-label {
     outline-color: #d1c5fc;
 }
 
-.input:not(:focus):invalid {
-    border-color: darkred;
-    outline: 2px solid darkred;
-    box-shadow: none;
-}
-
 .input:invalid {
     outline: 2px solid darkred;
     box-shadow: none;
