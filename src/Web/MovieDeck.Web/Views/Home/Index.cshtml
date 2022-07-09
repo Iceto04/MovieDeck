@@ -5,9 +5,6 @@
     this.ViewData["Title"] = "Home Page";
 }
 
-
-
-
 <body>
     <!-- main-slider -->
     <section class="w3l-main-slider position-relative" id="home">
@@ -17,15 +14,13 @@
                 {
                     <div class="item">
                         <div class="slider-info">
-                            <div class="banner-view">
-                                <img class="banner-view" src="@movie.BannerUrl">
-                            </div>
-                            <div class="banner-info">
-                                <h3>@movie.Title</h3>
-                                <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
-                                    <span class="bi bi-play-fill video-play-icon"></span>
-                                </a>
-                            </div>
+                                <img class="banner-view img-fluid" src="@movie.BannerUrl">
+                                <div class="banner-info">
+                                    <h3>@movie.Title</h3>
+                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
+                                        <span class="bi bi-play-fill video-play-icon"></span>
+                                    </a>
+                                </div>
                         </div>
                     </div>
                 }

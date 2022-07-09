@@ -837,13 +837,11 @@ header.nav-fixed {
     }
 
     .w3l-main-slider .banner-view {
-        width: 1300px;
-        height: 600px;
         object-fit: cover;
         object-position: bottom;
         background: no-repeat center;
         background-size: cover;
-        min-height: 500px;
+        min-height: 400px;
         position: relative;
         z-index: 0;
         display: grid;
