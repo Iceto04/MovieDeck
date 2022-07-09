@@ -58,3 +58,8 @@ input:valid+.input-label {
     background-color: transparent !important;
     border: none !important;
 }
+
+input.form-check-input[type=checkbox] {
+    -webkit-appearance: checkbox;
+    position: initial;
+}
