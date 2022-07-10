@@ -45,5 +45,10 @@
 
             return this.Redirect("/");
         }
+
+        public IActionResult ById()
+        {
+            return this.View();
+        }
     }
 }

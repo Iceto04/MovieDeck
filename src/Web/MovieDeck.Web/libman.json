@@ -79,5 +79,18 @@
         "font/bootstrap-icons.min.css"
       ]
     }
+  ,
+{
+  "provider": "cdnjs",
+  "library": "slick-carousel@1.8.1",
+  "destination": "wwwroot/lib/slick-carousel/",
+  "files": [
+    "slick.min.js",
+    "slick.min.css.map",
+    "slick.min.css",
+    "slick.js",
+    "slick.css"
   ]
+}
+]
 }
