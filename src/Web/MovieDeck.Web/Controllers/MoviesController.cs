@@ -46,6 +46,7 @@
             return this.Redirect("/");
         }
 
+        [Route("[controller]/{id}")]
         public async Task<IActionResult> ById(int id)
         {
             var model = await this.moviesService.GetMovieByIdAsync(id);

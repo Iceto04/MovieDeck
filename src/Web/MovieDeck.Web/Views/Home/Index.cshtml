@@ -12,17 +12,19 @@
             <div class="owl-one owl-carousel owl-theme">
                 @foreach (var movie in @Model.Movies)
                 {
-                    <div class="item">
-                        <div class="slider-info">
+                    <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
+                        <div class="item">
+                            <div class="slider-info">
                                 <img class="banner-view img-fluid" src="@movie.BannerUrl">
                                 <div class="banner-info">
                                     <h3>@movie.Title</h3>
-                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
-                                        <span class="bi bi-play-fill video-play-icon"></span>
-                                    </a>
+                                    @*                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
+                                <span class="bi bi-play-fill video-play-icon"></span>
+                                </a>*@
                                 </div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 }
             </div>
         </div>
@@ -44,34 +46,11 @@
                     </div>
                 </div>
                 <div class="w3l-populohny-grids">
-                    <div class="item vhny-grid">
-                        <div class="box16">
-                            <a href="genre.html">
-                                <figure>
-                                    <img class="img-fluid" src="/images/m7.jpg" alt="">
-                                </figure>
-                                <div class="box-content">
-                                    <h3 class="title">Frozen 2</h3>
-                                    <h4>
-
-                                        <span class="post">
-
-                                            <span class="fa fa-clock-o"> </span> 1 Hr 4min
-
-                                        </span>
-
-                                        <span class="post bi bi-heart-fill text-right"></span>
-                                    </h4>
-                                </div>
-                                <span class="bi bi-play-fill video-icon" aria-hidden="true"></span>
-                            </a>
-                        </div>
-                    </div>
                     @foreach (var movie in @Model.PopularMovies)
                     {
-                        <div class="item vhny-grid">
-                            <div class="box16">
-                                <a href="genre.html">
+                        <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
+                            <div class="item vhny-grid">
+                                <div class="box16">
                                     <figure>
                                         <img class="img-fluid" src="@movie.PosterUrl" alt="">
                                     </figure>
@@ -79,10 +58,10 @@
                                         <h4 class="title">@movie.Title</h4>
                                         <span class="post bi bi-heart-fill"></span>
                                     </div>
-                                    <span class="bi bi-play-fill video-icon" aria-hidden="true"></span>
-                                </a>
+                                    @*<span class="bi bi-play-fill video-icon" aria-hidden="true"></span>*@
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     }
                 </div>
             </div>
@@ -107,26 +86,25 @@
                     @foreach (var movie in @Model.Movies)
                     {
                         <div class="item vhny-grid">
-                            <div class="box16 mb-0">
-                                <a href="genre.html">
+                            <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
+                                <div class="box16 mb-0">
                                     <figure>
                                         <img class="img-fluid" src="@movie.PosterUrl" alt="">
                                     </figure>
                                     <div class="box-content">
                                         <h4>
                                             <span class="post">
-                                                <span class="fa fa-clock-o"> </span> @movie.Runtime.TotalMinutes min
+                                                <span class="bi bi-clock"> </span> @movie.Runtime.TotalMinutes min
                                             </span>
-                                            <span class="post fa fa-heart text-right"></span>
+                                            <span class="post bi bi-heart-fill text-right"></span>
                                         </h4>
                                     </div>
-                                    <span class="fa fa-play video-icon" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                            <h3> <a class="title-gd" href="genre.html">@movie.Title</a></h3>
+                                </div>
+                            </a>
+                            <h3> <a class="title-gd" asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">@movie.Title</a></h3>
                             <p>@movie.Plot</p>
                             <div class="button-center text-center mt-4">
-                                <a href="genre.html" class="btn watch-button">Watch now</a>
+                                <a href="#" class="btn watch-button">Watch Trailer</a>
                             </div>
                         </div>
                     }
@@ -150,7 +128,7 @@
                                     <p>2019 ‧ Comedy/Action ‧ 2h 3m</p>
                                     <a class="watch" href="genre.html">
 
-                                        <span class="fa fa-play"
+                                        <span class="bi bi-play-fill"
                                               aria-hidden="true"></span>
                                         Watch Trailer
 
@@ -170,7 +148,7 @@
                                     <p>2020 ‧ Family/Adventure ‧ 1h 41m</p>
                                     <a class="watch" href="genre.html">
 
-                                        <span class="fa fa-play"
+                                        <span class="bi bi-play-fill"
                                               aria-hidden="true"></span>
                                         Watch Trailer
 
@@ -190,7 +168,7 @@
                                     <p>2020 ‧ Comedy/Action ‧ 2h 4m</p>
                                     <a class="watch" href="genre.html">
 
-                                        <span class="fa fa-play"
+                                        <span class="bi bi-play-fill"
                                               aria-hidden="true"></span>
                                         Watch Trailer
 
@@ -219,17 +197,17 @@
                                         <div class="col-lg-4 new-relise-gd mt-lg-0 mt-0">
                                             <div class="slider-info">
                                                 <div class="img-circle">
-                                                    <a href="genre.html">
+                                                    <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
                                                         <img src="@movie.PosterUrl" class="img-fluid"
                                                          alt="author image">
                                                     </a>
                                                 </div>
                                                 <div class="message">
                                                     <p>English</p>
-                                                    <a class="author-book-title" href="genre.html">@movie.Title</a>
+                                                    <a class="author-book-title" asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">@movie.Title</a>
                                                     <h4>
                                                         <span class="post">
-                                                            <span class="fa fa-clock-o"> </span> @movie.Runtime
+                                                            <span class="bi bi-clock"> </span> @movie.Runtime
                                                         </span>
                                                     </h4>
                                                 </div>
