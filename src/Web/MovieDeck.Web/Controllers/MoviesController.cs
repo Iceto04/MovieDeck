@@ -46,9 +46,10 @@
             return this.Redirect("/");
         }
 
-        public IActionResult ById()
+        public async Task<IActionResult> ById(int id)
         {
-            return this.View();
+            var model = await this.moviesService.GetMovieByIdAsync(id);
+            return this.View(model);
         }
     }
 }

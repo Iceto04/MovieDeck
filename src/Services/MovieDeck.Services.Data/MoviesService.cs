@@ -9,6 +9,9 @@
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
     using MovieDeck.Services.TmdbApi;
+    using MovieDeck.Web.ViewModels.Actors;
+    using MovieDeck.Web.ViewModels.Directors;
+    using MovieDeck.Web.ViewModels.Genres;
     using MovieDeck.Web.ViewModels.Movies;
 
     public class MoviesService : IMoviesService
@@ -69,6 +72,38 @@
                     PosterUrl = x.PosterUrl,
                     BannerUrl = x.Images.FirstOrDefault().OriginalUrl,
                 }).ToList();
+        }
+
+        public async Task<SingleMovieViewModel> GetMovieByIdAsync(int id)
+        {
+            return await this.moviesRepository.AllAsNoTracking()
+                .Where(x => x.Id == id)
+                .Select(x => new SingleMovieViewModel
+                {
+                    Title = x.Title,
+                    Plot = x.Plot,
+                    ReleaseDate = x.ReleaseDate,
+                    Runtime = x.Runtime,
+                    OriginalUrl = x.OriginalUrl,
+                    PosterUrl = x.PosterUrl,
+                    ImdbRating = x.ImdbRating,
+                    Genres = x.Genres.Select(g => new GenreViewModel
+                    {
+                        Name = g.Genre.Name,
+                    }),
+                    Directors = x.Directors.Select(d => new DirectorViewModel
+                    {
+                        Name = d.Director.FullName,
+                        PhotoUrl = d.Director.PhotoUrl,
+                    }),
+                    Actors = x.Actors.Select(a => new ActorViewModel
+                    {
+                        FullName = a.Actor.FullName,
+                        CharacterName = a.CharacterName,
+                        PhotoUrl = a.Actor.PhotoUrl,
+                    }),
+                    Images = x.Images,
+                }).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync()

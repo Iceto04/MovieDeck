@@ -2584,8 +2584,8 @@ ul {
   }
 }
 .movie-single .movie-single-ct .movie-rate .rate-star i {
-  font-size: 36px;
-  color: #abb7c4;
+    font-size: 36px;
+    color: #f5b50a;
 }
 @media (max-width: 767px) {
   .movie-single .movie-single-ct .movie-rate .rate-star i {

@@ -13,5 +13,7 @@
         IEnumerable<MovieViewModel> GetAllForHomePage();
 
         Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync();
+
+        Task<SingleMovieViewModel> GetMovieByIdAsync(int id);
     }
 }
