@@ -20,7 +20,7 @@ namespace MovieDeck.Data.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,7 +87,7 @@ namespace MovieDeck.Data.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,8 +245,9 @@ namespace MovieDeck.Data.Migrations
                     ReleaseDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
                     ImdbRating = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OriginalUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PosterUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalId = table.Column<int>(type: "int", nullable: false),
+                    PosterPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BackdropPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -294,8 +295,7 @@ namespace MovieDeck.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MovieId = table.Column<int>(type: "int", nullable: false),
-                    OriginalUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),

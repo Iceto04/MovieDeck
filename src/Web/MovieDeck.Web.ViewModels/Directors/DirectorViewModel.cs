@@ -5,5 +5,7 @@
         public string Name { get; set; }
 
         public string PhotoUrl { get; set; }
+
+        public string PhotoPath { get; set; }
     }
 }

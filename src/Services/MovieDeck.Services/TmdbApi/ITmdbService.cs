@@ -3,18 +3,21 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using MovieDeck.Data.Models;
+    using MovieDeck.Services.Models;
 
     public interface ITmdbService
     {
-        Task ImportMoviesAsync(int fromId, int toId);
+        Task ImportMovieAsync(MovieDto movieDto);
 
-        // Task ImportMovieAsync(Movie movie);
-
-        // void GetMovieById(int id);
+        Task ImportMoviesInRangeAsync(int fromId, int toId);
 
         void GetAll();
-        Task<IEnumerable<Movie>> GetPopularMoviesAsync();
+
+        string GenereateImageUrl(string path);
+
+        Task<IEnumerable<int>> GetPopularMoviesOriginalIdAsync();
+
+        Task<MovieDto> GetMovieById(int id);
 
         // void GetMoviesInRange(int start, int end);
     }

@@ -5,7 +5,8 @@
 using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-using AngleSharp.Media;
+
+    using Microsoft.Extensions.Configuration;
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
@@ -17,8 +18,8 @@ using AngleSharp.Media;
 
     public class TmdbService : ITmdbService
     {
-        private const string TmdbApiKey = "ce275f68468813163db7ae1ad4adad0d";
         private const string BaseUrl = "https://www.themoviedb.org";
+        private readonly string TmdbApiKey;
 
         private readonly IDeletableEntityRepository<Data.Models.Movie> moviesRepository;
         private readonly IDeletableEntityRepository<Actor> actorsRepository;
@@ -30,6 +31,8 @@ using AngleSharp.Media;
         private readonly IRepository<MovieDirector> movieDirectorsRepository;
         private readonly IRepository<MovieCompany> movieCompaniesRepository;
         private readonly IRepository<MovieGenre> movieGenresRepository;
+
+        private readonly IConfiguration configuration;
 
         private TMDbClient client;
         private APIConfiguration config;
@@ -44,7 +47,8 @@ using AngleSharp.Media;
             IRepository<MovieActor> movieActorsRepository,
             IRepository<MovieDirector> movieDirectorsRepository,
             IRepository<MovieCompany> movieCompaniesRepository,
-            IRepository<MovieGenre> movieGenresRepository)
+            IRepository<MovieGenre> movieGenresRepository,
+            IConfiguration configuration)
         {
             this.moviesRepository = moviesRepository;
             this.actorsRepository = actorsRepository;
@@ -57,111 +61,115 @@ using AngleSharp.Media;
             this.movieCompaniesRepository = movieCompaniesRepository;
             this.movieGenresRepository = movieGenresRepository;
 
-            this.client = new TMDbClient(TmdbApiKey);
+            this.configuration = configuration;
+
+            this.TmdbApiKey = this.configuration.GetSection("TmdbApi")["ApiKey"];
+
+            this.client = new TMDbClient(this.TmdbApiKey);
             this.config = this.client.GetAPIConfiguration().Result;
+
         }
 
-        public async Task ImportMoviesAsync(int fromId, int toId)
+        public async Task ImportMovieAsync(MovieDto movieDto)
+        {
+            var movie = new Data.Models.Movie
+            {
+                Title = movieDto.Title,
+                Plot = movieDto.Plot,
+                ReleaseDate = movieDto.ReleaseDate,
+                Runtime = movieDto.Runtime,
+                ImdbRating = movieDto.ImdbRating,
+                PosterPath = movieDto.PosterPath,
+                BackdropPath = movieDto.BackdropPath,
+                OriginalId = movieDto.OriginalId,
+            };
+
+            await this.moviesRepository.AddAsync(movie);
+
+            foreach (var actorDto in movieDto.Actors)
+            {
+                var actorId = await this.GetOrCreateActorAsync(actorDto);
+                var characterName = actorDto.Character;
+
+                var movieActor = new MovieActor
+                {
+                    ActorId = actorId,
+                    Movie = movie,
+                    CharacterName = characterName,
+                };
+                await this.movieActorsRepository.AddAsync(movieActor);
+            }
+
+            foreach (var directorDto in movieDto.Directors)
+            {
+                var directorId = await this.GetOrCreateDirectorAsync(directorDto);
+
+                var movieDirector = new MovieDirector
+                {
+                    DirectorId = directorId,
+                    Movie = movie,
+                };
+                await this.movieDirectorsRepository.AddAsync(movieDirector);
+            }
+
+            foreach (var genreName in movieDto.Genres)
+            {
+                var genreId = await this.GetOrCreateGenreAsync(genreName);
+
+                var movieGenre = new MovieGenre
+                {
+                    GenreId = genreId,
+                    Movie = movie,
+                };
+                await this.movieGenresRepository.AddAsync(movieGenre);
+            }
+
+            foreach (var companyName in movieDto.Companies)
+            {
+                var companyId = await this.GetOrCreateCompanyAsync(companyName);
+
+                var movieCompany = new MovieCompany
+                {
+                    CompanyId = companyId,
+                    Movie = movie,
+                };
+                await this.movieCompaniesRepository.AddAsync(movieCompany);
+            }
+
+            foreach (var imageUrl in movieDto.Images)
+            {
+                var image = new Image
+                {
+                    OriginalPath = imageUrl,
+                    Movie = movie,
+                };
+
+                await this.imagesRepository.AddAsync(image);
+            }
+
+            await this.moviesRepository.SaveChangesAsync();
+        }
+
+        public async Task ImportMoviesInRangeAsync(int fromId, int toId)
         {
             var movies = await this.GetMoviesInRangeAsync(fromId, toId);
 
             foreach (var movieDto in movies)
             {
-                if (this.moviesRepository.AllAsNoTracking().Any(x => x.Title == movieDto.Title && x.Plot == movieDto.Plot))
+                if (this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == movieDto.OriginalId))
                 {
                     continue;
                 }
 
-                var movie = new Data.Models.Movie
-                {
-                    Title = movieDto.Title,
-                    Plot = movieDto.Plot,
-                    ReleaseDate = movieDto.ReleaseDate,
-                    Runtime = movieDto.Runtime,
-                    ImdbRating = movieDto.ImdbRating,
-                    OriginalUrl = movieDto.OriginalUrl,
-                    PosterUrl = movieDto.PosterUrl,
-                };
-
-                await this.moviesRepository.AddAsync(movie);
-
-                foreach (var actorDto in movieDto.Actors)
-                {
-                    var actorId = await this.GetOrCreateActorAsync(actorDto);
-                    var characterName = actorDto.Character;
-
-                    var movieActor = new MovieActor
-                    {
-                        ActorId = actorId,
-                        Movie = movie,
-                        CharacterName = characterName,
-                    };
-                    await this.movieActorsRepository.AddAsync(movieActor);
-                }
-
-                foreach (var directorDto in movieDto.Directors)
-                {
-                    var directorId = await this.GetOrCreateDirectorAsync(directorDto);
-
-                    var movieDirector = new MovieDirector
-                    {
-                        DirectorId = directorId,
-                        Movie = movie,
-                    };
-                    await this.movieDirectorsRepository.AddAsync(movieDirector);
-                }
-
-                foreach (var genreName in movieDto.Genres)
-                {
-                    var genreId = await this.GetOrCreateGenreAsync(genreName);
-
-                    var movieGenre = new MovieGenre
-                    {
-                        GenreId = genreId,
-                        Movie = movie,
-                    };
-                    await this.movieGenresRepository.AddAsync(movieGenre);
-                }
-
-                foreach (var companyName in movieDto.Companies)
-                {
-                    var companyId = await this.GetOrCreateCompanyAsync(companyName);
-
-                    var movieCompany = new MovieCompany
-                    {
-                        CompanyId = companyId,
-                        Movie = movie,
-                    };
-                    await this.movieCompaniesRepository.AddAsync(movieCompany);
-                }
-
-                foreach (var imageUrl in movieDto.Images)
-                {
-                    var image = new Image
-                    {
-                        OriginalUrl = imageUrl,
-                        Movie = movie,
-                    };
-
-                    await this.imagesRepository.AddAsync(image);
-                }
-
-                await this.moviesRepository.SaveChangesAsync();
-                Console.WriteLine(movie.Title + "is added");
+                await this.ImportMovieAsync(movieDto);
             }
         }
 
-        public async Task<IEnumerable<Data.Models.Movie>> GetPopularMoviesAsync()
+        public async Task<IEnumerable<int>> GetPopularMoviesOriginalIdAsync()
         {
             var topPopularMovies = await this.client.GetMoviePopularListAsync();
 
-            return topPopularMovies.Results.Select(x => new Data.Models.Movie
-            {
-                Title = x.Title,
-                ImdbRating = x.VoteAverage.ToString("F1"),
-                PosterUrl = this.config.Images.BaseUrl
-                    + this.config.Images.PosterSizes.LastOrDefault() + x.PosterPath,
-            });
+            return topPopularMovies.Results.Select(x => x.Id);
         }
 
         public void GetAll()
@@ -169,7 +177,7 @@ using AngleSharp.Media;
             throw new System.NotImplementedException();
         }
 
-        private async Task<MovieDto> GetMovieById(int id)
+        public async Task<MovieDto> GetMovieById(int id)
         {
             TMDbLib.Objects.Movies.Movie movieInfo = this.client
                 .GetMovieAsync(id, MovieMethods.Credits | MovieMethods.Images).Result;
@@ -186,9 +194,9 @@ using AngleSharp.Media;
                 ReleaseDate = movieInfo.ReleaseDate,
                 Runtime = TimeSpan.FromMinutes((double)movieInfo.Runtime),
                 ImdbRating = movieInfo.VoteAverage.ToString(),
-                OriginalUrl = BaseUrl + $"/movie/{movieInfo.Id}",
-                PosterUrl = movieInfo.PosterPath != null ? this.config.Images.BaseUrl
-                    + this.config.Images.PosterSizes.LastOrDefault() + movieInfo.PosterPath : null,
+                OriginalId = movieInfo.Id,
+                PosterPath = movieInfo.PosterPath,
+                BackdropPath = movieInfo.BackdropPath,
                 Genres = movieInfo.Genres.Select(x => x.Name).ToList(),
                 Companies = movieInfo.ProductionCompanies.Select(x => x.Name).ToList(),
                 Images = this.GetMovieImages(movieInfo),
@@ -196,9 +204,14 @@ using AngleSharp.Media;
                 Actors = await this.GetMovieActorsAsync(movieInfo),
             };
 
-            Console.WriteLine(movie.Title + "is taken");
-
             return movie;
+        }
+
+        public string GenereateImageUrl(string path)
+        {
+            return this.config.Images.BaseUrl +
+                this.config.Images.PosterSizes.LastOrDefault() +
+                path;
         }
 
         private async Task<List<ActorDto>> GetMovieActorsAsync(TMDbLib.Objects.Movies.Movie movieInfo)
@@ -214,8 +227,7 @@ using AngleSharp.Media;
                     FullName = actorInfo.Name,
                     Biography = string.IsNullOrEmpty(actorInfo.Biography) ? null : actorInfo.Biography,
                     BirthDate = actorInfo.Birthday,
-                    PhotoUrl = actorInfo.ProfilePath != null ? this.config.Images.BaseUrl
-                        + this.config.Images.ProfileSizes.LastOrDefault() + actorInfo.ProfilePath : null,
+                    PhotoPath = actorInfo.ProfilePath,
                     Character = string.IsNullOrEmpty(actor.Character) ? null : actor.Character,
                 });
             }
@@ -236,8 +248,7 @@ using AngleSharp.Media;
                     FullName = directorInfo.Name,
                     Biography = string.IsNullOrEmpty(directorInfo.Biography) ? null : directorInfo.Biography,
                     BirthDate = directorInfo.Birthday,
-                    PhotoUrl = directorInfo.ProfilePath != null ? this.config.Images.BaseUrl
-                        + this.config.Images.ProfileSizes.LastOrDefault() + directorInfo.ProfilePath : null,
+                    PhotoPath = directorInfo.ProfilePath,
                 });
             }
 
@@ -246,8 +257,7 @@ using AngleSharp.Media;
 
         private List<string> GetMovieImages(TMDbLib.Objects.Movies.Movie movieInfo)
         {
-            return movieInfo.Images.Backdrops.Select(x => this.config.Images.BaseUrl
-                        + this.config.Images.ProfileSizes.LastOrDefault() + x.FilePath).ToList();
+            return movieInfo.Images.Backdrops.Select(x => x.FilePath).ToList();
         }
 
         private async Task<IEnumerable<MovieDto>> GetMoviesInRangeAsync(int fromId, int toId)
@@ -282,7 +292,7 @@ using AngleSharp.Media;
                 FullName = actorDto.FullName,
                 Biography = actorDto.Biography,
                 BirthDate = actorDto.BirthDate,
-                PhotoUrl = actorDto.PhotoUrl,
+                PhotoPath = actorDto.PhotoPath,
             };
 
             await this.actorsRepository.AddAsync(actor);
@@ -307,7 +317,7 @@ using AngleSharp.Media;
                 FullName = directorDto.FullName,
                 Biography = directorDto.Biography,
                 BirthDate = directorDto.BirthDate,
-                PhotoUrl = directorDto.PhotoUrl,
+                PhotoPath = directorDto.PhotoPath,
             };
 
             await this.directorsRepository.AddAsync(director);

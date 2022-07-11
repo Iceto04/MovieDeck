@@ -75,7 +75,7 @@
                                                 <div class="mvsingle-item ov-item">
                                                     @foreach (var image in Model.Images.ToList().Take(4))
                                                 {
-                                                    <a class="img-lightbox" data-fancybox-group="gallery" href="@image.OriginalUrl"><img src="@image.OriginalUrl" alt="" class="img-fluid" style="width: 100px;"></a>
+                                                    <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid" style="width: 100px;"></a>
                                                 }
                                             </div>
                                             <div class="title-hd-sm">
@@ -349,7 +349,7 @@
                                             <h4>Directors & Credit Writers</h4>
                                         </div>
                                         <div class="mvcast-item w-100">
-                                            @foreach (var director in Model.Directors)
+                                            @foreach (var director in Model.Directors.Where(x => x.PhotoPath != null))
                                             {
                                                 <div class="cast-it w-100">
                                                     <div class="cast-left">
@@ -364,7 +364,7 @@
                                             <h4>Cast</h4>
                                         </div>
                                         <div class="mvcast-item">
-                                            @foreach (var actor in Model.Actors.Where(x => x.PhotoUrl != null))
+                                            @foreach (var actor in Model.Actors.Where(x => x.PhotoPath != null))
                                             {
                                                 <div class="cast-it w-100">
                                                     <div class="cast-left">
@@ -476,7 +476,7 @@
                                         <div class="mvsingle-item">
                                             @foreach (var image in Model.Images.ToList())
                                             {
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="@image.OriginalUrl"><img src="@image.OriginalUrl" alt="" class="img-fluid" style="width: 170px;"></a>
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid" style="width: 170px;"></a>
                                             }
                                         </div>
                                     </div>

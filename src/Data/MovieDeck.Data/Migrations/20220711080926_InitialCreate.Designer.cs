@@ -10,7 +10,7 @@ using MovieDeck.Data;
 namespace MovieDeck.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220629120456_InitialCreate")]
+    [Migration("20220711080926_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,7 @@ namespace MovieDeck.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PhotoUrl")
+                    b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -311,7 +311,7 @@ namespace MovieDeck.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PhotoUrl")
+                    b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -364,9 +364,6 @@ namespace MovieDeck.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Extension")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -376,7 +373,7 @@ namespace MovieDeck.Data.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<string>("OriginalUrl")
+                    b.Property<string>("OriginalPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -400,6 +397,9 @@ namespace MovieDeck.Data.Migrations
                     b.Property<string>("AddedByUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BackdropPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -415,13 +415,13 @@ namespace MovieDeck.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OriginalUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OriginalId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Plot")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PosterUrl")
+                    b.Property<string>("PosterPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ReleaseDate")

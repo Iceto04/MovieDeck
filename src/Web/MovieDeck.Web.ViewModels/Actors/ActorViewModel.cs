@@ -6,6 +6,8 @@
 
         public string PhotoUrl { get; set; }
 
+        public string PhotoPath { get; set; }
+
         public string CharacterName { get; set; }
     }
 }

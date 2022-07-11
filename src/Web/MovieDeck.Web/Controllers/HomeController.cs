@@ -50,7 +50,7 @@
         [HttpPost]
         public async Task<IActionResult> Import(int from, int to)
         {
-            await this.tmdbService.ImportMoviesAsync(from, to);
+            await this.tmdbService.ImportMoviesInRangeAsync(from, to);
             return this.Redirect("/");
         }
 

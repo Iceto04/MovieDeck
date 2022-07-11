@@ -1,5 +1,6 @@
 ﻿namespace MovieDeck.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,6 +13,7 @@
     using MovieDeck.Web.ViewModels.Actors;
     using MovieDeck.Web.ViewModels.Directors;
     using MovieDeck.Web.ViewModels.Genres;
+    using MovieDeck.Web.ViewModels.Images;
     using MovieDeck.Web.ViewModels.Movies;
 
     public class MoviesService : IMoviesService
@@ -63,14 +65,14 @@
             return this.moviesRepository.AllAsNoTracking()
                 .Select(x => new MovieViewModel
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     Plot = x.Plot,
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
                     ImdbRating = x.ImdbRating,
-                    OriginalUrl = x.OriginalUrl,
-                    PosterUrl = x.PosterUrl,
-                    BannerUrl = x.Images.FirstOrDefault().OriginalUrl,
+                    PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
+                    BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
                 }).ToList();
         }
 
@@ -84,8 +86,7 @@
                     Plot = x.Plot,
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
-                    OriginalUrl = x.OriginalUrl,
-                    PosterUrl = x.PosterUrl,
+                    PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
                     ImdbRating = x.ImdbRating,
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {
@@ -94,28 +95,74 @@
                     Directors = x.Directors.Select(d => new DirectorViewModel
                     {
                         Name = d.Director.FullName,
-                        PhotoUrl = d.Director.PhotoUrl,
+                        PhotoUrl = this.tmdbService.GenereateImageUrl(d.Director.PhotoPath),
+                        PhotoPath = d.Director.PhotoPath,
                     }),
                     Actors = x.Actors.Select(a => new ActorViewModel
                     {
                         FullName = a.Actor.FullName,
                         CharacterName = a.CharacterName,
-                        PhotoUrl = a.Actor.PhotoUrl,
+                        PhotoUrl = this.tmdbService.GenereateImageUrl(a.Actor.PhotoPath),
+                        PhotoPath = a.Actor.PhotoPath,
                     }),
-                    Images = x.Images,
+                    Images = x.Images.Select(i => new ImageViewModel
+                    {
+                        PhotoUrl = this.tmdbService.GenereateImageUrl(i.OriginalPath),
+                    }),
                 }).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync()
         {
-            var movies = await this.tmdbService.GetPopularMoviesAsync();
+            var originalIds = await this.tmdbService.GetPopularMoviesOriginalIdAsync();
 
-            return movies.Select(x => new MovieViewModel
+            await this.ImportMoviesIfNotExistAsync(originalIds);
+
+            var popularMovies = new List<MovieViewModel>();
+            foreach (var originalId in originalIds)
             {
-                Title = x.Title,
-                ImdbRating = x.ImdbRating,
-                PosterUrl = x.PosterUrl,
-            });
+                if (!this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
+                {
+                    continue;
+                }
+
+                var movie = await this.moviesRepository.AllAsNoTracking()
+                    .Where(x => x.OriginalId == originalId)
+                    .Select(x => new MovieViewModel
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Plot = x.Plot,
+                        ReleaseDate = x.ReleaseDate,
+                        Runtime = x.Runtime,
+                        ImdbRating = x.ImdbRating,
+                        PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
+                        BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
+                    }).FirstOrDefaultAsync();
+
+                popularMovies.Add(movie);
+            }
+
+            return popularMovies;
+        }
+
+        private async Task ImportMoviesIfNotExistAsync(IEnumerable<int> originalIds)
+        {
+            foreach (var originalId in originalIds)
+            {
+                if (this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
+                {
+                    continue;
+                }
+
+                var movieDto = await this.tmdbService.GetMovieById(originalId);
+                if (movieDto == null)
+                {
+                    continue;
+                }
+
+                await this.tmdbService.ImportMovieAsync(movieDto);
+            }
         }
     }
 }

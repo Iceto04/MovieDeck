@@ -78,8 +78,7 @@
                     ReleaseDate = movieDto.ReleaseDate,
                     Runtime = movieDto.Runtime,
                     ImdbRating = movieDto.ImdbRating,
-                    OriginalUrl = movieDto.OriginalUrl,
-                    PosterUrl = movieDto.PosterUrl,
+                    PosterPath = movieDto.PosterPath,
                 };
 
                 await this.moviesRepository.AddAsync(movie);
@@ -301,9 +300,7 @@
                 .QuerySelector("div[data-testid=hero-media__poster] > div > img")
                 .GetAttribute("src");
 
-            movieDto.PosterUrl = posterUrl.Substring(0, posterUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
-
-            movieDto.OriginalUrl = url;
+            movieDto.PosterPath = posterUrl.Substring(0, posterUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
 
             var genres = document.QuerySelectorAll("div[data-testid=genres] a > ul > li")
                 .Select(x => x.TextContent).ToList();
@@ -348,7 +345,7 @@
                     var photoUrl = directorFullInfoDoc
                         .QuerySelector("#name-poster")?.GetAttribute("src");
 
-                    directorDto.PhotoUrl = photoUrl
+                    directorDto.PhotoPath = photoUrl
                             .Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
                     /*
                     if (!photoUrl.Contains("@"))
@@ -460,7 +457,7 @@
 
                     var photoUrl = actorFullInfoDoc.QuerySelector("#name-poster")?.GetAttribute("src");
 
-                    actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
+                    actorDto.PhotoPath = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
 
                     /*
                     if (!photoUrl.Contains("@"))
@@ -503,7 +500,7 @@
                 FullName = actorDto.FullName,
                 Biography = actorDto.Biography,
                 BirthDate = actorDto.BirthDate,
-                PhotoUrl = actorDto.PhotoUrl,
+                PhotoPath = actorDto.PhotoPath,
             };
 
             await this.actorsRepository.AddAsync(actor);
@@ -528,7 +525,7 @@
                 FullName = directorDto.FullName,
                 Biography = directorDto.Biography,
                 BirthDate = directorDto.BirthDate,
-                PhotoUrl = directorDto.PhotoUrl,
+                PhotoPath = directorDto.PhotoPath,
             };
 
             await this.directorsRepository.AddAsync(director);

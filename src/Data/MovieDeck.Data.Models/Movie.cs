@@ -31,9 +31,11 @@
 
         public string ImdbRating { get; set; }
 
-        public string OriginalUrl { get; set; }
+        public int OriginalId { get; set; }
 
-        public string PosterUrl { get; set; }
+        public string PosterPath { get; set; }
+
+        public string BackdropPath { get; set; }
 
         public string AddedByUserId { get; set; }
 

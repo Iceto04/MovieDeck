@@ -16,10 +16,9 @@
 
         public string ImdbRating { get; set; }
 
-        public string OriginalUrl { get; set; }
-
         public string PosterUrl { get; set; }
 
-        public string BannerUrl { get; set; }
+        public string BackdropUrl { get; set; }
+
     }
 }

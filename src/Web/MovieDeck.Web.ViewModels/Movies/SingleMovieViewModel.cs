@@ -8,6 +8,7 @@
     using MovieDeck.Web.ViewModels.Actors;
     using MovieDeck.Web.ViewModels.Directors;
     using MovieDeck.Web.ViewModels.Genres;
+    using MovieDeck.Web.ViewModels.Images;
 
     public class SingleMovieViewModel : IMapFrom<Movie>
 {
@@ -21,8 +22,6 @@
 
         public string ImdbRating { get; set; }
 
-        public string OriginalUrl { get; set; }
-
         public string PosterUrl { get; set; }
 
         public IEnumerable<DirectorViewModel> Directors { get; set; }
@@ -31,6 +30,6 @@
 
         public IEnumerable<GenreViewModel> Genres { get; set; }
 
-        public IEnumerable<Image> Images { get; set; }
+        public IEnumerable<ImageViewModel> Images { get; set; }
     }
 }
