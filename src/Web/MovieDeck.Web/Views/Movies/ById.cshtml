@@ -33,7 +33,7 @@
                             <div class="rate">
                                 <i class="bi bi-star-fill"></i>
                                 <p>
-                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.000")</span> / 10<br>
+                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.0")</span> / 10<br>
                                     <span id="ratingsCount" class="rv">@Model.RatingsCount</span> Ratings
                                 </p>
                             </div>
@@ -600,7 +600,7 @@
                         'X-CSRF-TOKEN': antiForgeryToken
                     },
                     success: function(responseModel) {
-                        $('#averageRatingValue').html(responseModel.averageRating.toFixed(3));
+                        $('#averageRatingValue').html(responseModel.averageRating.toFixed(1));
                         if (!responseModel.isMovieRatedByCurrUser) {
                             var newNumber = Number($('#ratingsCount').text()) + 1;
                             $('#ratingsCount').text(newNumber);
