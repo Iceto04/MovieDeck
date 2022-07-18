@@ -21,15 +21,18 @@
         private readonly IDeletableEntityRepository<Movie> moviesRepository;
         private readonly IDeletableEntityRepository<Genre> genresRepository;
         private readonly ITmdbService tmdbService;
+        private readonly IRatingsService ratingsService;
 
         public MoviesService(
             IDeletableEntityRepository<Movie> moviesRepository,
             IDeletableEntityRepository<Genre> genresRepository,
-            ITmdbService tmdbService)
+            ITmdbService tmdbService,
+            IRatingsService ratingsService)
         {
             this.moviesRepository = moviesRepository;
             this.genresRepository = genresRepository;
             this.tmdbService = tmdbService;
+            this.ratingsService = ratingsService;
         }
 
         public async Task AddAsync(AddMovieInputModel input)
@@ -82,12 +85,13 @@
                 .Where(x => x.Id == id)
                 .Select(x => new SingleMovieViewModel
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     Plot = x.Plot,
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
                     PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
-                    ImdbRating = x.ImdbRating.ToString("F1"),
+                    AverageRating = this.ratingsService.GetAverageRatings(x.Id),
                     RatingsCount = x.RatingsCount,
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {

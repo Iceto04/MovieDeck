@@ -33,23 +33,23 @@
                             <div class="rate">
                                 <i class="bi bi-star-fill"></i>
                                 <p>
-
-
-                                    <span>@Model.ImdbRating</span> /10<br>
+                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.000")</span> / 10<br>
                                     <span class="rv">@Model.RatingsCount Ratings</span>
                                 </p>
                             </div>
                             <div class="rate-star">
                                 <p>Rate This Movie:  </p>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill-outline"></i>
+                                <i class="bi bi-star-fill" data-rating="1"></i>
+                                <i class="bi bi-star-fill" data-rating="2"></i>
+                                <i class="bi bi-star-fill" data-rating="3"></i>
+                                <i class="bi bi-star-fill" data-rating="4"></i>
+                                <i class="bi bi-star-fill" data-rating="5"></i>
+                                <i class="bi bi-star-fill" data-rating="6"></i>
+                                <i class="bi bi-star-fill" data-rating="7"></i>
+                                <i class="bi bi-star-fill" data-rating="8"></i>
+                                <i class="bi bi-star-fill" data-rating="9"></i>
+                                <i class="bi bi-star-fill" data-rating="10"></i>
+                                @*<i class="bi bi-star-fill-outline"></i>*@
                             </div>
                         </div>
                         <div class="movie-tabs">
@@ -576,7 +576,35 @@
     </div>
 </div>
 
+<form method="post" id="antiForgeryForm"></form>
+
 @section Scripts {
     <script src="~/lib/slick-carousel/slick.min.js" asp-append-version="true"></script>
     <script src="~/js/custom.js" asp-append-version="true"></script>
+
+    <script>
+        $("i[data-rating]").each(function() {
+            $(this).click(function() {
+                var value = $(this).attr("data-rating");
+                var movieId = @Model.Id;
+
+                var data = { movieId: movieId, value: value };
+
+                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Ratings",
+                    data: JSON.stringify(data),
+                    headers: {
+                        'X-CSRF-TOKEN': antiForgeryToken
+                    },
+                    success: function(data) {
+                        $('#averageRatingValue').html(data.averageRating.toFixed(3));
+                    },
+                    contentType: 'application/json',
+                });
+            })
+        });
+    </script>
 }

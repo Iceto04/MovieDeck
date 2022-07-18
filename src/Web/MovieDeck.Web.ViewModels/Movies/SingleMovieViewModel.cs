@@ -12,6 +12,8 @@
 
     public class SingleMovieViewModel : IMapFrom<Movie>
 {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string Plot { get; set; }
@@ -20,7 +22,7 @@
 
         public TimeSpan Runtime { get; set; }
 
-        public string ImdbRating { get; set; }
+        public double AverageRating { get; set; }
 
         public long RatingsCount { get; set; }
 

@@ -57,6 +57,11 @@ using MovieDeck.Services.TmdbApi;
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
+
             services.AddSingleton(this.configuration);
 
             // Data repositories
@@ -66,9 +71,12 @@ using MovieDeck.Services.TmdbApi;
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<IGenresService, GenresService>();
-            services.AddTransient<IMoviesService, MoviesService>();
             services.AddTransient<ITmdbService, TmdbService>();
+
+            // Data services
+            services.AddTransient<IMoviesService, MoviesService>();
+            services.AddTransient<IGenresService, GenresService>();
+            services.AddTransient<IRatingsService, RatingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
