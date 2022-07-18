@@ -404,8 +404,8 @@ namespace MovieDeck.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImdbRating")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("ImdbRating")
+                        .HasColumnType("float");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -421,6 +421,9 @@ namespace MovieDeck.Data.Migrations
 
                     b.Property<string>("PosterPath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("RatingsCount")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("Date");
@@ -580,6 +583,37 @@ namespace MovieDeck.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("ProductionCompanies");
+                });
+
+            modelBuilder.Entity("MovieDeck.Data.Models.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte>("Value")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("MovieDeck.Data.Models.Watchlist", b =>
@@ -788,6 +822,23 @@ namespace MovieDeck.Data.Migrations
                     b.Navigation("Watchlist");
                 });
 
+            modelBuilder.Entity("MovieDeck.Data.Models.Rating", b =>
+                {
+                    b.HasOne("MovieDeck.Data.Models.Movie", "Movie")
+                        .WithMany("Ratings")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieDeck.Data.Models.ApplicationUser", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MovieDeck.Data.Models.Watchlist", b =>
                 {
                     b.HasOne("MovieDeck.Data.Models.ApplicationUser", "Owner")
@@ -809,6 +860,8 @@ namespace MovieDeck.Data.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Movies");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("Roles");
 
@@ -836,6 +889,8 @@ namespace MovieDeck.Data.Migrations
                     b.Navigation("Genres");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("Watchlists");
                 });

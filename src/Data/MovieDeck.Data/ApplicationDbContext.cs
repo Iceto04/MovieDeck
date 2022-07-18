@@ -37,6 +37,8 @@
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Rating> Ratings { get; set; }
+
         public DbSet<MovieActor> MovieActors { get; set; }
 
         public DbSet<MovieDirector> MovieDirectors { get; set; }

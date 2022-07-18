@@ -244,7 +244,8 @@ namespace MovieDeck.Data.Migrations
                     Plot = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "Date", nullable: true),
                     Runtime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    ImdbRating = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImdbRating = table.Column<double>(type: "float", nullable: false),
+                    RatingsCount = table.Column<long>(type: "bigint", nullable: false),
                     OriginalId = table.Column<int>(type: "int", nullable: false),
                     PosterPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BackdropPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -425,6 +426,35 @@ namespace MovieDeck.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<byte>(type: "tinyint", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MovieWatchlists",
                 columns: table => new
                 {
@@ -595,6 +625,16 @@ namespace MovieDeck.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ratings_MovieId",
+                table: "Ratings",
+                column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_UserId",
+                table: "Ratings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Watchlists_IsDeleted",
                 table: "Watchlists",
                 column: "IsDeleted");
@@ -641,6 +681,9 @@ namespace MovieDeck.Data.Migrations
                 name: "MovieWatchlists");
 
             migrationBuilder.DropTable(
+                name: "Ratings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -656,10 +699,10 @@ namespace MovieDeck.Data.Migrations
                 name: "Genres");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Watchlists");
 
             migrationBuilder.DropTable(
-                name: "Watchlists");
+                name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

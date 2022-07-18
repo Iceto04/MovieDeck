@@ -26,7 +26,9 @@
 
         public TimeSpan Runtime { get; set; }
 
-        public string ImdbRating { get; set; }
+        public double ImdbRating { get; set; }
+
+        public long RatingsCount { get; set; }
 
         public string PosterPath { get; set; }
 

@@ -70,7 +70,7 @@
                     Plot = x.Plot,
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
-                    ImdbRating = x.ImdbRating,
+                    ImdbRating = x.ImdbRating.ToString("F1"),
                     PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
                     BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
                 }).ToList();
@@ -87,7 +87,8 @@
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
                     PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
-                    ImdbRating = x.ImdbRating,
+                    ImdbRating = x.ImdbRating.ToString("F1"),
+                    RatingsCount = x.RatingsCount,
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {
                         Name = g.Genre.Name,
@@ -135,7 +136,7 @@
                         Plot = x.Plot,
                         ReleaseDate = x.ReleaseDate,
                         Runtime = x.Runtime,
-                        ImdbRating = x.ImdbRating,
+                        ImdbRating = x.ImdbRating.ToString("F1"),
                         PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
                         BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
                     }).FirstOrDefaultAsync();

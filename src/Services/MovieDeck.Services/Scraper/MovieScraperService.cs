@@ -17,6 +17,8 @@
     /// <summary>
     /// Won't be used due to finding a good API that I can get data with.
     /// </summary>
+
+    /*
     public class MovieScraperService : IMovieScraperService
     {
         private const string BaseUrl = "https://www.imdb.com/title/tt{0}/";
@@ -133,7 +135,7 @@
                     await this.movieCompaniesRepository.AddAsync(movieCompany);
                 }
 
-                /*
+
                 foreach (var imageUrl in movieDto.Images)
                 {
                     var image = new Image
@@ -144,7 +146,7 @@
 
                     await this.imagesRepository.AddAsync(image);
                 }
-                */
+
 
                 added++;
             }
@@ -347,7 +349,7 @@
 
                     directorDto.PhotoPath = photoUrl
                             .Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
-                    /*
+
                     if (!photoUrl.Contains("@"))
                     {
                         directorDto.PhotoUrl = photoUrl
@@ -358,7 +360,7 @@
                         directorDto.PhotoUrl = photoUrl
                             .Substring(0, photoUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
                     }
-                    */
+
 
                     movieDto.Directors.Add(directorDto);
                 }
@@ -459,7 +461,7 @@
 
                     actorDto.PhotoPath = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
 
-                    /*
+
                     if (!photoUrl.Contains("@"))
                     {
                         actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("._V1_")) + PosterUrlExtension;
@@ -468,7 +470,7 @@
                     {
                         actorDto.PhotoUrl = photoUrl.Substring(0, photoUrl.LastIndexOf("@") + 1) + PosterUrlExtension;
                     }
-                    */
+
 
                     movieDto.Actors.Add(actorDto);
                 }
@@ -578,4 +580,5 @@
             return company.Id;
         }
     }
+    */
 }

@@ -9,7 +9,7 @@
     using MovieDeck.Services.Data;
     using MovieDeck.Web.ViewModels.Movies;
 
-    public class MoviesController : Controller
+    public class MoviesController : BaseController
     {
         private readonly IGenresService genresService;
         private readonly IMoviesService moviesService;

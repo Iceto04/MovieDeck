@@ -18,6 +18,7 @@
             this.Watchlists = new HashSet<MovieWatchlist>();
             this.Images = new HashSet<Image>();
             this.Companies = new HashSet<MovieCompany>();
+            this.Ratings = new HashSet<Rating>();
         }
 
         public string Title { get; set; }
@@ -29,7 +30,9 @@
 
         public TimeSpan Runtime { get; set; }
 
-        public string ImdbRating { get; set; }
+        public double ImdbRating { get; set; }
+
+        public long RatingsCount { get; set; }
 
         public int OriginalId { get; set; }
 
@@ -52,5 +55,7 @@
         public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<MovieCompany> Companies { get; set; }
+
+        public virtual ICollection<Rating> Ratings { get; set; }
     }
 }

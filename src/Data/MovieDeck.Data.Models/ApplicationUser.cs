@@ -18,6 +18,8 @@ namespace MovieDeck.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
             this.Watchlists = new HashSet<Watchlist>();
+            this.Ratings = new HashSet<Rating>();
+            this.Movies = new HashSet<Movie>();
         }
 
         // Audit info
@@ -39,5 +41,8 @@ namespace MovieDeck.Data.Models
         public virtual ICollection<Movie> Movies { get; set; }
 
         public virtual ICollection<Watchlist> Watchlists { get; set; }
+
+        public virtual ICollection<Rating> Ratings { get; set; }
+
     }
 }

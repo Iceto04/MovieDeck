@@ -22,6 +22,8 @@
 
         public string ImdbRating { get; set; }
 
+        public long RatingsCount { get; set; }
+
         public string PosterUrl { get; set; }
 
         public IEnumerable<DirectorViewModel> Directors { get; set; }
