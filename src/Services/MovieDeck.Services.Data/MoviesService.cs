@@ -92,7 +92,7 @@
                     Runtime = x.Runtime,
                     PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
                     AverageRating = this.ratingsService.GetAverageRatings(x.Id),
-                    RatingsCount = x.RatingsCount,
+                    RatingsCount = this.ratingsService.GetRatingsCount(x.Id),
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {
                         Name = g.Genre.Name,

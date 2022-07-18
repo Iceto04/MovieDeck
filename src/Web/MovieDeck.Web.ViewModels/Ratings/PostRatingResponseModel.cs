@@ -3,5 +3,7 @@
     public class PostRatingResponseModel
     {
         public double AverageRating { get; set; }
+
+        public bool IsMovieRatedByCurrUser { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using MovieDeck.Data.Common.Repositories;
-using MovieDeck.Data.Models;
-
-namespace MovieDeck.Services.Data
+﻿namespace MovieDeck.Services.Data
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using MovieDeck.Data.Common.Repositories;
+    using MovieDeck.Data.Models;
+
     public class RatingsService : IRatingsService
     {
         private readonly IRepository<Rating> ratingsRepository;
@@ -50,6 +50,23 @@ namespace MovieDeck.Services.Data
 
             return ((movie.ImdbRating * movie.RatingsCount)
                 + userRatings.Sum(x => x)) / (movie.RatingsCount + userRatings.Count);
+        }
+
+        public long GetRatingsCount(int movieId)
+        {
+            var userRatingsCount = this.ratingsRepository.All()
+                .Where(x => x.MovieId == movieId)
+                .ToList()
+                .Count;
+
+            var movie = this.moviesRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == movieId);
+
+            return userRatingsCount + movie.RatingsCount;
+        }
+
+        public bool IsMovieRated(int movieId, string userId)
+        {
+            return this.ratingsRepository.All().Any(x => x.MovieId == movieId && x.UserId == userId);
         }
     }
 }

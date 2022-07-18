@@ -24,9 +24,14 @@
         public async Task<ActionResult<PostRatingResponseModel>> Post(PostRatingInputModel input)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var isMovieRated = this.ratingsService.IsMovieRated(input.MovieId, userId);
             await this.ratingsService.SetRatingAsync(input.MovieId, userId, input.Value);
             var averageRating = this.ratingsService.GetAverageRatings(input.MovieId);
-            return new PostRatingResponseModel { AverageRating = averageRating };
+            return new PostRatingResponseModel
+            {
+                AverageRating = averageRating,
+                IsMovieRatedByCurrUser = isMovieRated,
+            };
         }
     }
 }

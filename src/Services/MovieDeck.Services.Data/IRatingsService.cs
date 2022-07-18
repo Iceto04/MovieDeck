@@ -7,5 +7,9 @@
         Task SetRatingAsync(int movieId, string userId, byte value);
 
         double GetAverageRatings(int movieId);
+
+        long GetRatingsCount(int movieId);
+
+        bool IsMovieRated(int movieId, string userId);
     }
 }
