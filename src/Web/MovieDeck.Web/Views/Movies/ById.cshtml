@@ -593,7 +593,9 @@
             $("i[data-rating]").each(function() {
                 $(this).click(function() {
 
-                    if (@this.User.Identity.IsAuthenticated) {
+                    @if (this.User.Identity.IsAuthenticated) 
+                    {
+                        <text>
                         var value = $(this).attr("data-rating");
                         var movieId = @Model.Id;
 
@@ -619,6 +621,7 @@
                         });
 
                         ratedIndex = Number($(this).data('rating')) - 1;
+                        </text>
                     }
                 })
             });
