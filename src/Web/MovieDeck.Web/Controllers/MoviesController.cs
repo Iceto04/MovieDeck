@@ -50,7 +50,11 @@ using System.Security.Claims;
         [Route("[controller]/{id}")]
         public async Task<IActionResult> ById(int id)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string userId = null;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
             var model = await this.moviesService.GetMovieByIdAsync(id, userId);
             return this.View(model);
         }

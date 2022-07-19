@@ -592,31 +592,34 @@
 
             $("i[data-rating]").each(function() {
                 $(this).click(function() {
-                    var value = $(this).attr("data-rating");
-                    var movieId = @Model.Id;
 
-                    let data = { movieId: movieId, value: value };
+                    if (@this.User.Identity.IsAuthenticated) {
+                        var value = $(this).attr("data-rating");
+                        var movieId = @Model.Id;
 
-                    var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+                        let data = { movieId: movieId, value: value };
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/api/Ratings",
-                        data: JSON.stringify(data),
-                        headers: {
-                            'X-CSRF-TOKEN': antiForgeryToken
-                        },
-                        success: function(responseModel) {
-                            $('#averageRatingValue').html(responseModel.averageRating.toFixed(3));
-                            if (!responseModel.isMovieRatedByCurrUser) {
-                                var newNumber = Number($('#ratingsCount').text()) + 1;
-                                $('#ratingsCount').text(newNumber);
-                            }
-                        },
-                        contentType: 'application/json',
-                    });
+                        var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
 
-                    ratedIndex = Number($(this).data('rating')) - 1;
+                        $.ajax({
+                            type: "POST",
+                            url: "/api/Ratings",
+                            data: JSON.stringify(data),
+                            headers: {
+                                'X-CSRF-TOKEN': antiForgeryToken
+                            },
+                            success: function(responseModel) {
+                                $('#averageRatingValue').html(responseModel.averageRating.toFixed(3));
+                                if (!responseModel.isMovieRatedByCurrUser) {
+                                    var newNumber = Number($('#ratingsCount').text()) + 1;
+                                    $('#ratingsCount').text(newNumber);
+                                }
+                            },
+                            contentType: 'application/json',
+                        });
+
+                        ratedIndex = Number($(this).data('rating')) - 1;
+                    }
                 })
             });
 
