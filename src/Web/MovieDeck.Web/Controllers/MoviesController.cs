@@ -1,6 +1,7 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
     using System.Linq;
+using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,8 @@
         [Route("[controller]/{id}")]
         public async Task<IActionResult> ById(int id)
         {
-            var model = await this.moviesService.GetMovieByIdAsync(id);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var model = await this.moviesService.GetMovieByIdAsync(id, userId);
             return this.View(model);
         }
     }

@@ -20,6 +20,15 @@
         }
 
         [Authorize]
+        [HttpGet]
+        public ActionResult<GetRatingResponseModel> Get(GetRatingInputModel input)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userRating = this.ratingsService.GetUserRating(input.MovieId, userId);
+            return new GetRatingResponseModel { UserRateIndex = userRating - 1 };
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<PostRatingResponseModel>> Post(PostRatingInputModel input)
         {

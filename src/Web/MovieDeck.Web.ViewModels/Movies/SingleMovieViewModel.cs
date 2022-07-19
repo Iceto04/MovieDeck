@@ -28,6 +28,8 @@
 
         public string PosterUrl { get; set; }
 
+        public int UserRating { get; set; }
+
         public IEnumerable<DirectorViewModel> Directors { get; set; }
 
         public IEnumerable<ActorViewModel> Actors { get; set; }

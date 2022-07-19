@@ -33,16 +33,16 @@
                             <div class="rate">
                                 <i class="bi bi-star-fill"></i>
                                 <p>
-                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.0")</span> / 10<br>
+                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.000")</span> / 10<br>
                                     <span id="ratingsCount" class="rv">@Model.RatingsCount</span> Ratings
                                 </p>
                             </div>
                             <div class="rate-star">
                                 <p>Rate This Movie:  </p>
-                                <i class="bi bi-star-fill" data-rating="1"></i>
-                                <i class="bi bi-star-fill" data-rating="2"></i>
-                                <i class="bi bi-star-fill" data-rating="3"></i>
-                                <i class="bi bi-star-fill" data-rating="4"></i>
+                                <i class="bi bi-star" data-rating="1"></i>
+                                <i class="bi bi-star" data-rating="2"></i>
+                                <i class="bi bi-star" data-rating="3"></i>
+                                <i class="bi bi-star" data-rating="4"></i>
                                 <i class="bi bi-star" data-rating="5"></i>
                                 <i class="bi bi-star" data-rating="6"></i>
                                 <i class="bi bi-star" data-rating="7"></i>
@@ -583,54 +583,96 @@
     <script src="~/js/custom.js" asp-append-version="true"></script>
 
     <script>
-        $("i[data-rating]").each(function() {
-            $(this).click(function() {
-                var value = $(this).attr("data-rating");
-                var movieId = @Model.Id;
+        var ratedIndex = @Model.UserRating - 1;
 
-                var data = { movieId: movieId, value: value };
-
-                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "/api/Ratings",
-                    data: JSON.stringify(data),
-                    headers: {
-                        'X-CSRF-TOKEN': antiForgeryToken
-                    },
-                    success: function(responseModel) {
-                        $('#averageRatingValue').html(responseModel.averageRating.toFixed(1));
-                        if (!responseModel.isMovieRatedByCurrUser) {
-                            var newNumber = Number($('#ratingsCount').text()) + 1;
-                            $('#ratingsCount').text(newNumber);
-                        }
-                    },
-                    contentType: 'application/json',
-                });
-            })
-        });
-    </script>
-
-    <script>
         $(document).ready(function() {
             resetStarFullness();
 
-            $('.bi-star').mouseover(function() {
+            setUserStars();
+
+            $("i[data-rating]").each(function() {
+                $(this).click(function() {
+                    var value = $(this).attr("data-rating");
+                    var movieId = @Model.Id;
+
+                    let data = { movieId: movieId, value: value };
+
+                    var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/Ratings",
+                        data: JSON.stringify(data),
+                        headers: {
+                            'X-CSRF-TOKEN': antiForgeryToken
+                        },
+                        success: function(responseModel) {
+                            $('#averageRatingValue').html(responseModel.averageRating.toFixed(3));
+                            if (!responseModel.isMovieRatedByCurrUser) {
+                                var newNumber = Number($('#ratingsCount').text()) + 1;
+                                $('#ratingsCount').text(newNumber);
+                            }
+                        },
+                        contentType: 'application/json',
+                    });
+
+                    ratedIndex = Number($(this).data('rating')) - 1;
+                })
+            });
+
+            $('i[data-rating]').mouseover(function() {
+                resetStarFullness();
+
                 var currentIndex = Number($(this).data('rating')) - 1;
 
                 for (var i = 0; i <= currentIndex; i++)
-                    $('.rate-star i').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+                    $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
             })
 
-            $('.bi-star').mouseleave(function() {
+            $('i[data-rating]').mouseleave(function() {
                 resetStarFullness();
+
+                if (ratedIndex != -1)
+                    for (var i = 0; i <= ratedIndex; i++)
+                        $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
             })
         })
 
 
+        function setUserStars() {
+
+            /* Not Workin with GET AJAX 
+
+            $.ajax({
+                url: "/api/Ratings",
+                data: JSON.stringify({ movieId: @Model.Id }),
+                success: function(response) {
+                    ratedIndex = response.userRateIndex;
+                },
+                contentType: 'application/json',
+            });
+
+            $.ajax({
+                method: 'GET',
+                url: '/api/Ratings',
+                data: JSON.stringify({ movieId: @Model.Id }),
+                contentType: 'application/json',
+            })
+            .done(function success(data) {
+                    ratedIndex = response.userRateIndex;
+            })
+            .fail(function fail(data, status) {
+                    alert('Request failed. Returned status of ' + status);
+            });
+            */
+
+            if (ratedIndex != -1)
+                for (var i = 0; i <= ratedIndex; i++)
+                    $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+        }
+
         function resetStarFullness() {
-            $('.rate-star i').removeClass('bi-star-fill').addClass('bi-star');
+            $('i[data-rating]').removeClass('bi-star-fill').addClass('bi-star');
         }
     </script>
 }

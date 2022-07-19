@@ -11,5 +11,7 @@
         long GetRatingsCount(int movieId);
 
         bool IsMovieRated(int movieId, string userId);
+
+        int GetUserRating(int movieId, string userID);
     }
 }

@@ -68,5 +68,18 @@
         {
             return this.ratingsRepository.All().Any(x => x.MovieId == movieId && x.UserId == userId);
         }
+
+        public int GetUserRating(int movieId, string userId)
+        {
+            var rating = this.ratingsRepository.All()
+                .FirstOrDefault(x => x.MovieId == movieId && x.UserId == userId);
+
+            if (rating == null)
+            {
+                return -1;
+            }
+
+            return rating.Value;
+        }
     }
 }

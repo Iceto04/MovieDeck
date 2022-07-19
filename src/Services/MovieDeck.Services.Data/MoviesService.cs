@@ -79,7 +79,7 @@
                 }).ToList();
         }
 
-        public async Task<SingleMovieViewModel> GetMovieByIdAsync(int id)
+        public async Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId)
         {
             return await this.moviesRepository.AllAsNoTracking()
                 .Where(x => x.Id == id)
@@ -93,6 +93,7 @@
                     PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
                     AverageRating = this.ratingsService.GetAverageRatings(x.Id),
                     RatingsCount = this.ratingsService.GetRatingsCount(x.Id),
+                    UserRating = this.ratingsService.GetUserRating(x.Id, userId),
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {
                         Name = g.Genre.Name,
