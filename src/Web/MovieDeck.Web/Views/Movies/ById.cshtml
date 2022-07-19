@@ -43,13 +43,13 @@
                                 <i class="bi bi-star-fill" data-rating="2"></i>
                                 <i class="bi bi-star-fill" data-rating="3"></i>
                                 <i class="bi bi-star-fill" data-rating="4"></i>
-                                <i class="bi bi-star-fill" data-rating="5"></i>
-                                <i class="bi bi-star-fill" data-rating="6"></i>
-                                <i class="bi bi-star-fill" data-rating="7"></i>
-                                <i class="bi bi-star-fill" data-rating="8"></i>
-                                <i class="bi bi-star-fill" data-rating="9"></i>
-                                <i class="bi bi-star-fill" data-rating="10"></i>
-                                @*<i class="bi bi-star-fill-outline"></i>*@
+                                <i class="bi bi-star" data-rating="5"></i>
+                                <i class="bi bi-star" data-rating="6"></i>
+                                <i class="bi bi-star" data-rating="7"></i>
+                                <i class="bi bi-star" data-rating="8"></i>
+                                <i class="bi bi-star" data-rating="9"></i>
+                                <i class="bi bi-star" data-rating="10"></i>
+                                @*bi-star-fill*@
                             </div>
                         </div>
                         <div class="movie-tabs">
@@ -610,5 +610,27 @@
                 });
             })
         });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            resetStarFullness();
+
+            $('.bi-star').mouseover(function() {
+                var currentIndex = Number($(this).data('rating')) - 1;
+
+                for (var i = 0; i <= currentIndex; i++)
+                    $('.rate-star i').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+            })
+
+            $('.bi-star').mouseleave(function() {
+                resetStarFullness();
+            })
+        })
+
+
+        function resetStarFullness() {
+            $('.rate-star i').removeClass('bi-star-fill').addClass('bi-star');
+        }
     </script>
 }
