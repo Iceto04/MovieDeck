@@ -625,50 +625,25 @@
 
                 var currentIndex = Number($(this).data('rating')) - 1;
 
-                for (var i = 0; i <= currentIndex; i++)
-                    $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+                setStars(currentIndex);
             })
 
             $('i[data-rating]').mouseleave(function() {
                 resetStarFullness();
 
-                if (ratedIndex != -1)
-                    for (var i = 0; i <= ratedIndex; i++)
-                        $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+                setUserStars();
             })
         })
 
+        function setStars(max) {
+            for (var i = 0; i <= max; i++)
+                $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+        }
+
 
         function setUserStars() {
-
-            /* Not Workin with GET AJAX 
-
-            $.ajax({
-                url: "/api/Ratings",
-                data: JSON.stringify({ movieId: @Model.Id }),
-                success: function(response) {
-                    ratedIndex = response.userRateIndex;
-                },
-                contentType: 'application/json',
-            });
-
-            $.ajax({
-                method: 'GET',
-                url: '/api/Ratings',
-                data: JSON.stringify({ movieId: @Model.Id }),
-                contentType: 'application/json',
-            })
-            .done(function success(data) {
-                    ratedIndex = response.userRateIndex;
-            })
-            .fail(function fail(data, status) {
-                    alert('Request failed. Returned status of ' + status);
-            });
-            */
-
             if (ratedIndex != -1)
-                for (var i = 0; i <= ratedIndex; i++)
-                    $('i[data-rating]').eq(i).removeClass('bi-star').addClass('bi-star-fill');
+                setStars(ratedIndex);
         }
 
         function resetStarFullness() {
