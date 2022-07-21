@@ -152,6 +152,40 @@
             return popularMovies;
         }
 
+        public async Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync()
+        {
+            var originalIds = await this.tmdbService.GetUpcomingMoviesOriginalIdAsync();
+
+            await this.ImportMoviesIfNotExistAsync(originalIds);
+
+            var upcomingMovies = new List<MovieViewModel>();
+            foreach (var originalId in originalIds)
+            {
+                if (!this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
+                {
+                    continue;
+                }
+
+                var movie = await this.moviesRepository.AllAsNoTracking()
+                    .Where(x => x.OriginalId == originalId)
+                    .Select(x => new MovieViewModel
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Plot = x.Plot,
+                        ReleaseDate = x.ReleaseDate,
+                        Runtime = x.Runtime,
+                        ImdbRating = x.ImdbRating.ToString("F1"),
+                        PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
+                        BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
+                    }).FirstOrDefaultAsync();
+
+                upcomingMovies.Add(movie);
+            }
+
+            return upcomingMovies;
+        }
+
         private async Task ImportMoviesIfNotExistAsync(IEnumerable<int> originalIds)
         {
             foreach (var originalId in originalIds)

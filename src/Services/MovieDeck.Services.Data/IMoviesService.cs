@@ -14,6 +14,8 @@
 
         Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync();
 
+        Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync();
+
         Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId);
     }
 }

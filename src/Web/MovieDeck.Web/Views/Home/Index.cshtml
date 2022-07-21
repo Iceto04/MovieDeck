@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="owl-three owl-carousel owl-theme">
-                    @foreach (var movie in @Model.Movies)
+                    @foreach (var movie in @Model.UpcomingMovies)
                     {
                         <div class="item vhny-grid">
                             <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">

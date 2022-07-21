@@ -27,11 +27,13 @@
         {
             var movies = this.moviesService.GetAllForHomePage();
             var popularMovies = await this.moviesService.GetPopularMoviesAsync();
+            var upcomingMovies = await this.moviesService.GetUpcomingMoviesAsync();
 
             var model = new IndexListViewModel
             {
                 Movies = movies,
                 PopularMovies = popularMovies,
+                UpcomingMovies = upcomingMovies,
             };
 
             return this.View(model);

@@ -9,5 +9,7 @@
         public IEnumerable<MovieViewModel> Movies { get; set; }
 
         public IEnumerable<MovieViewModel> PopularMovies { get; set; }
+
+        public IEnumerable<MovieViewModel> UpcomingMovies { get; set; }
     }
 }

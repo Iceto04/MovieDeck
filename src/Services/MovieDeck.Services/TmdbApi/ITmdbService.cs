@@ -17,6 +17,8 @@
 
         Task<IEnumerable<int>> GetPopularMoviesOriginalIdAsync();
 
+        Task<IEnumerable<int>> GetUpcomingMoviesOriginalIdAsync();
+
         Task<MovieDto> GetMovieById(int id);
 
         // void GetMoviesInRange(int start, int end);

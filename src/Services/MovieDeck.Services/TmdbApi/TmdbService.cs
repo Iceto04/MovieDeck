@@ -173,6 +173,13 @@ using System.IO;
             return topPopularMovies.Results.Select(x => x.Id);
         }
 
+        public async Task<IEnumerable<int>> GetUpcomingMoviesOriginalIdAsync()
+        {
+            var upcomingMovies = await this.client.GetMovieUpcomingListAsync();
+
+            return upcomingMovies.Results.Select(x => x.Id);
+        }
+
         public void GetAll()
         {
             throw new System.NotImplementedException();
