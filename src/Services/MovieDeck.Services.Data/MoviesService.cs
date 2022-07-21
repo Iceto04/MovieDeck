@@ -156,7 +156,7 @@
         {
             foreach (var originalId in originalIds)
             {
-                if (this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
+                if (this.moviesRepository.AllWithDeleted().Any(x => x.OriginalId == originalId))
                 {
                     continue;
                 }
