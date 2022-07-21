@@ -2470,9 +2470,6 @@ ul {
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 }
-.movie-single {
-  margin-top: 50px;
-}
 .movie-single .movie-img,
 .movie-single .mv-ceb {
   margin-right: 30px;

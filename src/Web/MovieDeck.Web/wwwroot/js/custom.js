@@ -433,7 +433,7 @@ $(function(){
 		var scrollPos = $(window).scrollTop(),
 		header = $('header');
 		//sticky for menu
-		if(scrollPos > 300){
+		if(scrollPos > 70){
 			header.addClass('sticky');
 		}else{
 			header.removeClass('sticky');
