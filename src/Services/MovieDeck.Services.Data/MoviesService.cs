@@ -179,8 +179,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
                     ImdbRating = x.ImdbRating.ToString("F1"),
-                    PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
-                    BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
+                    PosterUrl =
+                        x.PosterPath.Contains("-") ?
+                        "/images/recipes/" + x.PosterPath :
+                        this.tmdbService.GenereateImageUrl(x.PosterPath),
+                    BackdropUrl =
+                        x.BackdropPath.Contains("-") ?
+                        "/images/recipes/" + x.BackdropPath :
+                        this.tmdbService.GenereateImageUrl(x.BackdropPath),
                 }).ToList();
         }
 
@@ -195,7 +201,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                     Plot = x.Plot,
                     ReleaseDate = x.ReleaseDate,
                     Runtime = x.Runtime,
-                    PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
+                    PosterUrl =
+                        x.PosterPath.Contains("-") ?
+                        "/images/recipes/" + x.PosterPath :
+                        this.tmdbService.GenereateImageUrl(x.PosterPath),
                     AverageRating = this.ratingsService.GetAverageRatings(x.Id),
                     RatingsCount = this.ratingsService.GetRatingsCount(x.Id),
                     UserRating = userId == null ? 0 : this.ratingsService.GetUserRating(x.Id, userId),
@@ -216,9 +225,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                         PhotoUrl = this.tmdbService.GenereateImageUrl(a.Actor.PhotoPath),
                         PhotoPath = a.Actor.PhotoPath,
                     }),
-                    Images = x.Images.Select(i => new ImageViewModel
+                    Images = x.Images.Where(i => !x.PosterPath.Contains(i.Id))
+                    .Select(i => new ImageViewModel
                     {
-                        PhotoUrl = this.tmdbService.GenereateImageUrl(i.RemoteImageUrl),
+                        PhotoUrl =
+                            i.RemoteImageUrl != null ?
+                            this.tmdbService.GenereateImageUrl(i.RemoteImageUrl) :
+                            $"/images/recipes/{i.Id}.{i.Extension}",
                     }),
                 }).FirstOrDefaultAsync();
         }
