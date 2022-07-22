@@ -6,7 +6,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Identity/identity.css">
+    <link rel="stylesheet" href="~/css/forms.css">
 }
 
 <section class="vh-100 gradient-custom">
@@ -18,13 +18,13 @@
                         <form id="account" method="post" autocomplete="off">
                             <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
                             <p class="text-white-50 mb-3">Please enter your login and password!</p>
-                            <div class="form-outline mb-4">
+                            <div class="form-group mb-4">
                                 <label asp-for="Input.Email" class="form-label"></label>
                                 <input asp-for="Input.Email" class="form-control form-control-lg input transparent-input" />
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
 
-                            <div class="form-outline mb-4">
+                            <div class="form-group mb-4">
                                 <label asp-for="Input.Password" class="form-label"></label>
                                 <input asp-for="Input.Password" class="form-control form-control-lg input transparent-input" />
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
