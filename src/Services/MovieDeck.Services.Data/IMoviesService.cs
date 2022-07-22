@@ -8,7 +8,7 @@
 
     public interface IMoviesService
     {
-        Task AddAsync(AddMovieInputModel input);
+        Task CreateAsync(CreateMovieInputModel input, string userId, string imagePath);
 
         IEnumerable<MovieViewModel> GetAllForHomePage();
 
@@ -17,5 +17,7 @@
         Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync();
 
         Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId);
+
+        CreateMovieInputModel PopulateMovieInputModelDropdownCollections(CreateMovieInputModel viewModel);
     }
 }

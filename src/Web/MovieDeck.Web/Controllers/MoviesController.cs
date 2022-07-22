@@ -1,9 +1,11 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
+using System;
     using System.Linq;
-using System.Security.Claims;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,35 +16,52 @@ using System.Security.Claims;
     {
         private readonly IGenresService genresService;
         private readonly IMoviesService moviesService;
+        private readonly IWebHostEnvironment environment;
 
         public MoviesController(
             IGenresService genresService,
-            IMoviesService moviesService)
+            IMoviesService moviesService,
+            IWebHostEnvironment environment)
         {
             this.genresService = genresService;
             this.moviesService = moviesService;
+            this.environment = environment;
         }
 
-        public IActionResult Add()
+        public IActionResult Create()
         {
-            var viewModel = new AddMovieInputModel();
-            viewModel.GenresItems = this.genresService.GetAllAsKeyValuePairs()
-                .Select(x => new SelectListItem(x.Value, x.Key));
+            var viewModel = new CreateMovieInputModel();
+
+            viewModel = this.moviesService.PopulateMovieInputModelDropdownCollections(viewModel);
 
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddMovieInputModel input)
+        public async Task<IActionResult> Create(CreateMovieInputModel input)
         {
-            if (!this.ModelState.IsValid)
+            string userId = null;
+            if (this.User.Identity.IsAuthenticated)
             {
-                input.GenresItems = this.genresService.GetAllAsKeyValuePairs()
-                    .Select(x => new SelectListItem(x.Value, x.Key));
-                return this.View();
+                userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
-            await this.moviesService.AddAsync(input);
+            if (!this.ModelState.IsValid)
+            {
+                input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
+                return this.View(input);
+            }
+
+            try
+            {
+                await this.moviesService.CreateAsync(input, userId, $"{this.environment.WebRootPath}/images");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
+                return this.View(input);
+            }
 
             return this.Redirect("/");
         }

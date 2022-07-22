@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+using System.Reflection;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 
     using MovieDeck.Data.Common.Repositories;
@@ -18,24 +22,35 @@
 
     public class MoviesService : IMoviesService
     {
+        private readonly string[] allowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
+
         private readonly IDeletableEntityRepository<Movie> moviesRepository;
-        private readonly IDeletableEntityRepository<Genre> genresRepository;
+        private readonly IActorsService actorsService;
+        private readonly IGenresService genresService;
+        private readonly IDirectorsService directorsService;
+        private readonly ICompaniesService companiesService;
         private readonly ITmdbService tmdbService;
         private readonly IRatingsService ratingsService;
 
         public MoviesService(
             IDeletableEntityRepository<Movie> moviesRepository,
-            IDeletableEntityRepository<Genre> genresRepository,
+            IActorsService actorsService,
+            IGenresService genresService,
+            IDirectorsService directorsService,
+            ICompaniesService companiesService,
             ITmdbService tmdbService,
             IRatingsService ratingsService)
         {
             this.moviesRepository = moviesRepository;
-            this.genresRepository = genresRepository;
+            this.actorsService = actorsService;
+            this.genresService = genresService;
+            this.directorsService = directorsService;
+            this.companiesService = companiesService;
             this.tmdbService = tmdbService;
             this.ratingsService = ratingsService;
         }
 
-        public async Task AddAsync(AddMovieInputModel input)
+        public async Task CreateAsync(CreateMovieInputModel input, string userId, string imagePath)
         {
             var movie = new Movie
             {
@@ -43,11 +58,12 @@
                 Plot = input.Plot,
                 ReleaseDate = input.ReleaseDate,
                 Runtime = input.Runtime,
+                AddedByUserId = userId,
             };
 
             foreach (var genreId in input.GenresIds)
             {
-                var genre = this.genresRepository.All().FirstOrDefault(x => x.Id == genreId);
+                var genre = this.genresService.GetById(genreId);
                 if (genre == null)
                 {
                     continue;
@@ -59,8 +75,97 @@
                 });
             }
 
+            Directory.CreateDirectory($"{imagePath}/recipes/");
+
+            // Create and Save Poster Image
+            Image poster = this.CreateImage(input.Poster, userId);
+            movie.Images.Add(poster);
+            await this.SaveImageToWebRootAsync(imagePath, poster, input.Poster);
+
+            movie.PosterPath = $"/{poster.Id}.{poster.Extension}";
+
+            // Create and Save Backdrop Image
+            Image backdrop = this.CreateImage(input.Backdrop, userId);
+            movie.Images.Add(backdrop);
+            await this.SaveImageToWebRootAsync(imagePath, backdrop, input.Backdrop);
+
+            movie.BackdropPath = $"/{backdrop.Id}.{backdrop.Extension}";
+
+            foreach (var image in input.Images)
+            {
+                Image dbImage = this.CreateImage(image, userId);
+                movie.Images.Add(dbImage);
+                await this.SaveImageToWebRootAsync(imagePath, dbImage, image);
+            }
+
+            foreach (var actorId in input.ActorsIds)
+            {
+                var actor = this.actorsService.GetById(actorId);
+                if (actor == null)
+                {
+                    continue;
+                }
+
+                movie.Actors.Add(new MovieActor
+                {
+                    Actor = actor,
+                });
+            }
+
+            foreach (var directorId in input.DirectorsIds)
+            {
+                var director = this.directorsService.GetById(directorId);
+                if (director == null)
+                {
+                    continue;
+                }
+
+                movie.Directors.Add(new MovieDirector
+                {
+                    Director = director,
+                });
+            }
+
+            foreach (var companyId in input.CompaniesIds)
+            {
+                var company = this.companiesService.GetById(companyId);
+                if (company == null)
+                {
+                    continue;
+                }
+
+                movie.Companies.Add(new MovieCompany
+                {
+                    Company = company,
+                });
+            }
+
             await this.moviesRepository.AddAsync(movie);
             await this.moviesRepository.SaveChangesAsync();
+        }
+
+        private async Task SaveImageToWebRootAsync(string imagePath, Image dbImage, IFormFile image)
+        {
+            var posterPhysicalPath = $"{imagePath}/recipes/{dbImage.Id}.{dbImage.Extension}";
+            using Stream fileStream = new FileStream(posterPhysicalPath, FileMode.Create);
+            await image.CopyToAsync(fileStream);
+        }
+
+        private Image CreateImage(IFormFile image, string userId)
+        {
+            var extension = Path.GetExtension(image.FileName).TrimStart('.');
+            if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+            {
+                throw new Exception($"Invalid image extension {extension}");
+            }
+
+            var dbPoster = new Image
+            {
+                AddedByUserId = userId,
+                Extension = extension,
+            };
+
+            return dbPoster;
         }
 
         public IEnumerable<MovieViewModel> GetAllForHomePage()
@@ -113,7 +218,7 @@
                     }),
                     Images = x.Images.Select(i => new ImageViewModel
                     {
-                        PhotoUrl = this.tmdbService.GenereateImageUrl(i.OriginalPath),
+                        PhotoUrl = this.tmdbService.GenereateImageUrl(i.RemoteImageUrl),
                     }),
                 }).FirstOrDefaultAsync();
         }
@@ -203,6 +308,20 @@
 
                 await this.tmdbService.ImportMovieAsync(movieDto);
             }
+        }
+
+        public CreateMovieInputModel PopulateMovieInputModelDropdownCollections(CreateMovieInputModel viewModel)
+        {
+            viewModel.GenresItems = this.genresService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.ActorsItems = this.actorsService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.DirectorsItems = this.directorsService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.CompaniesItems = this.companiesService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+
+            return viewModel;
         }
     }
 }

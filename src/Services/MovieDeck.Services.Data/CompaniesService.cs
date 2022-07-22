@@ -1,28 +1,29 @@
 ﻿namespace MovieDeck.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
 
-    public class GenresService : IGenresService
+    public class CompaniesService : ICompaniesService
     {
-        private readonly IDeletableEntityRepository<Genre> genresRepository;
+        private readonly IDeletableEntityRepository<ProductionCompany> companiesRepository;
 
-        public GenresService(IDeletableEntityRepository<Genre> genresRepository)
+        public CompaniesService(IDeletableEntityRepository<ProductionCompany> companiesRepository)
         {
-            this.genresRepository = genresRepository;
+            this.companiesRepository = companiesRepository;
         }
 
-        public Genre GetById(int id)
+        public ProductionCompany GetById(int id)
         {
-            return this.genresRepository.All().FirstOrDefault(x => x.Id == id);
+            return this.companiesRepository.All().FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs()
         {
-            return this.genresRepository.AllAsNoTracking()
+            return this.companiesRepository.AllAsNoTracking()
                 .Select(x => new
                 {
                     x.Id,

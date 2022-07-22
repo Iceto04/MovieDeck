@@ -1,9 +1,9 @@
 ﻿namespace MovieDeck.Services.Data
 {
-    using System.Collections.Generic;
+    using MovieDeck.Data.Models;
 
-    public interface IGenresService
+    public interface IGenresService : IGetAllAsKeyValuePairs
     {
-        IEnumerable<KeyValuePair<string, string>> GetAllAsKeyValuePairs();
+        Genre GetById(int id);
     }
 }

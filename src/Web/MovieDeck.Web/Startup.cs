@@ -75,6 +75,9 @@ using MovieDeck.Services.TmdbApi;
 
             // Data services
             services.AddTransient<IMoviesService, MoviesService>();
+            services.AddTransient<IActorsService, ActorsService>();
+            services.AddTransient<IDirectorsService, DirectorsService>();
+            services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IGenresService, GenresService>();
             services.AddTransient<IRatingsService, RatingsService>();
         }

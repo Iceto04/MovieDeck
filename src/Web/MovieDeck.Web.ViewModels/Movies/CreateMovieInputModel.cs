@@ -5,6 +5,7 @@
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -14,7 +15,7 @@
     using MovieDeck.Web.ViewModels.Companies;
     using MovieDeck.Web.ViewModels.Directors;
 
-    public class AddMovieInputModel
+    public class CreateMovieInputModel
     {
         [Required]
         public string Title { get; set; }
@@ -24,7 +25,7 @@
         public string Plot { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         [ModelBinder(typeof(AddMovieModelBinder))]
         public TimeSpan Runtime { get; set; }
@@ -32,11 +33,26 @@
         [DisplayName("Genres")]
         public int[] GenresIds { get; set; }
 
-        //// public IEnumerable<AddActorInputModel> Actors { get; set; }
+        public IFormFile Poster { get; set; }
 
-        //// public IEnumerable<AddDirectorInputModel> Directors { get; set; }
+        public IFormFile Backdrop { get; set; }
 
-        //// public IEnumerable<AddCompanyInputModel> Companies { get; set; }
+        public IEnumerable<IFormFile> Images { get; set; }
+
+        [DisplayName("Actors")]
+        public int[] ActorsIds { get; set; }
+
+        [DisplayName("Directors")]
+        public int[] DirectorsIds { get; set; }
+
+        [DisplayName("Production Companies")]
+        public int[] CompaniesIds { get; set; }
+
+        public IEnumerable<SelectListItem> ActorsItems { get; set; }
+
+        public IEnumerable<SelectListItem> DirectorsItems { get; set; }
+
+        public IEnumerable<SelectListItem> CompaniesItems { get; set; }
 
         public IEnumerable<SelectListItem> GenresItems { get; set; }
     }

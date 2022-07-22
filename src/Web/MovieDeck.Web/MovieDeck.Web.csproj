@@ -48,5 +48,6 @@
     <Folder Include="Views\Actors\" />
     <Folder Include="Views\Directors\" />
     <Folder Include="Views\Companies\" />
+    <Folder Include="wwwroot\images\recipes\" />
   </ItemGroup>
 </Project>

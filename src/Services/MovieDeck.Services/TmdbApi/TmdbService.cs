@@ -141,7 +141,7 @@ using System.IO;
             {
                 var image = new Image
                 {
-                    OriginalPath = imageUrl,
+                    RemoteImageUrl = imageUrl,
                     Movie = movie,
                 };
 
