@@ -47,7 +47,7 @@ using System.Security.Claims;
             return this.Redirect("/");
         }
 
-        [Route("[controller]/{id}")]
+        [Route("[controller]/{id:int}")]
         public async Task<IActionResult> ById(int id)
         {
             string userId = null;
@@ -55,6 +55,7 @@ using System.Security.Claims;
             {
                 userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
+
             var model = await this.moviesService.GetMovieByIdAsync(id, userId);
             return this.View(model);
         }
