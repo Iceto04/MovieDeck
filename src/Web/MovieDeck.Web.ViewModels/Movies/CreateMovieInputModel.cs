@@ -39,8 +39,10 @@
 
         public IEnumerable<IFormFile> Images { get; set; }
 
-        [DisplayName("Actors")]
-        public int[] ActorsIds { get; set; }
+        public IEnumerable<MovieActorInputModel> Actors { get; set; }
+
+        // [DisplayName("Actors")]
+        // public int[] ActorsIds { get; set; }
 
         [DisplayName("Directors")]
         public int[] DirectorsIds { get; set; }
@@ -55,5 +57,6 @@
         public IEnumerable<SelectListItem> CompaniesItems { get; set; }
 
         public IEnumerable<SelectListItem> GenresItems { get; set; }
+
     }
 }

@@ -98,9 +98,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                 await this.SaveImageToWebRootAsync(imagePath, dbImage, image);
             }
 
-            foreach (var actorId in input.ActorsIds)
+            foreach (var actorInput in input.Actors)
             {
-                var actor = this.actorsService.GetById(actorId);
+                var actor = this.actorsService.GetById(actorInput.ActorId);
                 if (actor == null)
                 {
                     continue;
@@ -109,6 +109,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                 movie.Actors.Add(new MovieActor
                 {
                     Actor = actor,
+                    CharacterName = actorInput.CharacterName,
                 });
             }
 
