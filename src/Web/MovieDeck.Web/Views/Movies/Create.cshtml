@@ -83,7 +83,9 @@
                                     <select hidden asp-items="@Model.ActorsItems" class="form-control form-control-lg input transparent-input" 
                                     data-live-search="true"></select>   
                                 </div>
-                                <a class="btn btn-success" onclick="AddMoreActors()">+</a>
+                                <div class="d-grid gap-2 col-4 mx-auto">
+                                    <a class="btn btn-outline-success" onclick="AddMoreActors()">+</a>
+                                </div>
                             </div>
 
                             @*<div class="form-group">
@@ -130,9 +132,10 @@
 
         function AddMoreActors() {
             actorsItemsSelectItem.children("select").attr("name", "Actors[" + actorIndex + "].ActorId");
+            actorsItemsSelectItem.children("select").attr("id", "Actors[" + actorIndex + "]_ActorId");
 
             $("#ActorsContainer").
-                append("<div class='row'><div class='col-md-6'><label class='form-label' for=''>Fullname</label>" + actorsItemsSelectItem.html() + "</div><div class='col-md-6'><label class='form-label' for=''>Character</label> <input class='form-control form-control-lg input transparent-input' type='text' name='Actors[" + actorIndex + "].CharacterName' /></div></div>");
+                append("<div class='row'><div class='col-md-6'><label class='form-label' for='Actors[" + actorIndex + "]_ActorId'>Fullname</label>" + actorsItemsSelectItem.html() + "</div><div class='col-md-6'><label class='form-label' for='Actors[" + actorIndex + "]_CharacterName'>Character</label> <input class='form-control form-control-lg input transparent-input' type='text' id='Actors[" + actorIndex + "]_CharacterName' name='Actors[" + actorIndex + "].CharacterName' /></div></div>");
             actorIndex++;
         }
     </script>
