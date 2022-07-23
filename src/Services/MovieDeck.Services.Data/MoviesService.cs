@@ -106,6 +106,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                     continue;
                 }
 
+                if (movie.Actors.Any(x => x.Actor == actor))
+                {
+                    throw new Exception($"{actor.FullName} is already set as an actor");
+                }
+
                 movie.Actors.Add(new MovieActor
                 {
                     Actor = actor,

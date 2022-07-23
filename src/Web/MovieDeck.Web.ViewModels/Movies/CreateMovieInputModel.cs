@@ -33,10 +33,13 @@
         [DisplayName("Genres")]
         public int[] GenresIds { get; set; }
 
+        [Required]
         public IFormFile Poster { get; set; }
 
+        [Required]
         public IFormFile Backdrop { get; set; }
 
+        [Required]
         public IEnumerable<IFormFile> Images { get; set; }
 
         public IEnumerable<MovieActorInputModel> Actors { get; set; }

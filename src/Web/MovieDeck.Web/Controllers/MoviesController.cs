@@ -1,13 +1,11 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
-using System;
-    using System.Linq;
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
     using MovieDeck.Services.Data;
     using MovieDeck.Web.ViewModels.Movies;
