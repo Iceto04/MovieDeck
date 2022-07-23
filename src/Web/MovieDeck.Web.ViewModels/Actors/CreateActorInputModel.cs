@@ -12,6 +12,7 @@
         [MaxLength(250)]
         public string FullName { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
 
         [Required]

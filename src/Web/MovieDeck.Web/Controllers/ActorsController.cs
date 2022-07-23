@@ -1,6 +1,7 @@
 ﻿namespace MovieDeck.Web.Controllers
 {
     using System.Security.Claims;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreateActorInputModel input)
+        public async Task<IActionResult> Create(CreateActorInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -40,7 +41,7 @@
                 userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
-            this.actorsService.CreateAsync(input, userId, $"{this.environment.WebRootPath}/images");
+            await this.actorsService.CreateAsync(input, userId, $"{this.environment.WebRootPath}/images");
 
             return this.Redirect("/");
         }
