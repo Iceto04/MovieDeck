@@ -1,0 +1,49 @@
+﻿@model MovieDeck.Web.ViewModels.Actors.CreateActorInputModel
+@{
+    this.ViewData["Title"] = "Create Actor";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/forms.css">
+}
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-11 col-md-9 col-lg-8">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <form method="post" enctype="multipart/form-data">
+                            <h2 class="fw-bold mb-3 text-uppercase">@this.ViewData["Title"]</h2>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <div class="form-outline mb-4">
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label asp-for="Biography" class="form-label"></label>
+                                <textarea asp-for="Biography" class="form-control form-control-lg input transparent-input" rows="5"></textarea>
+                                <span asp-validation-for="Biography" class="text-danger"></span>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label asp-for="BirthDate" class="form-label"></label>
+                                <input asp-for="BirthDate" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label asp-for="Photo" class="form-label"></label>
+                                <input asp-for="Photo" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="Photo" class="text-danger"></span>
+                            </div>
+
+                            <input class="btn btn-outline-light btn-lg px-5 my-3" type="submit" value="Create" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

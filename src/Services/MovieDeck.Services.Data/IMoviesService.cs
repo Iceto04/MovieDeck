@@ -16,8 +16,9 @@
 
         Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync();
 
-        Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId);
+        Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId = null);
 
-        CreateMovieInputModel PopulateMovieInputModelDropdownCollections(CreateMovieInputModel viewModel);
+        T PopulateMovieInputModelDropdownCollections<T>(T viewModel)
+            where T : MovieInputModelDropdownItems;
     }
 }

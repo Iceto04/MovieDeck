@@ -1,6 +1,6 @@
 ﻿@model MovieDeck.Web.ViewModels.Movies.CreateMovieInputModel
 @{
-    this.ViewData["Title"] = "Create movie";
+    this.ViewData["Title"] = "Create Movie";
 }
 
 @section Styles {
@@ -15,7 +15,7 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
                         <form method="post" enctype="multipart/form-data">
-                            <h2 class="fw-bold mb-3 text-uppercase">Create Movie</h2>
+                            <h2 class="fw-bold mb-3 text-uppercase">@this.ViewData["Title"]</h2>
                             <div asp-validation-summary="All" class="text-danger"></div>
 
                             <div class="form-outline mb-4">
