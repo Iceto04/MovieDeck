@@ -10,5 +10,7 @@
         Director GetById(int id);
 
         Task CreateAsync(CreateDirectorInputModel input, string userId, string imagePath);
+
+        Task RemoveAllMovieDirectorsForMovieAsync(int id);
     }
 }

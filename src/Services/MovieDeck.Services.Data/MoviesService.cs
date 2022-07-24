@@ -150,6 +150,104 @@ using Microsoft.AspNetCore.Mvc.Rendering;
             await this.moviesRepository.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(int id, EditMovieInputModel input)
+        {
+            var movie = await this.moviesRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+            movie.Title = input.Title;
+            movie.Plot = input.Plot;
+            movie.ReleaseDate = input.ReleaseDate;
+            movie.Runtime = input.Runtime;
+
+
+
+            await this.genresService.RemoveAllMovieGenresForMovieAsync(id);
+            movie.Genres.Clear();
+
+            if (input.GenresIds != null)
+            {
+                foreach (var genreId in input.GenresIds)
+                {
+                    var genre = this.genresService.GetById(genreId);
+                    if (genre == null)
+                    {
+                        continue;
+                    }
+
+                    movie.Genres.Add(new MovieGenre
+                    {
+                        Genre = genre,
+                    });
+                }
+            }
+
+            await this.actorsService.RemoveAllMovieActorsForMovieAsync(id);
+            movie.Actors.Clear();
+
+            if (input.Actors != null)
+            {
+                foreach (var actorInput in input.Actors)
+                {
+                    var actor = this.actorsService.GetById(actorInput.ActorId);
+                    if (actor == null)
+                    {
+                        continue;
+                    }
+
+                    if (movie.Actors.Any(x => x.Actor == actor))
+                    {
+                        throw new Exception($"{actor.FullName} is already set as an actor");
+                    }
+
+                    movie.Actors.Add(new MovieActor
+                    {
+                        Actor = actor,
+                        CharacterName = actorInput.CharacterName,
+                    });
+                }
+            }
+
+
+            await this.directorsService.RemoveAllMovieDirectorsForMovieAsync(id);
+            movie.Directors.Clear();
+
+            if (input.DirectorsIds != null)
+            {
+                foreach (var directorId in input.DirectorsIds)
+                {
+                    var director = this.directorsService.GetById(directorId);
+                    if (director == null)
+                    {
+                        continue;
+                    }
+
+                    movie.Directors.Add(new MovieDirector
+                    {
+                        Director = director,
+                    });
+                }
+            }
+
+            await this.companiesService.RemoveAllMovieCompaniesForMovieAsync(id);
+            movie.Companies.Clear();
+
+            if (input.CompaniesIds != null)
+            {
+                foreach (var companyId in input.CompaniesIds)
+                {
+                    var company = this.companiesService.GetById(companyId);
+                    if (company == null)
+                    {
+                        continue;
+                    }
+
+                    movie.Companies.Add(new MovieCompany
+                    {
+                        Company = company,
+                    });
+                }
+            }
+        }
+
         public IEnumerable<T> GetAllForHomePage<T>()
         {
             return this.moviesRepository.AllAsNoTracking()

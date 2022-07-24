@@ -1,11 +1,11 @@
 ﻿namespace MovieDeck.Web.ViewModels.Movies
 {
-    using System.Collections.Generic;
     using System.ComponentModel;
 
-    using Microsoft.AspNetCore.Mvc.Rendering;
+    using MovieDeck.Data.Models;
+    using MovieDeck.Services.Mapping;
 
-    public class MovieActorInputModel
+    public class MovieActorInputModel : IMapFrom<MovieActor>
     {
         [DisplayName("Actor")]
         public int ActorId { get; set; }

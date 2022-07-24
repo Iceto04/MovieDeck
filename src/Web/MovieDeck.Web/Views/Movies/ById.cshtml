@@ -143,11 +143,14 @@
                                             <div class="sb-it">
                                                 <h6>Genres:</h6>
                                                 <p>
-                                                    @foreach (var genre in Model.Genres.Take(Model.Genres.Count() - 1))
+                                                    @if (Model.Genres.Count() != 0)
                                                     {
-                                                        <a href="#">@genre.GenreName, </a>
-                                                    }
+                                                        foreach (var genre in Model.Genres.Take(Model.Genres.Count() - 1))
+                                                        {
+                                                            <a href="#">@genre.GenreName, </a>
+                                                        }
                                                     <a href="#">@Model.Genres.ToList()[@Model.Genres.Count() - 1].GenreName</a>
+                                                    }
                                                 </p>
                                             </div>
                                             <div class="sb-it">

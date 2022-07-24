@@ -12,13 +12,16 @@
     public class ActorsService : IActorsService
     {
         private readonly IDeletableEntityRepository<Actor> actorsRepository;
+        private readonly IRepository<MovieActor> movieActorRepository;
         private readonly IImagesService imagesService;
 
         public ActorsService(
             IDeletableEntityRepository<Actor> actorsRepository,
+            IRepository<MovieActor> movieActorRepository,
             IImagesService imagesService)
         {
             this.actorsRepository = actorsRepository;
+            this.movieActorRepository = movieActorRepository;
             this.imagesService = imagesService;
         }
 
@@ -56,6 +59,17 @@
                 })
                 .OrderBy(x => x.FullName)
                 .ToList().Select(x => new KeyValuePair<string, string>(x.Id.ToString(), x.FullName));
+        }
+
+        public async Task RemoveAllMovieActorsForMovieAsync(int id)
+        {
+            var movieActors = this.movieActorRepository.All().Where(x => x.MovieId == id);
+            foreach (var movieActor in movieActors)
+            {
+                this.movieActorRepository.Delete(movieActor);
+            }
+
+            await this.movieActorRepository.SaveChangesAsync();
         }
     }
 }

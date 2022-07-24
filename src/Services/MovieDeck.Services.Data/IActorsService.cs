@@ -10,5 +10,7 @@
         Actor GetById(int id);
 
         Task CreateAsync(CreateActorInputModel input, string userId, string imagePath);
+
+        Task RemoveAllMovieActorsForMovieAsync(int id);
     }
 }

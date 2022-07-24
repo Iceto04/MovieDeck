@@ -10,6 +10,8 @@
     {
         Task CreateAsync(CreateMovieInputModel input, string userId, string imagePath);
 
+        Task UpdateAsync(int id, EditMovieInputModel input);
+
         IEnumerable<T> GetAllForHomePage<T>();
 
         Task<IEnumerable<T>> GetPopularMoviesAsync<T>();

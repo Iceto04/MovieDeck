@@ -11,10 +11,14 @@
     public class CompaniesService : ICompaniesService
     {
         private readonly IDeletableEntityRepository<ProductionCompany> companiesRepository;
+        private readonly IRepository<MovieCompany> movieCompanyRepository;
 
-        public CompaniesService(IDeletableEntityRepository<ProductionCompany> companiesRepository)
+        public CompaniesService(
+            IDeletableEntityRepository<ProductionCompany> companiesRepository,
+            IRepository<MovieCompany> movieCompanyRepository)
         {
             this.companiesRepository = companiesRepository;
+            this.movieCompanyRepository = movieCompanyRepository;
         }
 
         public async Task CreateAsync(CreateCompanyInputModel input)
@@ -43,6 +47,17 @@
                 })
                 .OrderBy(x => x.Name)
                 .ToList().Select(x => new KeyValuePair<string, string>(x.Id.ToString(), x.Name));
+        }
+
+        public async Task RemoveAllMovieCompaniesForMovieAsync(int id)
+        {
+            var movieCompanies = this.movieCompanyRepository.All().Where(x => x.MovieId == id);
+            foreach (var movieCompany in movieCompanies)
+            {
+                this.movieCompanyRepository.Delete(movieCompany);
+            }
+
+            await this.movieCompanyRepository.SaveChangesAsync();
         }
     }
 }

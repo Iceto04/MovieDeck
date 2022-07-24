@@ -10,5 +10,7 @@
         ProductionCompany GetById(int id);
 
         Task CreateAsync(CreateCompanyInputModel input);
+
+        Task RemoveAllMovieCompaniesForMovieAsync(int id);
     }
 }

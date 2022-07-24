@@ -1,5 +1,159 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MovieDeck.Web.ViewModels.Movies.EditMovieInputModel
 @{
+    this.ViewData["Title"] = "Edit movie";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/forms.css">
+    <style>option { background-color: #343A40; }</style>
+}
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-11 col-md-9 col-lg-8">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <form method="post" enctype="multipart/form-data">
+                            <h2 class="fw-bold mb-3 text-uppercase">Edit Movie</h2>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="form-outline mb-4">
+                                <label asp-for="Title" class="form-label"></label>
+                                <input asp-for="Title" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label asp-for="Plot" class="form-label"></label>
+                                <textarea asp-for="Plot" class="form-control form-control-lg input transparent-input" rows="5"></textarea>
+                                <span asp-validation-for="Plot" class="text-danger"></span>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label asp-for="ReleaseDate" class="form-label"></label>
+                                <input asp-for="ReleaseDate" type="date" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <label asp-for="Runtime"></label>
+                                <input asp-for="Runtime" type="hidden" class="form-control" />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Runtime.Hours" class="form-label">Hours</label>
+                                    <input asp-for="Runtime.Hours" class="form-control form-control-lg input transparent-input" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Runtime.Minutes" class="form-label">Minutes</label>
+                                    <input asp-for="Runtime.Minutes" class="form-control form-control-lg input transparent-input" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="Runtime.Seconds" class="form-label">Seconds</label>
+                                    <input asp-for="Runtime.Seconds" class="form-control form-control-lg input transparent-input" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="GenresIds" class="form-label"></label>
+                                <select asp-for="GenresIds" asp-items="@Model.GenresItems" class="form-control form-control-lg input transparent-input selectpicker"
+                                        data-live-search="true" data-actions-box="true" data-size="5"></select>
+                                <span asp-validation-for="GenresIds" class="text-danger"></span>
+                            </div>
+
+@*                            <div class="form-group">
+                                <label asp-for="Poster" class="form-label"></label>
+                                <input asp-for="Poster" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="Poster" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Backdrop" class="form-label"></label>
+                                <input asp-for="Backdrop" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="Backdrop" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Images" class="form-label"></label>
+                                <input asp-for="Images" class="form-control form-control-lg input transparent-input" />
+                                <span asp-validation-for="Images" class="text-danger"></span>
+                            </div>*@
+
+                            <div id="ActorsContainer">
+                                <label asp-for="Actors"></label>
+                                <div id="ActorsItemsContainer">
+                                    <select hidden asp-items="@Model.ActorsItems" class="form-control form-control-lg input transparent-input" 
+                                    data-live-search="true"></select>   
+                                </div>
+                                <div class="d-grid gap-2 col-4 mx-auto">
+                                    <a class="btn btn-outline-success" onclick="AddMoreActors()">+</a>
+                                </div>
+                                @for (int i = 0; i < Model.Actors.Count; i++)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label" asp-for="Actors[i].ActorId">Fullname</label>
+                                            <select asp-for="Actors[i].ActorId" asp-items="@Model.ActorsItems" class="form-control form-control-lg input transparent-input"
+                                            data-live-search="true"></select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="Actors[i].CharacterName" class="form-label">Character</label> 
+                                            <input asp-for="Actors[i].CharacterName" class="form-control form-control-lg input transparent-input" type="text" />
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+
+                            @*<div class="form-group">
+                                <label asp-for="ActorsIds" class="form-label"></label>
+                                <select asp-for="ActorsIds" asp-items="@Model.ActorsItems" class="form-control form-control-lg input transparent-input selectpicker"
+                                        data-live-search="true" data-actions-box="true" data-size="5"></select>
+                                <span asp-validation-for="ActorsIds" class="text-danger"></span>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label asp-for="DirectorsIds" class="form-label"></label>
+                                <select asp-for="DirectorsIds" asp-items="@Model.DirectorsItems" class="form-control form-control-lg input transparent-input selectpicker"
+                                        data-live-search="true" data-actions-box="true" data-size="5"></select>
+                                <span asp-validation-for="DirectorsIds" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CompaniesIds" class="form-label"></label>
+                                <select asp-for="CompaniesIds" asp-items="@Model.CompaniesItems" class="form-control form-control-lg input transparent-input selectpicker"
+                                        data-live-search="true" data-actions-box="true" data-size="5"></select>
+                                <span asp-validation-for="CompaniesIds" class="text-danger"></span>
+                            </div>
+
+                            <input class="btn btn-outline-light btn-lg px-5 my-3" type="submit" value="Edit" />
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js" asp-append-version="true"></script>
+
+    <script>
+        var newActorIndex = @Model.Actors.Count;
+        var actorsItemsSelectItem = $("#ActorsItemsContainer").clone();
+
+        $("#ActorsItemsContainer").remove();
+
+        actorsItemsSelectItem.children("select").removeAttr("hidden");
+
+        function AddMoreActors() {
+            actorsItemsSelectItem.children("select").attr("name", "Actors[" + newActorIndex + "].ActorId");
+            actorsItemsSelectItem.children("select").attr("id", "Actors[" + newActorIndex + "]_ActorId");
+
+            $("#ActorsContainer").
+                append("<div class='row'><div class='col-md-6'><label class='form-label' for='Actors[" + newActorIndex + "]_ActorId'>Fullname</label>" + actorsItemsSelectItem.html() + "</div><div class='col-md-6'><label class='form-label' for='Actors[" + newActorIndex + "]_CharacterName'>Character</label> <input class='form-control form-control-lg input transparent-input' type='text' id='Actors[" + newActorIndex + "]_CharacterName' name='Actors[" + newActorIndex + "].CharacterName' /></div></div>");
+            newActorIndex++;
+        }
+    </script>
 }

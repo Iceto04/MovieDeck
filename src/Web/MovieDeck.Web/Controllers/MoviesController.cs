@@ -64,13 +64,26 @@
             return this.Redirect("/");
         }
 
-        /*
         public async Task<IActionResult> Edit(int id)
         {
-            var input = await this.moviesService.GetMovieByIdAsync(id);
+            var input = await this.moviesService.GetMovieByIdAsync<EditMovieInputModel>(id);
             input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
+            return this.View(input);
         }
-        */
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditMovieInputModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
+                return this.View(input);
+            }
+
+            await this.moviesService.UpdateAsync(id, input);
+
+            return this.RedirectToAction(nameof(this.ById), new { id });
+        }
 
         [Route("[controller]/{id:int}")]
         public async Task<IActionResult> ById(int id)
