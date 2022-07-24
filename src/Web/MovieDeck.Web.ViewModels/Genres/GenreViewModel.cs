@@ -1,7 +1,10 @@
 ﻿namespace MovieDeck.Web.ViewModels.Genres
 {
-    public class GenreViewModel
+    using MovieDeck.Data.Models;
+    using MovieDeck.Services.Mapping;
+
+    public class GenreViewModel : IMapFrom<MovieGenre>
     {
-        public string Name { get; set; }
+        public string GenreName { get; set; }
     }
 }

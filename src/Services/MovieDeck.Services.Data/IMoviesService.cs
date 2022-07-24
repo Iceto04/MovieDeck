@@ -10,13 +10,13 @@
     {
         Task CreateAsync(CreateMovieInputModel input, string userId, string imagePath);
 
-        IEnumerable<MovieViewModel> GetAllForHomePage();
+        IEnumerable<T> GetAllForHomePage<T>();
 
-        Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync();
+        Task<IEnumerable<T>> GetPopularMoviesAsync<T>();
 
-        Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync();
+        Task<IEnumerable<T>> GetUpcomingMoviesAsync<T>();
 
-        Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId = null);
+        Task<T> GetMovieByIdAsync<T>(int id, string userId = null);
 
         T PopulateMovieInputModelDropdownCollections<T>(T viewModel)
             where T : MovieInputModelDropdownItems;

@@ -25,9 +25,9 @@
 
         public async Task<IActionResult> Index()
         {
-            var movies = this.moviesService.GetAllForHomePage();
-            var popularMovies = await this.moviesService.GetPopularMoviesAsync();
-            var upcomingMovies = await this.moviesService.GetUpcomingMoviesAsync();
+            var movies = this.moviesService.GetAllForHomePage<MovieViewModel>();
+            var popularMovies = await this.moviesService.GetPopularMoviesAsync<MovieViewModel>();
+            var upcomingMovies = await this.moviesService.GetUpcomingMoviesAsync<MovieViewModel>();
 
             var model = new IndexListViewModel
             {

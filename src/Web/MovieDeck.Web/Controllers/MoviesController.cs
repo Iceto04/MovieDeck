@@ -12,17 +12,17 @@
 
     public class MoviesController : BaseController
     {
-        private readonly IGenresService genresService;
         private readonly IMoviesService moviesService;
+        private readonly IRatingsService ratingsService;
         private readonly IWebHostEnvironment environment;
 
         public MoviesController(
-            IGenresService genresService,
             IMoviesService moviesService,
+            IRatingsService ratingsService,
             IWebHostEnvironment environment)
         {
-            this.genresService = genresService;
             this.moviesService = moviesService;
+            this.ratingsService = ratingsService;
             this.environment = environment;
         }
 
@@ -64,6 +64,14 @@
             return this.Redirect("/");
         }
 
+        /*
+        public async Task<IActionResult> Edit(int id)
+        {
+            var input = await this.moviesService.GetMovieByIdAsync(id);
+            input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
+        }
+        */
+
         [Route("[controller]/{id:int}")]
         public async Task<IActionResult> ById(int id)
         {
@@ -73,7 +81,8 @@
                 userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
-            var model = await this.moviesService.GetMovieByIdAsync(id, userId);
+            var model = await this.moviesService.GetMovieByIdAsync<SingleMovieViewModel>(id, userId);
+            model.UserRating = userId == null ? (byte)0 : this.ratingsService.GetUserRating(model.Id, userId);
             return this.View(model);
         }
     }

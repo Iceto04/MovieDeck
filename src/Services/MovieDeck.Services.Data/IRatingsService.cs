@@ -12,6 +12,6 @@
 
         bool IsMovieRated(int movieId, string userId);
 
-        int GetUserRating(int movieId, string userID);
+        byte GetUserRating(int movieId, string userID);
     }
 }

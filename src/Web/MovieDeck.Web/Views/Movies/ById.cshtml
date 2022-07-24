@@ -84,12 +84,12 @@
                                             </div>
                                             <!-- movie cast -->
                                             <div class="mvcast-item">
-                                                @foreach (var actor in Model.Actors.ToList().Where(x => x.PhotoUrl != null).Take(10))
+                                                @foreach (var actor in Model.Actors.ToList().Where(x => x.ActorPhotoPath != null).Take(10))
                                                 {
                                                     <div class="cast-it">
                                                         <div class="cast-left">
-                                                            <img src="@actor.PhotoUrl" alt="@actor.FullName" style="width: 40px;">
-                                                            <a href="#">@actor.FullName</a>
+                                                            <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 40px;">
+                                                            <a href="#">@actor.ActorFullName</a>
                                                         </div>
                                                         <p>@actor.CharacterName</p>
                                                     </div>
@@ -126,7 +126,7 @@
                                                 <p>
                                                     @foreach (var director in Model.Directors.Take(3))
                                                     {
-                                                        <a href="#">@director.Name ,</a>
+                                                        <a href="#">@director.DirectorFullName ,</a>
                                                     }
                                                 </p>
                                             </div>
@@ -135,9 +135,9 @@
                                                 <p>
                                                     @foreach (var actor in Model.Actors.Take(3))
                                                     {
-                                                        <a href="#">@actor.FullName, </a>
+                                                        <a href="#">@actor.ActorFullName, </a>
                                                     }
-                                                    <a href="#">@Model.Actors.ToList()[3].FullName</a>
+                                                    <a href="#">@Model.Actors.ToList()[3].ActorFullName</a>
                                                 </p>
                                             </div>
                                             <div class="sb-it">
@@ -145,9 +145,9 @@
                                                 <p>
                                                     @foreach (var genre in Model.Genres.Take(Model.Genres.Count() - 1))
                                                     {
-                                                        <a href="#">@genre.Name, </a>
+                                                        <a href="#">@genre.GenreName, </a>
                                                     }
-                                                    <a href="#">@Model.Genres.ToList()[@Model.Genres.Count() - 1].Name</a>
+                                                    <a href="#">@Model.Genres.ToList()[@Model.Genres.Count() - 1].GenreName</a>
                                                 </p>
                                             </div>
                                             <div class="sb-it">
@@ -349,12 +349,12 @@
                                             <h4>Directors & Credit Writers</h4>
                                         </div>
                                         <div class="mvcast-item w-100">
-                                            @foreach (var director in Model.Directors.Where(x => x.PhotoPath != null))
+                                            @foreach (var director in Model.Directors.Where(x => x.DirectorPhotoPath != null))
                                             {
                                                 <div class="cast-it w-100">
                                                     <div class="cast-left">
-                                                        <img src="@director.PhotoUrl" alt="@director.Name" style="width: 40px;">
-                                                        <a href="#">@director.Name</a>
+                                                        <img src="@director.PhotoUrl" alt="@director.DirectorFullName" style="width: 40px;">
+                                                        <a href="#">@director.DirectorFullName</a>
                                                     </div>
                                                     <p>Director</p>
                                                 </div>
@@ -364,12 +364,12 @@
                                             <h4>Cast</h4>
                                         </div>
                                         <div class="mvcast-item">
-                                            @foreach (var actor in Model.Actors.Where(x => x.PhotoPath != null))
+                                            @foreach (var actor in Model.Actors.Where(x => x.ActorPhotoPath != null))
                                             {
                                                 <div class="cast-it w-100">
                                                     <div class="cast-left">
-                                                        <img src="@actor.PhotoUrl" alt="@actor.FullName" style="width: 40px;">
-                                                        <a href="#">@actor.FullName</a>
+                                                        <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 40px;">
+                                                        <a href="#">@actor.ActorFullName</a>
                                                     </div>
                                                     <p>@actor.CharacterName</p>
                                                 </div>

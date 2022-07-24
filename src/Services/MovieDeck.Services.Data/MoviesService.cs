@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
+    using MovieDeck.Services.Mapping;
     using MovieDeck.Services.TmdbApi;
     using MovieDeck.Web.ViewModels.Actors;
     using MovieDeck.Web.ViewModels.Directors;
@@ -22,7 +23,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class MoviesService : IMoviesService
     {
-
         private readonly IDeletableEntityRepository<Movie> moviesRepository;
         private readonly IActorsService actorsService;
         private readonly IGenresService genresService;
@@ -150,32 +150,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
             await this.moviesRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<MovieViewModel> GetAllForHomePage()
+        public IEnumerable<T> GetAllForHomePage<T>()
         {
             return this.moviesRepository.AllAsNoTracking()
-                .Select(x => new MovieViewModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Plot = x.Plot,
-                    ReleaseDate = x.ReleaseDate,
-                    Runtime = x.Runtime,
-                    ImdbRating = x.ImdbRating.ToString("F1"),
-                    PosterUrl =
-                        x.PosterPath.Contains("-") ?
-                        "/images/recipes/" + x.PosterPath :
-                        this.tmdbService.GenereateImageUrl(x.PosterPath),
-                    BackdropUrl =
-                        x.BackdropPath.Contains("-") ?
-                        "/images/recipes/" + x.BackdropPath :
-                        this.tmdbService.GenereateImageUrl(x.BackdropPath),
-                }).ToList();
+                    .To<T>().ToList();
         }
 
-        public async Task<SingleMovieViewModel> GetMovieByIdAsync(int id, string userId)
+        public async Task<T> GetMovieByIdAsync<T>(int id, string userId)
         {
             return await this.moviesRepository.AllAsNoTracking()
                 .Where(x => x.Id == id)
+                .To<T>().FirstOrDefaultAsync();
+
+                /* without AutoMapper
                 .Select(x => new SingleMovieViewModel
                 {
                     Id = x.Id,
@@ -189,7 +176,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                         this.tmdbService.GenereateImageUrl(x.PosterPath),
                     AverageRating = this.ratingsService.GetAverageRatings(x.Id),
                     RatingsCount = this.ratingsService.GetRatingsCount(x.Id),
-                    UserRating = userId == null ? 0 : this.ratingsService.GetUserRating(x.Id, userId),
+                    UserRating = (byte)(userId == null ? 0 : this.ratingsService.GetUserRating(x.Id, userId)),
                     Genres = x.Genres.Select(g => new GenreViewModel
                     {
                         Name = g.Genre.Name,
@@ -214,16 +201,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
                             this.tmdbService.GenereateImageUrl(i.RemoteImageUrl) :
                             $"/images/recipes/{i.Id}.{i.Extension}",
                     }),
-                }).FirstOrDefaultAsync();
+                */
         }
 
-        public async Task<IEnumerable<MovieViewModel>> GetPopularMoviesAsync()
+        public async Task<IEnumerable<T>> GetPopularMoviesAsync<T>()
         {
             var originalIds = await this.tmdbService.GetPopularMoviesOriginalIdAsync();
 
             await this.ImportMoviesIfNotExistAsync(originalIds);
 
-            var popularMovies = new List<MovieViewModel>();
+            var popularMovies = new List<T>();
             foreach (var originalId in originalIds)
             {
                 if (!this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
@@ -233,17 +220,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
                 var movie = await this.moviesRepository.AllAsNoTracking()
                     .Where(x => x.OriginalId == originalId)
-                    .Select(x => new MovieViewModel
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Plot = x.Plot,
-                        ReleaseDate = x.ReleaseDate,
-                        Runtime = x.Runtime,
-                        ImdbRating = x.ImdbRating.ToString("F1"),
-                        PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
-                        BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
-                    }).FirstOrDefaultAsync();
+                    .To<T>()
+                    .FirstOrDefaultAsync();
 
                 popularMovies.Add(movie);
             }
@@ -251,13 +229,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
             return popularMovies;
         }
 
-        public async Task<IEnumerable<MovieViewModel>> GetUpcomingMoviesAsync()
+        public async Task<IEnumerable<T>> GetUpcomingMoviesAsync<T>()
         {
             var originalIds = await this.tmdbService.GetUpcomingMoviesOriginalIdAsync();
 
             await this.ImportMoviesIfNotExistAsync(originalIds);
 
-            var upcomingMovies = new List<MovieViewModel>();
+            var upcomingMovies = new List<T>();
             foreach (var originalId in originalIds)
             {
                 if (!this.moviesRepository.AllAsNoTracking().Any(x => x.OriginalId == originalId))
@@ -267,22 +245,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
                 var movie = await this.moviesRepository.AllAsNoTracking()
                     .Where(x => x.OriginalId == originalId)
-                    .Select(x => new MovieViewModel
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Plot = x.Plot,
-                        ReleaseDate = x.ReleaseDate,
-                        Runtime = x.Runtime,
-                        ImdbRating = x.ImdbRating.ToString("F1"),
-                        PosterUrl = this.tmdbService.GenereateImageUrl(x.PosterPath),
-                        BackdropUrl = this.tmdbService.GenereateImageUrl(x.BackdropPath),
-                    }).FirstOrDefaultAsync();
+                    .To<T>()
+                    .FirstOrDefaultAsync();
 
                 upcomingMovies.Add(movie);
             }
 
             return upcomingMovies;
+        }
+
+        public T PopulateMovieInputModelDropdownCollections<T>(T viewModel)
+            where T : MovieInputModelDropdownItems
+        {
+            viewModel.GenresItems = this.genresService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.ActorsItems = this.actorsService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.DirectorsItems = this.directorsService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+            viewModel.CompaniesItems = this.companiesService.GetAllAsKeyValuePairs()
+                .Select(x => new SelectListItem(x.Value, x.Key));
+
+            return viewModel;
         }
 
         private async Task ImportMoviesIfNotExistAsync(IEnumerable<int> originalIds)
@@ -302,20 +286,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
                 await this.tmdbService.ImportMovieAsync(movieDto);
             }
-        }
-
-        public T PopulateMovieInputModelDropdownCollections<T>(T viewModel) where T : MovieInputModelDropdownItems
-        {
-            viewModel.GenresItems = this.genresService.GetAllAsKeyValuePairs()
-                .Select(x => new SelectListItem(x.Value, x.Key));
-            viewModel.ActorsItems = this.actorsService.GetAllAsKeyValuePairs()
-                .Select(x => new SelectListItem(x.Value, x.Key));
-            viewModel.DirectorsItems = this.directorsService.GetAllAsKeyValuePairs()
-                .Select(x => new SelectListItem(x.Value, x.Key));
-            viewModel.CompaniesItems = this.companiesService.GetAllAsKeyValuePairs()
-                .Select(x => new SelectListItem(x.Value, x.Key));
-
-            return viewModel;
         }
     }
 }

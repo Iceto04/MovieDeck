@@ -10,7 +10,7 @@
     <section class="w3l-main-slider position-relative" id="home">
         <div class="companies20-content">
             <div class="owl-one owl-carousel owl-theme">
-                @foreach (var movie in @Model.Movies)
+                @foreach (var movie in Model.Movies)
                 {
                     <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
                         <div class="item">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="w3l-populohny-grids">
-                    @foreach (var movie in @Model.PopularMovies)
+                    @foreach (var movie in Model.PopularMovies)
                     {
                         <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
                             <div class="item vhny-grid">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="owl-three owl-carousel owl-theme">
-                    @foreach (var movie in @Model.UpcomingMovies)
+                    @foreach (var movie in Model.UpcomingMovies)
                     {
                         <div class="item vhny-grid">
                             <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
