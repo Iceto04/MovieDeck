@@ -1,11 +1,12 @@
 ﻿namespace MovieDeck.Services.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
+    using MovieDeck.Web.ViewModels.Companies;
 
     public class CompaniesService : ICompaniesService
     {
@@ -14,6 +15,17 @@
         public CompaniesService(IDeletableEntityRepository<ProductionCompany> companiesRepository)
         {
             this.companiesRepository = companiesRepository;
+        }
+
+        public async Task CreateAsync(CreateCompanyInputModel input)
+        {
+            var company = new ProductionCompany
+            {
+                Name = input.Name,
+            };
+
+            await this.companiesRepository.AddAsync(company);
+            await this.companiesRepository.SaveChangesAsync();
         }
 
         public ProductionCompany GetById(int id)
