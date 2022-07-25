@@ -18,7 +18,7 @@
                         <div class="movie-btn">
                             <div class="btn-transform transform-vertical red">
                                 <div>
-                                    <a href="#" class="item item-1 redbtn">
+                                    <a data-src="@Model.TrailerUrl" data-toggle="modal" data-target="#myModal" class="item item-1 redbtn">
                                         <i class="bi bi-play-fill"></i> Watch Trailer
                                     </a>
                                 </div>
@@ -28,6 +28,18 @@
                                     </a>
                                 </div>
                             </div>
+                            <div class="btn-transform transform-vertical pt-3">
+							    <div>
+                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn"> 
+                                        <i class="bi bi-pen-fill"></i> Edit
+                                    </a>
+                                </div>
+							    <div>
+                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn">
+                                        <i class="bi bi-pen-fill"></i>
+                                    </a>
+                                </div>
+						    </div>
                         </div>
                     </div>
                 </div>
