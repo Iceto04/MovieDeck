@@ -91,7 +91,7 @@
                                                 <p>@Model.Plot</p>
                                                 <div class="title-hd-sm">
                                                     <h4>Videos & Photos</h4>
-                                                    <a href="#" class="time">All 5 Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
+                                                    <a href="#" class="time">All @Model.Videos.Count() Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
                                                 </div>
                                                 <div class="mvsingle-item ov-item">
                                                     @foreach (var image in Model.Images.ToList().Take(4))
