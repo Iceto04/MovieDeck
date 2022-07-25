@@ -20,6 +20,8 @@
 
         Task<T> GetMovieByIdAsync<T>(int id, string userId = null);
 
+        List<MovieVideoViewModel> GetMovieVideosForSingleMoviePage(int id);
+
         T PopulateMovieInputModelDropdownCollections<T>(T viewModel)
             where T : MovieInputModelDropdownItems;
     }

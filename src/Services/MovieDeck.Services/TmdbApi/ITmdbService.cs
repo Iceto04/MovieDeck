@@ -21,6 +21,8 @@
 
         Task<MovieDto> GetMovieById(int id);
 
+        List<MovieVideoDto> GetMovieVideos(int id);
+
         // void GetMoviesInRange(int start, int end);
     }
 }

@@ -95,7 +95,8 @@
             }
 
             var model = await this.moviesService.GetMovieByIdAsync<SingleMovieViewModel>(id, userId);
-            model.UserRating = userId == null ? (byte)0 : this.ratingsService.GetUserRating(model.Id, userId);
+            model.UserRating = userId == null ? (byte)0 : this.ratingsService.GetUserRating(id, userId);
+            model.Videos = this.moviesService.GetMovieVideosForSingleMoviePage(model.OriginalId);
             return this.View(model);
         }
     }

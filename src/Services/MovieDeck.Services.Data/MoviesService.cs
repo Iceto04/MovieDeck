@@ -10,7 +10,7 @@ using System.Reflection;
     using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-
+using MovieDeck.Common;
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
     using MovieDeck.Services.Mapping;
@@ -350,6 +350,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
             }
 
             return upcomingMovies;
+        }
+
+        public List<MovieVideoViewModel> GetMovieVideosForSingleMoviePage(int id)
+        {
+            var movieVideoDtos = this.tmdbService.GetMovieVideos(id);
+
+            var movieVideos = new List<MovieVideoViewModel>();
+
+            foreach (var video in movieVideoDtos)
+            {
+                var movieVideo = new MovieVideoViewModel
+                {
+                    Url = string.Format(GlobalConstants.YoutubeEmbedVideoUrl, video.Key),
+                    ThumbnailUrl = string.Format(GlobalConstants.YoutubeVideoThumbnailUrl, video.Key),
+                    Name = video.Name,
+                };
+
+                movieVideos.Add(movieVideo);
+            }
+
+            return movieVideos;
         }
 
         public T PopulateMovieInputModelDropdownCollections<T>(T viewModel)

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -223,6 +222,27 @@ using System.IO;
             return this.config.Images.BaseUrl +
                 this.config.Images.PosterSizes.LastOrDefault() +
                 path;
+        }
+
+        public List<MovieVideoDto> GetMovieVideos(int id)
+        {
+            TMDbLib.Objects.Movies.Movie movieInfo = this.client
+                .GetMovieAsync(id, MovieMethods.Videos).Result;
+
+            var movieVideosDtos = new List<MovieVideoDto>();
+
+            foreach (var video in movieInfo.Videos.Results.Where(x => x.Site == "YouTube"))
+            {
+                var movieVideoDto = new MovieVideoDto
+                {
+                    Key = video.Key,
+                    Name = video.Name,
+                };
+
+                movieVideosDtos.Add(movieVideoDto);
+            }
+
+            return movieVideosDtos;
         }
 
         private async Task<List<ActorDto>> GetMovieActorsAsync(TMDbLib.Objects.Movies.Movie movieInfo)

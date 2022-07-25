@@ -2738,8 +2738,17 @@ ul {
 }
 .movie-single .movie-single-ct .mvsingle-item .vd-item {
   margin-bottom: 30px;
-  width: 170px;
+  width: 240px;
 }
+
+.photo-item {
+    width: 100px;
+}
+
+.photo-item-all {
+    width: 180px;
+}
+
 .movie-single .movie-single-ct .mvsingle-item .vd-item:hover h6 a {
   color: #dcf836;
 }

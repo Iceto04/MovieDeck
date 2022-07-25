@@ -9,5 +9,7 @@
         public const string RemoteImagesUrl = "https://image.tmdb.org/t/p/original{0}";
 
         public const string YoutubeEmbedVideoUrl = "https://www.youtube.com/embed/{0}";
+
+        public const string YoutubeVideoThumbnailUrl = "http://img.youtube.com/vi/{0}/mqdefault.jpg";
     }
 }

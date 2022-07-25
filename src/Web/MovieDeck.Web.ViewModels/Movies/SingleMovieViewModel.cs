@@ -29,6 +29,8 @@
 
         public long RatingsCount { get; set; }
 
+        public int OriginalId { get; set; }
+
         public string PosterUrl { get; set; }
 
         public string TrailerUrl { get; set; }
@@ -42,6 +44,8 @@
         public IEnumerable<GenreViewModel> Genres { get; set; }
 
         public IEnumerable<ImageViewModel> Images { get; set; }
+
+        public IEnumerable<MovieVideoViewModel> Videos { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

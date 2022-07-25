@@ -1,4 +1,5 @@
-﻿@using MovieDeck.Web.ViewModels.Movies
+﻿@using MovieDeck.Common
+@using MovieDeck.Web.ViewModels.Movies
 @model SingleMovieViewModel
 @{
     this.ViewData["Title"] = @Model.Title;
@@ -29,17 +30,17 @@
                                 </div>
                             </div>
                             <div class="btn-transform transform-vertical pt-3">
-							    <div>
-                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn"> 
+                                <div>
+                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn">
                                         <i class="bi bi-pen-fill"></i> Edit
                                     </a>
                                 </div>
-							    <div>
+                                <div>
                                     <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn">
                                         <i class="bi bi-pen-fill"></i>
                                     </a>
                                 </div>
-						    </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +96,7 @@
                                                 <div class="mvsingle-item ov-item">
                                                     @foreach (var image in Model.Images.ToList().Take(4))
                                                 {
-                                                    <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid" style="width: 100px;"></a>
+                                                    <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid photo-item"></a>
                                                 }
                                             </div>
                                             <div class="title-hd-sm">
@@ -409,97 +410,32 @@
                                             </div>
                                         </div>
                                         <div class="title-hd-sm w-100">
-                                            <h4>Videos <span>(8)</span></h4>
+                                            <h4>Videos <span>@Model.Videos.Count()</span></h4>
                                         </div>
                                         <div class="mvsingle-item media-item">
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item1.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
+                                            @foreach (var item in Model.Videos)
+                                            {
+                                                <div class="vd-item">
+                                                    <div class="vd-it">
+                                                        <img class="vd-img" data-src="@item.Url" data-toggle="modal" data-target="#myModal" src="@item.ThumbnailUrl" alt="">
+                                                        <a data-src="@item.Url" data-toggle="modal" data-target="#myModal" class="fancybox-media hvr-grow video-btn">
+                                                            <img src="bi bi-play-fill" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="vd-infor">
+                                                        <h6><a data-src="@item.Url" data-toggle="modal" data-target="#myModal">@item.Name</a></h6>
+                                                    </div>
                                                 </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Trailer:  Watch New Scenes</a></h6>
-                                                    <p class="time"> 1: 31</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item2.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Featurette: “Avengers Re-Assembled</a></h6>
-                                                    <p class="time"> 1: 03</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item3.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Interview: Robert Downey Jr</a></h6>
-                                                    <p class="time"> 3:27</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item4.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Interview: Scarlett Johansson</a></h6>
-                                                    <p class="time"> 3:27</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item1.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Featurette: Meet Quicksilver & The Scarlet Witch</a></h6>
-                                                    <p class="time"> 1: 31</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item2.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Interview: Director Joss Whedon</a></h6>
-                                                    <p class="time"> 1: 03</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item3.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Interview: Mark Ruffalo</a></h6>
-                                                    <p class="time"> 3:27</p>
-                                                </div>
-                                            </div>
-                                            <div class="vd-item">
-                                                <div class="vd-it">
-                                                    <img class="vd-img" src="~/images/vd-item4.jpg" alt="">
-                                                    <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/images/play-vd.png" alt=""></a>
-                                                </div>
-                                                <div class="vd-infor">
-                                                    <h6> <a href="#">Official Trailer #2</a></h6>
-                                                    <p class="time"> 3:27</p>
-                                                </div>
-                                            </div>
+                                            }
+
                                         </div>
                                         <div class="title-hd-sm w-100">
                                             <h4>Photos <span> @Model.Images.Count()</span></h4>
                                         </div>
                                         <div class="mvsingle-item">
-                                            @foreach (var image in Model.Images.ToList())
+                                            @foreach (var image in Model.Images)
                                             {
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid" style="width: 170px;"></a>
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid photo-item-all"></a>
                                             }
                                         </div>
                                     </div>
@@ -596,7 +532,7 @@
                 </div>
             </div>
         </div>
-        @if (Model.TrailerUrl != "#")
+        @if (Model.TrailerUrl != "#" || Model.Videos.Count() > 0)
         {
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -643,7 +579,7 @@
         @if (this.User.Identity.IsAuthenticated)
         {
             <text>
-                                                                        var value = $(this).attr("data-rating");
+                                                                                    var value = $(this).attr("data-rating");
                         var movieId = @Model.Id;
 
                         let data = { movieId: movieId, value: value };
@@ -670,7 +606,7 @@
                         ratedIndex = Number($(this).data('rating')) - 1;
             </text>
         }
-                                                })
+                                                        })
             });
 
             $('i[data-rating]').mouseover(function() {
