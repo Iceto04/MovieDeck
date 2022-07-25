@@ -149,10 +149,10 @@
 
         function AddMoreActors() {
             actorsItemsSelectItem.children("select").attr("name", "Actors[" + newActorIndex + "].ActorId");
-            actorsItemsSelectItem.children("select").attr("id", "Actors[" + newActorIndex + "]_ActorId");
+            actorsItemsSelectItem.children("select").attr("id", "Actors_" + newActorIndex + "__ActorId");
 
             $("#ActorsContainer").
-                append("<div class='row'><div class='col-md-6'><label class='form-label' for='Actors[" + newActorIndex + "]_ActorId'>Fullname</label>" + actorsItemsSelectItem.html() + "</div><div class='col-md-6'><label class='form-label' for='Actors[" + newActorIndex + "]_CharacterName'>Character</label> <input class='form-control form-control-lg input transparent-input' type='text' id='Actors[" + newActorIndex + "]_CharacterName' name='Actors[" + newActorIndex + "].CharacterName' /></div></div>");
+                append("<div class='row'><div class='col-md-6'><label class='form-label' for='Actors_" + newActorIndex + "__ActorId'>Fullname</label>" + actorsItemsSelectItem.html() + "</div><div class='col-md-6'><label class='form-label' for='Actors_" + newActorIndex + "__CharacterName'>Character</label> <input class='form-control form-control-lg input transparent-input' type='text' id='Actors_" + newActorIndex + "__CharacterName' name='Actors[" + newActorIndex + "].CharacterName' /></div></div>");
             newActorIndex++;
         }
     </script>

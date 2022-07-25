@@ -83,6 +83,7 @@ using System.IO;
                 PosterPath = movieDto.PosterPath,
                 BackdropPath = movieDto.BackdropPath,
                 OriginalId = movieDto.OriginalId,
+                TrailerKey = movieDto.TrailerKey,
             };
 
             await this.moviesRepository.AddAsync(movie);
@@ -206,6 +207,7 @@ using System.IO;
                 OriginalId = movieInfo.Id,
                 PosterPath = movieInfo.PosterPath,
                 BackdropPath = movieInfo.BackdropPath,
+                TrailerKey = movieInfo.Videos.Results.LastOrDefault(x => x.Type == "Trailer").Key,
                 Genres = movieInfo.Genres.Select(x => x.Name).ToList(),
                 Companies = movieInfo.ProductionCompanies.Select(x => x.Name).ToList(),
                 Images = this.GetMovieImages(movieInfo),

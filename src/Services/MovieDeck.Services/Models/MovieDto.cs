@@ -34,6 +34,8 @@
 
         public string BackdropPath { get; set; }
 
+        public string TrailerKey { get; set; }
+
         public int OriginalId { get; set; }
 
         //// public string AddedByUserId { get; set; }

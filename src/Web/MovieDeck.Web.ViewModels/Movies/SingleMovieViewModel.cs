@@ -31,7 +31,7 @@
 
         public string PosterUrl { get; set; }
 
-        public string CurrentUserId { get; set; }
+        public string TrailerUrl { get; set; }
 
         public byte UserRating { get; set; }
 
@@ -59,7 +59,10 @@
                         : ((x.ImdbRating * x.RatingsCount)
                             + x.Ratings.Sum(x => x.Value)) / (x.RatingsCount + x.Ratings.Count)))
                 .ForMember(x => x.RatingsCount, opt =>
-                    opt.MapFrom(x => x.RatingsCount + x.Ratings.Count));
+                    opt.MapFrom(x => x.RatingsCount + x.Ratings.Count))
+                .ForMember(x => x.TrailerUrl, opt =>
+                    opt.MapFrom(x => x.TrailerKey != null ?
+                        string.Format(GlobalConstants.YoutubeEmbedVideoUrl, x.TrailerKey) : "#"));
         }
     }
 }
