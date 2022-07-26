@@ -17,19 +17,22 @@
                     <div class="movie-img sticky-sb">
                         <img src="@Model.PosterUrl" alt="">
                         <div class="movie-btn">
-                            <div class="btn-transform transform-vertical red">
-                                <div>
-                                    <a data-src="@Model.TrailerUrl" data-toggle="modal" data-target="#myModal" class="item item-1 redbtn">
-                                        <i class="bi bi-play-fill"></i> Watch Trailer
-                                    </a>
+                            @if (this.Model.TrailerUrl != "#")
+                            {
+                                <div class="btn-transform transform-vertical red mb-3">
+                                    <div>
+                                        <a data-src="@Model.TrailerUrl" data-toggle="modal" data-target="#myModal" class="item item-1 redbtn">
+                                            <i class="bi bi-play-fill"></i> Watch Trailer
+                                        </a>
+                                    </div>
+                                    <div id="TrailerContainer">
+                                        <a data-src="@Model.TrailerUrl" class="item item-2 redbtn fancybox-media hvr-grow video-btn" data-toggle="modal" data-target="#myModal">
+                                            <i class="bi bi-play-fill"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div id="TrailerContainer">
-                                    <a data-src="@Model.TrailerUrl" class="item item-2 redbtn fancybox-media hvr-grow video-btn" data-toggle="modal" data-target="#myModal">
-                                        <i class="bi bi-play-fill"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="btn-transform transform-vertical pt-3">
+                            }
+                            <div class="btn-transform transform-vertical">
                                 <div>
                                     <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn">
                                         <i class="bi bi-pen-fill"></i> Edit
@@ -534,7 +537,7 @@
         </div>
         @if (Model.TrailerUrl != "#" || Model.Videos.Count() > 0)
         {
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade pt-50" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 

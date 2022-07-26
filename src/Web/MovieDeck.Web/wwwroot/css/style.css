@@ -2820,6 +2820,11 @@ ul {
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.pt-50 {
+    padding-top: 50px;
+}
+
 .movie-single .movie-single-ct .mvcast-item .cast-it .series-it p {
   padding-right: 20px;
 }
