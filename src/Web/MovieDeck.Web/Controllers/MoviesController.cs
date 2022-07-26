@@ -4,9 +4,11 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
+    using MovieDeck.Common;
     using MovieDeck.Services.Data;
     using MovieDeck.Web.ViewModels.Movies;
 
@@ -67,6 +69,10 @@
         public async Task<IActionResult> Edit(int id)
         {
             var input = await this.moviesService.GetMovieByIdAsync<EditMovieInputModel>(id);
+            if (input == null)
+            {
+                return this.NotFound();
+            }
             input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
             return this.View(input);
         }
@@ -85,6 +91,14 @@
             return this.RedirectToAction(nameof(this.ById), new { id });
         }
 
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.moviesService.DeleteAsync(id);
+            return this.RedirectToAction("Index", "Home");
+        }
+
         [Route("[controller]/{id:int}")]
         public async Task<IActionResult> ById(int id)
         {
@@ -95,6 +109,10 @@
             }
 
             var model = await this.moviesService.GetMovieByIdAsync<SingleMovieViewModel>(id, userId);
+            if (model == null)
+            {
+                return this.NotFound();
+            }
             model.UserRating = userId == null ? (byte)0 : this.ratingsService.GetUserRating(id, userId);
             model.Videos = this.moviesService.GetMovieVideosForSingleMoviePage(model.OriginalId);
             return this.View(model);

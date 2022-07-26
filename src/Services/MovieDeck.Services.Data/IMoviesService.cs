@@ -12,6 +12,8 @@
 
         Task UpdateAsync(int id, EditMovieInputModel input);
 
+        Task DeleteAsync(int id);
+
         IEnumerable<T> GetAllForHomePage<T>();
 
         Task<IEnumerable<T>> GetPopularMoviesAsync<T>();

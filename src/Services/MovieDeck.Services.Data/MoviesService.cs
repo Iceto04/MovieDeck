@@ -4,21 +4,16 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-using System.Reflection;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-using MovieDeck.Common;
+
+    using MovieDeck.Common;
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
     using MovieDeck.Services.Mapping;
     using MovieDeck.Services.TmdbApi;
-    using MovieDeck.Web.ViewModels.Actors;
-    using MovieDeck.Web.ViewModels.Directors;
-    using MovieDeck.Web.ViewModels.Genres;
-    using MovieDeck.Web.ViewModels.Images;
     using MovieDeck.Web.ViewModels.Movies;
 
     public class MoviesService : IMoviesService
@@ -248,6 +243,13 @@ using MovieDeck.Common;
             }
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var movie = await this.moviesRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+            this.moviesRepository.Delete(movie);
+            await this.moviesRepository.SaveChangesAsync();
+        }
+
         public IEnumerable<T> GetAllForHomePage<T>()
         {
             return this.moviesRepository.AllAsNoTracking()
@@ -354,6 +356,11 @@ using MovieDeck.Common;
 
         public List<MovieVideoViewModel> GetMovieVideosForSingleMoviePage(int id)
         {
+            if (id == 0)
+            {
+                return new List<MovieVideoViewModel>();
+            }
+
             var movieVideoDtos = this.tmdbService.GetMovieVideos(id);
 
             var movieVideos = new List<MovieVideoViewModel>();

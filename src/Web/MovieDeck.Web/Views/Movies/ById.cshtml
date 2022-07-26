@@ -18,86 +18,103 @@
                         <img src="@Model.PosterUrl" alt="">
                         <div class="movie-btn">
                             @if (this.Model.TrailerUrl != "#")
-                            {
-                                <div class="btn-transform transform-vertical red mb-3">
-                                    <div>
-                                        <a data-src="@Model.TrailerUrl" data-toggle="modal" data-target="#myModal" class="item item-1 redbtn">
-                                            <i class="bi bi-play-fill"></i> Watch Trailer
-                                        </a>
-                                    </div>
-                                    <div id="TrailerContainer">
-                                        <a data-src="@Model.TrailerUrl" class="item item-2 redbtn fancybox-media hvr-grow video-btn" data-toggle="modal" data-target="#myModal">
-                                            <i class="bi bi-play-fill"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            }
-                            <div class="btn-transform transform-vertical">
+                        {
+                            <div class="btn-transform transform-vertical red mb-3">
                                 <div>
-                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn">
-                                        <i class="bi bi-pen-fill"></i> Edit
+                                    <a data-src="@Model.TrailerUrl" data-toggle="modal" data-target="#myModal" class="item item-1 redbtn">
+                                        <i class="bi bi-play-fill"></i> Watch Trailer
                                     </a>
                                 </div>
-                                <div>
-                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn">
-                                        <i class="bi bi-pen-fill"></i>
+                                <div id="TrailerContainer">
+                                    <a data-src="@Model.TrailerUrl" class="item item-2 redbtn fancybox-media hvr-grow video-btn" data-toggle="modal" data-target="#myModal">
+                                        <i class="bi bi-play-fill"></i>
                                     </a>
                                 </div>
                             </div>
+                        }
+                        <div class="btn-transform transform-vertical">
+                            <div>
+                                <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-1 yellowbtn">
+                                    <i class="bi bi-pen-fill"></i> Edit
+                                </a>
+                            </div>
+                            <div>
+                                <a asp-controller="Movies" asp-action="Edit" asp-route-id="@Model.Id" class="item item-2 yellowbtn">
+                                    <i class="bi bi-pen-fill"></i>
+                                </a>
+                            </div>
                         </div>
+                        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                        {
+                            <div class="btn-transform transform-vertical red mt-3">
+                                <form id="deleteForm" asp-controller="Movies" asp-action="Delete" asp-route-id="@Model.Id">
+                                    <div>
+                                        <a data-toggle="modal" data-target="#exampleModal" class="item item-1 redbtn">
+                                            <i class="bi bi-trash3-fill"></i> Delete
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a data-toggle="modal" data-target="#deleteModal" class="item item-2 redbtn">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div class="col-md-8 col-sm-12 col-xs-12">
-                    <div class="movie-single-ct main-content">
-                        <h1 class="bd-hd">@Model.Title <span>@Model.ReleaseDate.Value.Year</span></h1>
-                        <div class="social-btn">
-                            <a href="#" class="parent-btn"><i class="bi bi-heart-fill"></i> Add to Favorite</a>
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="movie-single-ct main-content">
+                    <h1 class="bd-hd">@Model.Title <span>@Model.ReleaseDate.Value.Year</span></h1>
+                    <div class="social-btn">
+                        <a href="#" class="parent-btn"><i class="bi bi-heart-fill"></i> Add to Favorite</a>
+                    </div>
+                    <div class="movie-rate">
+                        <div class="rate">
+                            <i class="bi bi-star-fill"></i>
+                            <p>
+                                <span id="averageRatingValue">@Model.AverageRating.ToString("0.000")</span> / 10<br>
+                                <span id="ratingsCount" class="rv">@Model.RatingsCount</span> Ratings
+                            </p>
                         </div>
-                        <div class="movie-rate">
-                            <div class="rate">
-                                <i class="bi bi-star-fill"></i>
-                                <p>
-                                    <span id="averageRatingValue">@Model.AverageRating.ToString("0.000")</span> / 10<br>
-                                    <span id="ratingsCount" class="rv">@Model.RatingsCount</span> Ratings
-                                </p>
-                            </div>
-                            <div class="rate-star">
-                                <p>Rate This Movie:  </p>
-                                <i class="bi bi-star" data-rating="1"></i>
-                                <i class="bi bi-star" data-rating="2"></i>
-                                <i class="bi bi-star" data-rating="3"></i>
-                                <i class="bi bi-star" data-rating="4"></i>
-                                <i class="bi bi-star" data-rating="5"></i>
-                                <i class="bi bi-star" data-rating="6"></i>
-                                <i class="bi bi-star" data-rating="7"></i>
-                                <i class="bi bi-star" data-rating="8"></i>
-                                <i class="bi bi-star" data-rating="9"></i>
-                                <i class="bi bi-star" data-rating="10"></i>
-                                @*bi-star-fill*@
-                            </div>
+                        <div class="rate-star">
+                            <p>Rate This Movie:  </p>
+                            <i class="bi bi-star" data-rating="1"></i>
+                            <i class="bi bi-star" data-rating="2"></i>
+                            <i class="bi bi-star" data-rating="3"></i>
+                            <i class="bi bi-star" data-rating="4"></i>
+                            <i class="bi bi-star" data-rating="5"></i>
+                            <i class="bi bi-star" data-rating="6"></i>
+                            <i class="bi bi-star" data-rating="7"></i>
+                            <i class="bi bi-star" data-rating="8"></i>
+                            <i class="bi bi-star" data-rating="9"></i>
+                            <i class="bi bi-star" data-rating="10"></i>
+                            @*bi-star-fill*@
                         </div>
-                        <div class="movie-tabs">
-                            <div class="tabs">
-                                <ul class="tab-links tabs-mv">
-                                    <li class="active"><a href="#overview">Overview</a></li>
-                                    <li><a href="#reviews"> Reviews</a></li>
-                                    <li><a href="#cast">  Cast & Crew </a></li>
-                                    <li><a href="#media"> Media</a></li>
-                                    <li><a href="#moviesrelated"> Related Movies</a></li>
+                    </div>
+                    <div class="movie-tabs">
+                        <div class="tabs">
+                            <ul class="tab-links tabs-mv">
+                                <li class="active"><a href="#overview">Overview</a></li>
+                                <li><a href="#reviews"> Reviews</a></li>
+                                <li><a href="#cast">  Cast & Crew </a></li>
+                                <li><a href="#media"> Media</a></li>
+                                <li><a href="#moviesrelated"> Related Movies</a></li>
 
 
-                                </ul>
-                                <div class="tab-content">
-                                    <div id="overview" class="tab active">
-                                        <div class="row">
-                                            <div class="col-md-8 col-sm-12 col-xs-12">
-                                                <p>@Model.Plot</p>
-                                                <div class="title-hd-sm">
-                                                    <h4>Videos & Photos</h4>
-                                                    <a href="#" class="time">All @Model.Videos.Count() Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
-                                                </div>
-                                                <div class="mvsingle-item ov-item">
-                                                    @foreach (var image in Model.Images.ToList().Take(4))
+                            </ul>
+                            <div class="tab-content">
+                                <div id="overview" class="tab active">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-12 col-xs-12">
+                                            <p>@Model.Plot</p>
+                                            <div class="title-hd-sm">
+                                                <h4>Videos & Photos</h4>
+                                                <a href="#" class="time">All @Model.Videos.Count() Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
+                                            </div>
+                                            <div class="mvsingle-item ov-item">
+                                                @foreach (var image in Model.Images.ToList().Take(4))
                                                 {
                                                     <a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid photo-item"></a>
                                                 }
@@ -560,6 +577,26 @@
     </div>
 </div>
 
+<div class="modal pt-50" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Movie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete "@Model.Title"?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form method="post" id="antiForgeryForm"></form>
 
 @section Scripts {
@@ -582,7 +619,7 @@
         @if (this.User.Identity.IsAuthenticated)
         {
             <text>
-                                                                                    var value = $(this).attr("data-rating");
+                                                                                                var value = $(this).attr("data-rating");
                         var movieId = @Model.Id;
 
                         let data = { movieId: movieId, value: value };
@@ -609,7 +646,7 @@
                         ratedIndex = Number($(this).data('rating')) - 1;
             </text>
         }
-                                                        })
+                                                                })
             });
 
             $('i[data-rating]').mouseover(function() {
