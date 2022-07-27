@@ -7,6 +7,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/slick-carousel/slick.min.css" asp-append-version="true">
+	<link rel="stylesheet" href="~/lib/fancyapps/ui/dist/fancybox.min.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
 }
 
@@ -54,7 +55,7 @@
 												<div class="mvsingle-item ov-item">
 													@foreach (var image in Model.Images.Take(4))
 													{
-														<a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl" >
+														<a class="img-lightbox" data-fancybox="gallery" href="@image.PhotoUrl" >
 															<img src="@image.PhotoUrl" alt="" class="img-fluid photo-item">
 														</a>
 													}
@@ -121,7 +122,7 @@
 										<div class="mvsingle-item">
 											@foreach (var image in Model.Images)
 											{
-											   <a class="img-lightbox"  data-fancybox-group="gallery" href="@image.PhotoUrl" >
+											   <a class="img-lightbox"  data-fancybox="gallery" href="@image.PhotoUrl" >
 												   <img src="@image.PhotoUrl" alt="" class="img-fluid photo-item-all">
 												</a>
 											}
@@ -179,5 +180,6 @@
 
 @section Scripts {
     <script src="~/lib/slick-carousel/slick.min.js" asp-append-version="true"></script>
+	<script src="~/lib/fancyapps/ui/dist/fancybox.umd.min.js" asp-append-version="true"></script>
     <script src="~/js/custom.js" asp-append-version="true"></script>
 }

@@ -428,17 +428,17 @@ $(function(){
 	})
 	multiselect.dropdown({'set selected': 'Role1,Role2'});
 	//== scroll function for single page
-	$(window).scroll(function(event) {
-		/* Act on the event */
-		var scrollPos = $(window).scrollTop(),
-		header = $('header');
-		//sticky for menu
-		if(scrollPos > 70){
-			header.addClass('sticky');
-		}else{
-			header.removeClass('sticky');
-		}
-	});		
+	//$(window).scroll(function(event) {
+	//	/* Act on the event */
+	//	var scrollPos = $(window).scrollTop(),
+	//	header = $('header');
+	//	//sticky for menu
+	//	if(scrollPos > 70){
+	//		header.addClass('sticky');
+	//	}else{
+	//		header.removeClass('sticky');
+	//	}
+	//});		
 	//back to top js
 	var backtotop = $('#back-to-top');
     backtotop.on('click', function (e) {
