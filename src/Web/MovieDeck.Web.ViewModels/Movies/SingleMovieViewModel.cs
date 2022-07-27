@@ -43,7 +43,7 @@
 
         public IEnumerable<GenreViewModel> Genres { get; set; }
 
-        public IEnumerable<ImageViewModel> Images { get; set; }
+        public IEnumerable<MovieImageViewModel> Images { get; set; }
 
         public IEnumerable<MovieVideoViewModel> Videos { get; set; }
 
@@ -52,7 +52,7 @@
             configuration.CreateMap<Movie, SingleMovieViewModel>()
                 .ForMember(x => x.PosterUrl, opt =>
                     opt.MapFrom(x => x.PosterPath.Contains("-") ?
-                        "/images/recipes/" + x.PosterPath :
+                        $"/images/{GlobalConstants.MoviesImagesFolder}/" + x.PosterPath :
                         string.Format(GlobalConstants.RemoteImagesUrl, x.PosterPath)))
                 /// If the movie has no API ratings and no one has rated it,
                 /// the view should display 0 and the database cannot be divided by zero,

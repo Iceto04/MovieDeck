@@ -11,5 +11,13 @@
         public const string YoutubeEmbedVideoUrl = "https://www.youtube.com/embed/{0}";
 
         public const string YoutubeVideoThumbnailUrl = "http://img.youtube.com/vi/{0}/mqdefault.jpg";
+
+        public const string BlankProfilePicture = "/images/blank-profile-picture.png";
+
+        public const string MoviesImagesFolder = "movies";
+
+        public const string ActorsImagesFolder = "actors";
+
+        public const string DirectorsImagesFolder = "directors";
     }
 }

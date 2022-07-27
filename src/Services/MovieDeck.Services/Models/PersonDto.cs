@@ -11,5 +11,7 @@
         public string Biography { get; set; }
 
         public string PhotoPath { get; set; }
+
+        public int OriginalId { get; set; }
     }
 }

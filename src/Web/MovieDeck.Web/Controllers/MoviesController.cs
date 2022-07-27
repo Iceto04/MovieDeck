@@ -73,6 +73,7 @@
             {
                 return this.NotFound();
             }
+
             input = this.moviesService.PopulateMovieInputModelDropdownCollections(input);
             return this.View(input);
         }
@@ -102,17 +103,18 @@
         [Route("[controller]/{id:int}")]
         public async Task<IActionResult> ById(int id)
         {
+            var model = await this.moviesService.GetMovieByIdAsync<SingleMovieViewModel>(id);
+            if (model == null)
+            {
+                return this.NotFound();
+            }
+
             string userId = null;
             if (this.User.Identity.IsAuthenticated)
             {
                 userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
 
-            var model = await this.moviesService.GetMovieByIdAsync<SingleMovieViewModel>(id, userId);
-            if (model == null)
-            {
-                return this.NotFound();
-            }
             model.UserRating = userId == null ? (byte)0 : this.ratingsService.GetUserRating(id, userId);
             model.Videos = this.moviesService.GetMovieVideosForSingleMoviePage(model.OriginalId);
             return this.View(model);

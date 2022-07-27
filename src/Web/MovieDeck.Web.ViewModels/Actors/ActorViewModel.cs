@@ -7,6 +7,8 @@
 
     public class ActorViewModel : IMapFrom<MovieActor>, IHaveCustomMappings
     {
+        public int ActorId { get; set; }
+
         public string ActorFullName { get; set; }
 
         public string ActorPhotoPath { get; set; }
@@ -19,9 +21,11 @@
         {
             configuration.CreateMap<MovieActor, ActorViewModel>()
                 .ForMember(x => x.PhotoUrl, opt =>
-                    opt.MapFrom(x => x.Actor.PhotoPath.Contains("-") ?
-                        "/images/recipes/" + x.Actor.PhotoPath :
-                        string.Format(GlobalConstants.RemoteImagesUrl, x.Actor.PhotoPath)));
+                    opt.MapFrom(x => x.Actor.PhotoPath == null ?
+                        GlobalConstants.BlankProfilePicture :
+                            x.Actor.PhotoPath.Contains("-") ?
+                            $"/images/{GlobalConstants.ActorsImagesFolder}/" + x.Actor.PhotoPath :
+                            string.Format(GlobalConstants.RemoteImagesUrl, x.Actor.PhotoPath)));
         }
     }
 }

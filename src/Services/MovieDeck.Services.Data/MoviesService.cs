@@ -72,17 +72,19 @@
                 });
             }
 
-            Directory.CreateDirectory($"{imagePath}/recipes/");
+            Directory.CreateDirectory($"{imagePath}/{GlobalConstants.MoviesImagesFolder}/");
 
             // Create and Save Poster Image
             Image poster = this.imagesService.CreateImage(input.Poster, userId);
-            await this.imagesService.SaveImageToWebRootAsync(imagePath, poster, input.Poster);
+            await this.imagesService
+                .SaveImageToWebRootAsync(imagePath, poster, input.Poster, GlobalConstants.MoviesImagesFolder);
 
             movie.PosterPath = $"/{poster.Id}.{poster.Extension}";
 
             // Create and Save Backdrop Image
             Image backdrop = this.imagesService.CreateImage(input.Backdrop, userId);
-            await this.imagesService.SaveImageToWebRootAsync(imagePath, backdrop, input.Backdrop);
+            await this.imagesService
+                .SaveImageToWebRootAsync(imagePath, backdrop, input.Backdrop, GlobalConstants.MoviesImagesFolder);
 
             movie.BackdropPath = $"/{backdrop.Id}.{backdrop.Extension}";
 
@@ -90,12 +92,13 @@
             {
                 Image dbImage = this.imagesService.CreateImage(image, userId);
                 movie.Images.Add(dbImage);
-                await this.imagesService.SaveImageToWebRootAsync(imagePath, dbImage, image);
+                await this.imagesService
+                    .SaveImageToWebRootAsync(imagePath, dbImage, image, GlobalConstants.MoviesImagesFolder);
             }
 
             foreach (var actorInput in input.Actors)
             {
-                var actor = this.actorsService.GetById(actorInput.ActorId);
+                var actor = this.actorsService.GetActorById(actorInput.ActorId);
                 if (actor == null)
                 {
                     continue;
@@ -153,8 +156,6 @@
             movie.ReleaseDate = input.ReleaseDate;
             movie.Runtime = input.Runtime;
 
-
-
             await this.genresService.RemoveAllMovieGenresForMovieAsync(id);
             movie.Genres.Clear();
 
@@ -182,7 +183,7 @@
             {
                 foreach (var actorInput in input.Actors)
                 {
-                    var actor = this.actorsService.GetById(actorInput.ActorId);
+                    var actor = this.actorsService.GetActorById(actorInput.ActorId);
                     if (actor == null)
                     {
                         continue;
@@ -256,7 +257,7 @@
                     .To<T>().ToList();
         }
 
-        public async Task<T> GetMovieByIdAsync<T>(int id, string userId)
+        public async Task<T> GetMovieByIdAsync<T>(int id)
         {
             return await this.moviesRepository.AllAsNoTracking()
                 .Where(x => x.Id == id)
@@ -272,7 +273,7 @@
                     Runtime = x.Runtime,
                     PosterUrl =
                         x.PosterPath.Contains("-") ?
-                        "/images/recipes/" + x.PosterPath :
+                        "/images/movies/" + x.PosterPath :
                         this.tmdbService.GenereateImageUrl(x.PosterPath),
                     AverageRating = this.ratingsService.GetAverageRatings(x.Id),
                     RatingsCount = this.ratingsService.GetRatingsCount(x.Id),
@@ -299,7 +300,7 @@
                         PhotoUrl =
                             i.RemoteImageUrl != null ?
                             this.tmdbService.GenereateImageUrl(i.RemoteImageUrl) :
-                            $"/images/recipes/{i.Id}.{i.Extension}",
+                            $"/images/movies/{i.Id}.{i.Extension}",
                     }),
                 */
         }
@@ -365,13 +366,13 @@
 
             var movieVideos = new List<MovieVideoViewModel>();
 
-            foreach (var video in movieVideoDtos)
+            foreach (var videoDto in movieVideoDtos)
             {
                 var movieVideo = new MovieVideoViewModel
                 {
-                    Url = string.Format(GlobalConstants.YoutubeEmbedVideoUrl, video.Key),
-                    ThumbnailUrl = string.Format(GlobalConstants.YoutubeVideoThumbnailUrl, video.Key),
-                    Name = video.Name,
+                    Url = string.Format(GlobalConstants.YoutubeEmbedVideoUrl, videoDto.Key),
+                    ThumbnailUrl = string.Format(GlobalConstants.YoutubeVideoThumbnailUrl, videoDto.Key),
+                    Name = videoDto.Name,
                 };
 
                 movieVideos.Add(movieVideo);

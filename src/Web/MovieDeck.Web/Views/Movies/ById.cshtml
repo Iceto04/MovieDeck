@@ -10,14 +10,15 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/youtubeModel.css" asp-append-version="true">
 }
-    <div class="page-single movie-single movie_single">
-        <div class="container">
-            <div class="row ipad-width2">
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="movie-img sticky-sb">
-                        <img src="@Model.PosterUrl" alt="">
-                        <div class="movie-btn">
-                            @if (this.Model.TrailerUrl != "#")
+
+<div class="page-single movie-single movie_single">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="movie-img sticky-sb">
+                    <img src="@Model.PosterUrl" alt="">
+                    <div class="movie-btn">
+                        @if (this.Model.TrailerUrl != "#")
                         {
                             <div class="btn-transform transform-vertical red mb-3">
                                 <div>
@@ -111,7 +112,7 @@
                                             <p>@Model.Plot</p>
                                             <div class="title-hd-sm">
                                                 <h4>Videos & Photos</h4>
-                                                <a href="#" class="time">All @Model.Videos.Count() Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
+                                                <a href="#media" class="time">All @Model.Videos.Count() Videos & @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
                                             </div>
                                             <div class="mvsingle-item ov-item">
                                                 @foreach (var image in Model.Images.ToList().Take(4))
@@ -121,7 +122,7 @@
                                             </div>
                                             <div class="title-hd-sm">
                                                 <h4>cast</h4>
-                                                <a href="#" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
+                                                <a href="#cast" class="time">Full Cast & Crew  <i class="ion-ios-arrow-right"></i></a>
                                             </div>
                                             <!-- movie cast -->
                                             <div class="mvcast-item">
@@ -129,8 +130,8 @@
                                                 {
                                                     <div class="cast-it">
                                                         <div class="cast-left">
-                                                            <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 40px;">
-                                                            <a href="#">@actor.ActorFullName</a>
+                                                            <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
+                                                            <a asp-controller="Actors" asp-action="ById" asp-route-id="@actor.ActorId">@actor.ActorFullName</a>
                                                         </div>
                                                         <p>@actor.CharacterName</p>
                                                     </div>
@@ -176,9 +177,9 @@
                                                 <p>
                                                     @foreach (var actor in Model.Actors.Take(3))
                                                     {
-                                                        <a href="#">@actor.ActorFullName, </a>
+                                                        <a asp-controller="Actors" asp-action="ById" asp-route-id="@actor.ActorId" >@actor.ActorFullName, </a>
                                                     }
-                                                    <a href="#">@Model.Actors.ToList()[3].ActorFullName</a>
+                                                    <a asp-controller="Actors" asp-action="ById" asp-route-id="@Model.Actors.ToList()[3].ActorId">@Model.Actors.ToList()[3].ActorFullName</a>
                                                 </p>
                                             </div>
                                             <div class="sb-it">
@@ -392,12 +393,12 @@
                                         <div class="title-hd-sm w-100">
                                             <h4>Directors & Credit Writers</h4>
                                         </div>
-                                        <div class="mvcast-item w-100">
+                                        <div class="mvcast-item w-100 pr-4">
                                             @foreach (var director in Model.Directors.Where(x => x.DirectorPhotoPath != null))
                                             {
-                                                <div class="cast-it w-100">
+                                                <div class="cast-it">
                                                     <div class="cast-left">
-                                                        <img src="@director.PhotoUrl" alt="@director.DirectorFullName" style="width: 40px;">
+                                                        <img src="@director.PhotoUrl" alt="@director.DirectorFullName" style="width: 80px;">
                                                         <a href="#">@director.DirectorFullName</a>
                                                     </div>
                                                     <p>Director</p>
@@ -407,13 +408,13 @@
                                         <div class="title-hd-sm w-100">
                                             <h4>Cast</h4>
                                         </div>
-                                        <div class="mvcast-item">
-                                            @foreach (var actor in Model.Actors.Where(x => x.ActorPhotoPath != null))
+                                        <div class="mvcast-item w-100 pr-4">
+                                            @foreach (var actor in Model.Actors)
                                             {
-                                                <div class="cast-it w-100">
+                                                <div class="cast-it">
                                                     <div class="cast-left">
-                                                        <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 40px;">
-                                                        <a href="#">@actor.ActorFullName</a>
+                                                        <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
+                                                        <a asp-controller="Actors" asp-action="ById" asp-route-id="@actor.ActorId">@actor.ActorFullName</a>
                                                     </div>
                                                     <p>@actor.CharacterName</p>
                                                 </div>
@@ -575,23 +576,23 @@
             </div>
         }
     </div>
-</div>
 
-<div class="modal pt-50" id="deleteModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Movie</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete "@Model.Title"?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+    <div class="modal pt-50" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Movie</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want to delete "@Model.Title"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                </div>
             </div>
         </div>
     </div>
@@ -619,7 +620,7 @@
         @if (this.User.Identity.IsAuthenticated)
         {
             <text>
-                                                                                                var value = $(this).attr("data-rating");
+                                                                                                                                        var value = $(this).attr("data-rating");
                         var movieId = @Model.Id;
 
                         let data = { movieId: movieId, value: value };
@@ -646,7 +647,7 @@
                         ratedIndex = Number($(this).data('rating')) - 1;
             </text>
         }
-                                                                })
+                                                                                            })
             });
 
             $('i[data-rating]').mouseover(function() {
@@ -679,4 +680,4 @@
             $('i[data-rating]').removeClass('bi-star-fill').addClass('bi-star');
         }
     </script>
-}
+    }

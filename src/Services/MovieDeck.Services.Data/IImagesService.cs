@@ -8,7 +8,7 @@
 
     public interface IImagesService
     {
-        Task SaveImageToWebRootAsync(string imagePath, Image dbImage, IFormFile image);
+        Task SaveImageToWebRootAsync(string imagePath, Image dbImage, IFormFile image, string folderPath);
 
         Image CreateImage(IFormFile image, string userId);
     }

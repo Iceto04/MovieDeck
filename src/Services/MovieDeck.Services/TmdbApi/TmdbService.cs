@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@
     using TMDbLib.Client;
     using TMDbLib.Objects.Configuration;
     using TMDbLib.Objects.Movies;
+    using TMDbLib.Objects.People;
 
     public class TmdbService : ITmdbService
     {
@@ -206,7 +208,7 @@
                 OriginalId = movieInfo.Id,
                 PosterPath = movieInfo.PosterPath,
                 BackdropPath = movieInfo.BackdropPath,
-                TrailerKey = movieInfo.Videos.Results.LastOrDefault(x => x.Type == "Trailer")?.Key ,
+                TrailerKey = movieInfo.Videos.Results.LastOrDefault(x => x.Type == "Trailer")?.Key,
                 Genres = movieInfo.Genres.Select(x => x.Name).ToList(),
                 Companies = movieInfo.ProductionCompanies.Select(x => x.Name).ToList(),
                 Images = this.GetMovieImages(movieInfo),
@@ -217,17 +219,10 @@
             return movie;
         }
 
-        public string GenereateImageUrl(string path)
-        {
-            return this.config.Images.BaseUrl +
-                this.config.Images.PosterSizes.LastOrDefault() +
-                path;
-        }
-
-        public List<MovieVideoDto> GetMovieVideos(int id)
+        public List<MovieVideoDto> GetMovieVideos(int originalId)
         {
             TMDbLib.Objects.Movies.Movie movieInfo = this.client
-                .GetMovieAsync(id, MovieMethods.Videos).Result;
+                .GetMovieAsync(originalId, MovieMethods.Videos).Result;
 
             var movieVideosDtos = new List<MovieVideoDto>();
 
@@ -245,6 +240,26 @@
             return movieVideosDtos;
         }
 
+        public List<ActorImageDto> GetActorImages(int originalId)
+        {
+            Person actorInfo = this.client
+                .GetPersonAsync(originalId, PersonMethods.Images).Result;
+
+            var actorImagesDtos = new List<ActorImageDto>();
+
+            foreach (var actorImage in actorInfo.Images.Profiles)
+            {
+                var actorImageDto = new ActorImageDto
+                {
+                    PhotoPath = actorImage.FilePath,
+                };
+
+                actorImagesDtos.Add(actorImageDto);
+            }
+
+            return actorImagesDtos;
+        }
+
         private async Task<List<ActorDto>> GetMovieActorsAsync(TMDbLib.Objects.Movies.Movie movieInfo)
         {
             var actors = new List<ActorDto>();
@@ -259,6 +274,7 @@
                     Biography = string.IsNullOrEmpty(actorInfo.Biography) ? null : actorInfo.Biography,
                     BirthDate = actorInfo.Birthday,
                     PhotoPath = actorInfo.ProfilePath,
+                    OriginalId = actorInfo.Id,
                     Character = string.IsNullOrEmpty(actor.Character) ? null : actor.Character,
                 });
             }
@@ -280,6 +296,7 @@
                     Biography = string.IsNullOrEmpty(directorInfo.Biography) ? null : directorInfo.Biography,
                     BirthDate = directorInfo.Birthday,
                     PhotoPath = directorInfo.ProfilePath,
+                    OriginalId = directorInfo.Id,
                 });
             }
 
@@ -311,7 +328,7 @@
         {
             var actor = this.actorsRepository
                 .AllAsNoTracking()
-                .FirstOrDefault(x => x.FullName == actorDto.FullName && x.Biography == actorDto.Biography);
+                .FirstOrDefault(x => x.OriginalId == actorDto.OriginalId);
 
             if (actor != null)
             {
@@ -324,6 +341,7 @@
                 Biography = actorDto.Biography,
                 BirthDate = actorDto.BirthDate,
                 PhotoPath = actorDto.PhotoPath,
+                OriginalId = actorDto.OriginalId,
             };
 
             await this.actorsRepository.AddAsync(actor);
@@ -336,7 +354,7 @@
         {
             var director = this.directorsRepository
                 .AllAsNoTracking()
-                .FirstOrDefault(x => x.FullName == directorDto.FullName && x.Biography == directorDto.Biography);
+                .FirstOrDefault(x => x.OriginalId == directorDto.OriginalId);
 
             if (director != null)
             {
@@ -349,6 +367,7 @@
                 Biography = directorDto.Biography,
                 BirthDate = directorDto.BirthDate,
                 PhotoPath = directorDto.PhotoPath,
+                OriginalId = directorDto.OriginalId,
             };
 
             await this.directorsRepository.AddAsync(director);

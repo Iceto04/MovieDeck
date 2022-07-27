@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using MovieDeck.Common;
     using MovieDeck.Data.Common.Repositories;
     using MovieDeck.Data.Models;
     using MovieDeck.Web.ViewModels.Directors;
@@ -34,10 +35,13 @@
                 BirthDate = input.BirthDate,
             };
 
-            Directory.CreateDirectory($"{imagePath}/recipes/");
+
+
+            Directory.CreateDirectory($"{imagePath}/{GlobalConstants.DirectorsImagesFolder}/");
 
             Image photo = this.imagesService.CreateImage(input.Photo, userId);
-            await this.imagesService.SaveImageToWebRootAsync(imagePath, photo, input.Photo);
+            await this.imagesService
+                .SaveImageToWebRootAsync(imagePath, photo, input.Photo, GlobalConstants.DirectorsImagesFolder);
             director.PhotoPath = $"/{photo.Id}.{photo.Extension}";
 
             await this.directorsRepository.AddAsync(director);

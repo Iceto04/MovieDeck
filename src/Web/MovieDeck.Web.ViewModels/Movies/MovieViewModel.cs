@@ -31,11 +31,11 @@
             configuration.CreateMap<Movie, MovieViewModel>()
                 .ForMember(x => x.PosterUrl, opt =>
                     opt.MapFrom(x => x.PosterPath.Contains("-") ?
-                        "/images/recipes/" + x.PosterPath :
+                        $"/images/{GlobalConstants.MoviesImagesFolder}/" + x.PosterPath :
                         string.Format(GlobalConstants.RemoteImagesUrl, x.PosterPath)))
                 .ForMember(x => x.BackdropUrl, opt =>
                     opt.MapFrom(x => x.BackdropPath.Contains("-") ?
-                        "/images/recipes/" + x.BackdropPath :
+                        $"/images/{GlobalConstants.MoviesImagesFolder}/" + x.BackdropPath :
                         string.Format(GlobalConstants.RemoteImagesUrl, x.BackdropPath)));
         }
     }

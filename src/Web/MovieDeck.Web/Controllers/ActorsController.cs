@@ -8,6 +8,7 @@
 
     using MovieDeck.Services.Data;
     using MovieDeck.Web.ViewModels.Actors;
+using MovieDeck.Web.ViewModels.Movies;
 
     public class ActorsController : BaseController
     {
@@ -44,6 +45,19 @@
             await this.actorsService.CreateAsync(input, userId, $"{this.environment.WebRootPath}/images");
 
             return this.Redirect("/");
+        }
+
+        [Route("[controller]/{id:int}")]
+        public IActionResult ById(int id)
+        {
+            var model = this.actorsService.GetById<SingleActorViewModel>(id);
+            if (model == null)
+            {
+                return this.NotFound();
+            }
+
+            model.Images = this.actorsService.GetActorPhotosForSingleActorPage(model.OriginalId);
+            return this.View(model);
         }
     }
 }

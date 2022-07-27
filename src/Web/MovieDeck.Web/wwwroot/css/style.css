@@ -2808,8 +2808,14 @@ ul {
 }
 .movie-single .movie-single-ct .mvcast-item .cast-it p {
   width: 40%;
-  text-align: left;
+  text-align: right;
 }
+
+.actor-movie-character {
+    text-align: left !important;
+    width: auto !important;
+}
+
 .movie-single .movie-single-ct .mvcast-item .cast-it .series-it {
   width: 100%;
 }
@@ -3203,9 +3209,7 @@ p.pad-change {
 p.ceb-single {
   font-size: 18px;
 }
-.cebleb-single {
-  margin-top: -345px;
-}
+
 @media (max-width: 767px) {
   .cebleb-single {
     overflow: hidden;

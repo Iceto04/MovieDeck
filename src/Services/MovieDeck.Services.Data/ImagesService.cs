@@ -13,9 +13,10 @@
     {
         private readonly string[] allowedExtensions = new[] { "jpg", "jpeg", "png", "gif" };
 
-        public async Task SaveImageToWebRootAsync(string imagePath, Image dbImage, IFormFile image)
+        public async Task SaveImageToWebRootAsync(string imagePath, Image dbImage, IFormFile image,
+            string folderPath)
         {
-            var posterPhysicalPath = $"{imagePath}/recipes/{dbImage.Id}.{dbImage.Extension}";
+            var posterPhysicalPath = $"{imagePath}/{folderPath}/{dbImage.Id}.{dbImage.Extension}";
             using Stream fileStream = new FileStream(posterPhysicalPath, FileMode.Create);
             await image.CopyToAsync(fileStream);
         }

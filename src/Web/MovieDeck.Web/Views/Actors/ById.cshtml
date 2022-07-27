@@ -1,0 +1,183 @@
+﻿@using MovieDeck.Common
+@using MovieDeck.Web.ViewModels.Actors
+@model SingleActorViewModel
+@{
+    this.ViewData["Title"] = Model.FullName;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/slick-carousel/slick.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+}
+
+<div class="page-single movie-single cebleb-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="mv-ceb">
+					<img src="@Model.PhotoUrl" alt="">
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct">
+					<h1 class="bd-hd">@Model.FullName</h1>
+					<div class="movie-tabs">
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overview">Overview</a></li>
+								@if (Model.Biography != null) 
+								{
+									<li><a href="#biography"> Biography</a></li>
+								}
+								@if (Model.Images.Count() != 0)
+								{
+									<li><a href="#media"> Media</a></li>
+								}
+								<li><a href="#filmography">Filmography</a></li>                        
+							</ul>
+						    <div class="tab-content">
+						        <div id="overview" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+											@if (Model.Biography != null)
+											{
+												<p>@Model.BiographyShort</p>
+												<p></p>
+												<p class="time"><a href="#biography">See full bio <i class="ion-ios-arrow-right"></i></a></p>
+											}
+											@if (Model.Images.Count() != 0)
+											{
+												<div class="title-hd-sm">
+													<h4>Videos & Photos</h4>
+													<a href="#media" class="time">All @Model.Images.Count() Photos <i class="ion-ios-arrow-right"></i></a>
+												</div>
+												<div class="mvsingle-item ov-item">
+													@foreach (var image in Model.Images.Take(4))
+													{
+														<a class="img-lightbox" data-fancybox-group="gallery" href="@image.PhotoUrl" >
+															<img src="@image.PhotoUrl" alt="" class="img-fluid photo-item">
+														</a>
+													}
+												</div>
+											}
+											<div class="title-hd-sm">
+												<h4>filmography</h4>
+												<a href="#filmography" class="time">Full Filmography<i class="ion-ios-arrow-right"></i></a>
+											</div>
+											<!-- movie cast -->
+											<div class="mvcast-item">											
+												@foreach (var movie in Model.Movies.Take(10))
+												{
+												   <div class="cast-it">
+														<div class="cast-left cebleb-film">
+															<img src="@movie.MoviePosterUrl" alt="" style="width: 80px;">
+															<div>
+																<a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.MovieId">@movie.MovieTitle </a>
+																<p class="time actor-movie-character">@movie.CharacterName</p>
+															</div>
+														
+														</div>
+														<p>@movie.MovieReleaseDate.ToShortDateString()</p>
+													</div>
+												}
+											</div>
+						            	</div>
+										@if (Model.BirthDate != null)
+										{
+											<div class="col-md-4 col-xs-12 col-sm-12">
+						            			<div class="sb-it">
+						            				<h6>Date of Birth: </h6>
+						            				<p>@Model.BirthDate.Value.ToShortDateString()</p>
+						            			</div>
+						            		</div>
+										}
+						            </div>
+						        </div>
+								@if (Model.Biography != null)
+								{
+									<div id="biography" class="tab">
+									   <div class="row">
+						            		<div class="rv-hd">
+												<div>
+													<h3>Biography of</h3>
+						       	 					<h2>@Model.FullName</h2>
+												</div>							            						
+						            		</div>
+						            		<p>@Model.Biography</p>
+										</div>
+									</div>
+								}
+						        <div id="media" class="tab">
+						        	<div class="row">
+						        		<div class="rv-hd">
+						            		<div>
+						            			<h3>Photos of</h3>
+					       	 					<h2>@Model.FullName</h2>
+						            		</div>
+						            	</div>
+										<div class="title-hd-sm w-100">
+											<h4>Photos <span> @Model.Images.Count()</span></h4>
+										</div>
+										<div class="mvsingle-item">
+											@foreach (var image in Model.Images)
+											{
+											   <a class="img-lightbox"  data-fancybox-group="gallery" href="@image.PhotoUrl" >
+												   <img src="@image.PhotoUrl" alt="" class="img-fluid photo-item-all">
+												</a>
+											}
+										</div>
+						        	</div>
+					       	 	</div>
+					       	 	<div id="filmography" class="tab">
+						        	<div class="row">
+						            	<div class="rv-hd">
+						            		<div>
+						            			<h3>Filmography of</h3>
+					       	 					<h2>@Model.FullName</h2>
+						            		</div>
+										
+						            	</div>
+						            	<div class="topbar-filter w-100">
+											<p>Found <span>@Model.Movies.Count() movies</span> in total</p>
+											<label>Filter by:</label>
+											<select>
+												<option value="popularity">Popularity Descending</option>
+												<option value="popularity">Popularity Ascending</option>
+												<option value="rating">Rating Descending</option>
+												<option value="rating">Rating Ascending</option>
+												<option value="date">Release date Descending</option>
+												<option value="date">Release date Ascending</option>
+											</select>
+										</div>
+										<!-- movie cast -->
+										<div class="mvcast-item w-100 pr-4">											
+											@foreach (var movie in Model.Movies)
+											{
+												<div class="cast-it">
+													<div class="cast-left cebleb-film">
+														<img src="@movie.MoviePosterUrl" alt="" style="width: 80px;">
+														<div>
+															<a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.MovieId">@movie.MovieTitle </a>
+															<p class="time actor-movie-character">@movie.CharacterName</p>
+														</div>
+														
+													</div>
+													<p>@movie.MovieReleaseDate.ToShortDateString()</p>
+												</div>
+											}
+										</div>
+						            </div>
+					       	 	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/slick-carousel/slick.min.js" asp-append-version="true"></script>
+    <script src="~/js/custom.js" asp-append-version="true"></script>
+}

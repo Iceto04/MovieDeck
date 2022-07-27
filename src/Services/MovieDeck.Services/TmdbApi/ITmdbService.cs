@@ -13,15 +13,15 @@
 
         void GetAll();
 
-        string GenereateImageUrl(string path);
-
         Task<IEnumerable<int>> GetPopularMoviesOriginalIdAsync();
 
         Task<IEnumerable<int>> GetUpcomingMoviesOriginalIdAsync();
 
         Task<MovieDto> GetMovieById(int id);
 
-        List<MovieVideoDto> GetMovieVideos(int id);
+        List<MovieVideoDto> GetMovieVideos(int originaId);
+
+        List<ActorImageDto> GetActorImages(int originalId);
 
         // void GetMoviesInRange(int start, int end);
     }

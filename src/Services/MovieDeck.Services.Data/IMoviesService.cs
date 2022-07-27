@@ -20,7 +20,7 @@
 
         Task<IEnumerable<T>> GetUpcomingMoviesAsync<T>();
 
-        Task<T> GetMovieByIdAsync<T>(int id, string userId = null);
+        Task<T> GetMovieByIdAsync<T>(int id);
 
         List<MovieVideoViewModel> GetMovieVideosForSingleMoviePage(int id);
 
