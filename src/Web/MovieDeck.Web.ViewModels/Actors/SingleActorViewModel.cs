@@ -20,7 +20,12 @@
 
         public string Biography { get; set; }
 
-        public string BiographyShort => this.Biography != null ? this.Biography.Substring(0, 300) + "..." : null;
+        public string BiographyShort =>
+            this.Biography != null ?
+            this.Biography.Length > 300
+                ? this.Biography.Substring(0, 300) + "..."
+                : this.Biography
+            : null;
 
         public string PhotoUrl { get; set; }
 
