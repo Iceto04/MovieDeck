@@ -92,7 +92,6 @@
       ]
     },
     {
-      "provider": "jsdelivr",
       "library": "@fancyapps/ui@4.0.30",
       "destination": "wwwroot/lib/fancyapps/ui/",
       "files": [
@@ -100,6 +99,15 @@
         "dist/fancybox.umd.js",
         "dist/fancybox.min.css",
         "dist/fancybox.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "lazysizes@5.3.2",
+      "destination": "wwwroot/lib/lazysizes/",
+      "files": [
+        "lazysizes.min.js",
+        "lazysizes.js"
       ]
     }
   ]

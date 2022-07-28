@@ -15,7 +15,7 @@
                     <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
                         <div class="item">
                             <div class="slider-info">
-                                <img class="banner-view img-fluid" src="@movie.BackdropUrl">
+                                <img class="banner-view img-fluid lazyload" data-src="@movie.BackdropUrl">
                                 <div class="banner-info">
                                     <h3>@movie.Title</h3>
                                     @*                                    <a href="#small-dialog1" class="popup-with-zoom-anim play-view1">
@@ -52,7 +52,7 @@
                             <div class="item vhny-grid">
                                 <div class="box16">
                                     <figure>
-                                        <img class="img-fluid" src="@movie.PosterUrl" alt="">
+                                        <img class="img-fluid lazyload" data-src="@movie.PosterUrl" alt="">
                                     </figure>
                                     <div class="box-content">
                                         <h4 class="title">@movie.Title</h4>
@@ -89,7 +89,7 @@
                             <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
                                 <div class="box16 mb-0">
                                     <figure>
-                                        <img class="img-fluid" src="@movie.PosterUrl" alt="">
+                                        <img class="img-fluid lazyload" data-src="@movie.PosterUrl" alt="">
                                     </figure>
                                     <div class="box-content">
                                         <h4>
@@ -198,7 +198,7 @@
                                             <div class="slider-info">
                                                 <div class="img-circle">
                                                     <a asp-controller="Movies" asp-action="ById" asp-route-id="@movie.Id">
-                                                        <img src="@movie.PosterUrl" class="img-fluid"
+                                                        <img data-src="@movie.PosterUrl" class="img-fluid lazyload"
                                                          alt="author image">
                                                     </a>
                                                 </div>

@@ -118,7 +118,7 @@
                                             <div class="mvsingle-item ov-item">
                                                 @foreach (var image in Model.Images.ToList().Take(4))
                                                 {
-                                                    <a data-fancybox="gallery" href="@image.PhotoUrl"><img src="@image.PhotoUrl" alt="" class="img-fluid photo-item"></a>
+                                                    <a data-fancybox="gallery" href="@image.PhotoUrl"><img data-src="@image.PhotoUrl" alt="" class="img-fluid photo-item lazyload"></a>
                                                 }
                                             </div>
                                             <div class="title-hd-sm">
@@ -131,7 +131,7 @@
                                                 {
                                                     <div class="cast-it">
                                                         <div class="cast-left">
-                                                            <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
+                                                            <img class="lazyload" data-src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
                                                             <a asp-controller="Actors" asp-action="ById" asp-route-id="@actor.ActorId">@actor.ActorFullName</a>
                                                         </div>
                                                         <p>@actor.CharacterName</p>
@@ -399,7 +399,7 @@
                                             {
                                                 <div class="cast-it">
                                                     <div class="cast-left">
-                                                        <img src="@director.PhotoUrl" alt="@director.DirectorFullName" style="width: 80px;">
+                                                        <img class="lazyload" data-src="@director.PhotoUrl" alt="@director.DirectorFullName" style="width: 80px;">
                                                         <a href="#">@director.DirectorFullName</a>
                                                     </div>
                                                     <p>Director</p>
@@ -414,7 +414,7 @@
                                             {
                                                 <div class="cast-it">
                                                     <div class="cast-left">
-                                                        <img src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
+                                                        <img class="lazyload" data-src="@actor.PhotoUrl" alt="@actor.ActorFullName" style="width: 80px;">
                                                         <a asp-controller="Actors" asp-action="ById" asp-route-id="@actor.ActorId">@actor.ActorFullName</a>
                                                     </div>
                                                     <p>@actor.CharacterName</p>
@@ -458,7 +458,7 @@
                                             @foreach (var image in Model.Images)
                                             {
                                                 <a data-fancybox="gallery" href="@image.PhotoUrl">
-                                                    <img src="@image.PhotoUrl" alt="" class="img-fluid photo-item-all">
+                                                    <img data-src="@image.PhotoUrl" alt="" class="img-fluid photo-item-all lazyload">
                                                 </a>
                                             }
                                         </div>
